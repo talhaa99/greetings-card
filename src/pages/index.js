@@ -75,14 +75,14 @@ const Page = () => {
         {/*</Container>*/}
         <Section1/>
         <Section2/>
-        <video
-          src="https://greetings-card-apis.tecshield.net/uploads/images/templateVideo/1754051568412-recorded-video.mp4"
-          controls
-          autoPlay
-          muted
-          playsInline
-          style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-        />
+        {/*<video*/}
+        {/*  src="https://greetings-card-apis.tecshield.net/uploads/images/templateVideo/1754051568412-recorded-video.mp4"*/}
+        {/*  controls*/}
+        {/*  autoPlay*/}
+        {/*  muted*/}
+        {/*  playsInline*/}
+        {/*  style={{ width: '100%', height: 'auto', borderRadius: '8px' }}*/}
+        {/*/>*/}
 
         {/*<Checkout/>*/}
         <PopularCards/>
