@@ -45,6 +45,7 @@ const Editor = () => {
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [userTemplateData, setUserTemplateData] = useState(null);
+  const [url, setUrl] = useState(null);
   // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
 
   useEffect(() => {
@@ -58,14 +59,13 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
+  console.log('auth', auth);
 
   const getFrontCardDetail = async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${BASE_URL}/api/cards/get/data/game/${cardId}`);
       setData(res.data.data);
-
-      console.log('res', res);
 
       await createTemplateData();
 
@@ -103,6 +103,7 @@ const Editor = () => {
   };
 
   console.log('userTemplateData', userTemplateData);
+  console.log("url...........", url);
 
   const createTemplateData = async () => {
     const email = getUserEmail();
@@ -157,11 +158,16 @@ const Editor = () => {
         'LoadSavedData',
         JSON.stringify(userTemplateData)
       );
+      setUrl({
+        qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`, token: auth?.user.token
+      })
       //sending qr link here
       instance.SendMessage(
         'JsonDataHandlerAndParser',
         'QrLink',
-        JSON.stringify(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`)
+        JSON.stringify({
+          qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`, token: auth?.user.token
+        })
       );
 
       gameIframe.current.contentWindow.saveImage = async (array = [], int, index) => {

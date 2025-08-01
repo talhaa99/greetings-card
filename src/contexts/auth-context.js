@@ -100,7 +100,7 @@ export const AuthProvider = (props) => {
           }
         );
         // window.location.reload();
-        delete response.data.data.token;
+        // delete response.data.data.token;
         dispatch({
           type: HANDLERS.INITIALIZE,
           payload: response.data.data
@@ -279,6 +279,7 @@ export const AuthProvider = (props) => {
         loginUserData,
         setLoginUserData,
         googleSignInDone,
+        initialize,
         setGoogleSignInDone,
         signUpUserData,
         setSignUpUserData,

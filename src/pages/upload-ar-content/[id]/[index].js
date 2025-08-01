@@ -27,7 +27,7 @@ const Upload = () => {
   const auth = useAuth();
   const theme = useTheme();
   const router = useRouter();
-  const { id, index, temp } = router.query;
+  const { id, index, temp, token } = router.query;
   const [loading, setLoading] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
@@ -38,6 +38,20 @@ const Upload = () => {
   const [previewUrls, setPreviewUrls] = useState('');
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  console.log("auth", auth);
+  console.log("token", token);
+
+
+  useEffect(() => {
+    if (token && !auth.isAuthenticated) {
+      // store token and initialize manually
+      localStorage.setItem('token', token);
+      auth.initialize();
+    }
+  }, [token]);
+
+
 
   const useStyles = styled((theme) => ({
     root: {
