@@ -444,8 +444,8 @@ export const LandingNav = () => {
   //   callBackendAfterSignUp();
   // }, [signUpUserData, status]);
 
-  console.log('session', status, session);
-  console.log('loginUserData', loginUserData);
+  // console.log('session', status, session);
+  // console.log('loginUserData', loginUserData);
 
   useEffect(() => {
     const googleClicked = localStorage.getItem('googleClicked');
@@ -468,32 +468,10 @@ export const LandingNav = () => {
       const email=  loginUserData.email;
       try {
         await SignInWithGoogle({name, email});
-
-
-        // const response = await axios.post(`${API_BASE_URL}/api/user/google-signin`, {
-        //   name: session.user.name,
-        //   email: session.user.email
-        // });
-        //
-        // const token = response.data.data.token;
-        // localStorage.setItem('token', token);
-        //
-        // console.log('HEREEEEE: ', response.data);
-        //
-        // setLoginUserData(response.data.data);
-
         // ✅ Block future calls and clear click flag
         localStorage.setItem('hasCalled', 'true');
         localStorage.removeItem('googleClicked');
-        window.location.reload();
-
         // window.location.reload();
-
-        //  await router.push('/');
-        // if (isSave) {
-        //   window.location.reload();
-        // }
-
         toast.success('Sign in successfully');
       } catch (error) {
         // toast.error(error?.response?.data?.msg)
@@ -511,18 +489,6 @@ export const LandingNav = () => {
     handleCloseAvatar();
     router.push('/');
   };
-
-  // useEffect(() => {
-  //   const dropdown = document.getElementById('userDropdownBtn');
-  //
-  //   dropdown.addEventListener('show.bs.dropdown', () => setGifZIndex(800));
-  //   dropdown.addEventListener('hide.bs.dropdown', () => setGifZIndex(1300));
-  //
-  //   return () => {
-  //     dropdown.removeEventListener('show.bs.dropdown', () => setGifZIndex(800));
-  //     dropdown.removeEventListener('hide.bs.dropdown', () => setGifZIndex(1300));
-  //   };
-  // }, []);
 
   useEffect(() => {
     const dropdown = document.getElementById('userDropdownBtn');
@@ -730,9 +696,11 @@ export const LandingNav = () => {
 
                       <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
                         <li>
+                          <NextLink href='/myCards' passHref legacyBehavior>
                           <button className="dropdown-item" onClick={handleMyCards}>
                             My Cards
                           </button>
+                          </NextLink>
                         </li>
                         <li>
                           <button className="dropdown-item">
@@ -817,7 +785,9 @@ export const LandingNav = () => {
                 {/* Dropdown menu */}
                 <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
                   <li>
+                    <NextLink href='/myCards' passHref legacyBehavior>
                     <button className="dropdown-item" onClick={handleMyCards}>My Cards</button>
+                    </NextLink>
                   </li>
                   <li>
                     <button className="dropdown-item">My Account</button>

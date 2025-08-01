@@ -94,6 +94,7 @@ const Upload = () => {
         } catch (err) {
           console.error('Upload error:', err);
           toast.error(err?.response?.data?.msg);
+          setShowWarning(false);
         } finally {
           setLoading(false);
         }
@@ -134,6 +135,7 @@ const Upload = () => {
     } catch (err) {
       console.error('Upload failed image:', err);
       toast.error(err?.response?.data?.msg);
+      setShowWarning(false);
     } finally {
       setVideoLoading(false);
     }
@@ -151,13 +153,16 @@ const Upload = () => {
       if (isImage) {
         toast.success('Image Deleted successfully!');
         setPreviewUrls(null);
+        setShowWarning(false);
       } else {
         toast.success('Video Deleted successfully!');
         setPreviewVideoUrls(null);
+        setShowWarning(false);
       }
     } catch (error) {
       console.log('error in video', error);
       toast.error(error?.response?.data?.msg);
+      setShowWarning(false);
     }
   };
   return (<>

@@ -37,7 +37,7 @@ const Editor = () => {
   const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
   const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
   const gameLoadCalled = useRef(false);
-
+  const hasCreatedTemplateRef = useRef(false);
   const [data, setData] = useState(null);
   const [showQr, setShowQr] = useState(false);
   const [cardData, setCardData] = useState(null);
@@ -45,17 +45,19 @@ const Editor = () => {
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [userTemplateData, setUserTemplateData] = useState(null);
-  const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
-
-  console.log('userCardId', userCardId);
-  console.log('content-----------------------------------', content);
+  // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
 
   useEffect(() => {
-    if (!userTemplateData) {
-      return;
-    }
-    setContent(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
-  }, [userTemplateData]);
+    const runOnceAfterLogin = async () => {
+      if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
+        hasCreatedTemplateRef.current = true;
+        await createTemplateData();
+      }
+    };
+
+    runOnceAfterLogin();
+  }, [auth?.isAuthenticated]); // only depends on login state
+
 
   const getFrontCardDetail = async () => {
     try {
@@ -133,18 +135,6 @@ const Editor = () => {
     };
   }, [data && userTemplateData]);
 
-  // const shortenUrl = async (longUrl) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`
-  //     );
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error('URL shortening failed:', error);
-  //     return longUrl; // fallback
-  //   }
-  // };
-
   const gameOnLoad = () => {
     const instance = gameIframe.current?.contentWindow?.gameInstance;
 
@@ -168,17 +158,10 @@ const Editor = () => {
         JSON.stringify(userTemplateData)
       );
       //sending qr link here
-
-      // const longUrl = `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`;
-      // const shortUrl = await shortenUrl(longUrl);
-
-      // console.log('shortUrl------------', shortUrl);
-
       instance.SendMessage(
         'JsonDataHandlerAndParser',
         'QrLink',
         JSON.stringify(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`)
-        // JSON.stringify(shortUrl)
       );
 
       gameIframe.current.contentWindow.saveImage = async (array = [], int, index) => {
@@ -298,7 +281,7 @@ const Editor = () => {
               isAuthenticated: isAuth,
               isImage,
               index,
-              userId: userCardId
+              uuid: userCardId
 
             },
             {
@@ -338,7 +321,7 @@ const Editor = () => {
               }
             }
           );
-          console.log('response of save data===> not authenticated', response);
+          console.log('response of save data===> ', response);
           setUserTemplateData(response?.data?.data);
           // openLogin();
           if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
