@@ -103,7 +103,7 @@ const Editor = () => {
   };
 
   console.log('userTemplateData', userTemplateData);
-  console.log("url...........", url);
+  console.log('url...........', url);
 
   const createTemplateData = async () => {
     const email = getUserEmail();
@@ -160,7 +160,19 @@ const Editor = () => {
       );
       setUrl({
         qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`, token: auth?.user.token
-      })
+      });
+
+
+      //send qrlink for user ar experience
+      instance.SendMessage(
+        'JsonDataHandlerAndParser',
+        'purchaseCardLink',
+        JSON.stringify(
+          `https://ar-experience-greetings-card.tecshield.net/${userTemplateData?._id}`
+        )
+      );
+
+
       //sending qr link here
       instance.SendMessage(
         'JsonDataHandlerAndParser',
@@ -169,6 +181,8 @@ const Editor = () => {
           qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`, token: auth?.user.token
         })
       );
+
+
 
       gameIframe.current.contentWindow.saveImage = async (array = [], int, index) => {
         console.log('🖼️ Received array:', array);
