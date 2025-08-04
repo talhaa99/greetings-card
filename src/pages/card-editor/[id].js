@@ -158,14 +158,14 @@ const Editor = () => {
         'LoadSavedData',
         JSON.stringify(userTemplateData)
       );
-     
+
 
       //send qrlink for user ar experience
       instance.SendMessage(
         'JsonDataHandlerAndParser',
         'purchaseCardLink',
         JSON.stringify(
-          `https://ar-experience-greetings-card.tecshield.net/${userTemplateData?._id}`
+          `${BASE_URL}/${userTemplateData?._id}`
         )
       );
 
