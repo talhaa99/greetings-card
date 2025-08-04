@@ -158,10 +158,7 @@ const Editor = () => {
         'LoadSavedData',
         JSON.stringify(userTemplateData)
       );
-      setUrl({
-        qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`, token: auth?.user.token
-      });
-
+     
 
       //send qrlink for user ar experience
       instance.SendMessage(
@@ -172,17 +169,16 @@ const Editor = () => {
         )
       );
 
-
       //sending qr link here
       instance.SendMessage(
         'JsonDataHandlerAndParser',
         'QrLink',
         JSON.stringify({
-          qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`, token: auth?.user.token
+          qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`,
+          token: auth?.user?.token || ''
+
         })
       );
-
-
 
       gameIframe.current.contentWindow.saveImage = async (array = [], int, index) => {
         console.log('🖼️ Received array:', array);
