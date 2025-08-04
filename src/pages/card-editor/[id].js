@@ -165,7 +165,7 @@ const Editor = () => {
         'JsonDataHandlerAndParser',
         'purchaseCardLink',
         JSON.stringify(
-          `${BASE_URL}/${userTemplateData?._id}`
+          `https://ar-experience-greetings-card.tecshield.net/${userTemplateData?._id}`
         )
       );
 
