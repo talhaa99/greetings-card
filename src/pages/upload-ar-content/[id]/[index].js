@@ -275,8 +275,8 @@ const Upload = () => {
               }}
             >
               <WarningIcon color="error" sx={{ fontSize: 60 }}/>
-              <Box sx={{ fontSize: 20, fontWeight: 600 }}>⚠️ Link expired or invalid</Box>
-              <Button variant="contained" onClick={() => router.push('/')}>Go to Home</Button>
+              <Box sx={{ fontSize: 20, fontWeight: 600 }}>⚠️ Link is expire!</Box>
+              {/*<Button variant="contained" onClick={() => router.push('/')}>Go to Home</Button>*/}
             </Box>
           )
 
