@@ -263,7 +263,7 @@ const Upload = () => {
           <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
             <CircularProgress color="secondary"/>
           </Stack>
-        ) : isTokenValid ? (
+        ) : isTokenValid  === false? (
             <Box
               sx={{
                 height: '80vh',
@@ -274,13 +274,10 @@ const Upload = () => {
                 gap: 2
               }}
             >
-              <WarningIcon color="error" sx={{ fontSize: 60 }}/>
               <Box sx={{ fontSize: 20, fontWeight: 600 }}>⚠️ Link is expire!</Box>
               {/*<Button variant="contained" onClick={() => router.push('/')}>Go to Home</Button>*/}
             </Box>
-          )
-
-          : (
+          ) : (
             <Box sx={{
               width: '100%',
               height: '100vh', // overflowY: 'auto',
