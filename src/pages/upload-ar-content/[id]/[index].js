@@ -57,7 +57,7 @@ const Upload = () => {
       }
 
       try {
-        console.log(":token before calling apu", token);
+        console.log(':token before calling apu', token);
         setVerifyLoading(true);
 
         const res = await axios.post('/api/verify-token', { token });
@@ -65,8 +65,12 @@ const Upload = () => {
 
         if (res.data.success) {
           await localStorage.setItem('token', token);
-          auth.initialize();
-          console.log("done to call initialize");
+          const checkToken = localStorage.getItem('token');
+          if (checkToken) {
+            auth.initialize();
+            console.log('done to call initialize');
+          }
+
           setIsTokenValid(true);
         } else {
           setIsTokenValid(false);
