@@ -28,6 +28,7 @@ const Editor = () => {
   const { openLogin } = useLoginModal();
   const { isSave, setIsSave } = useSavedModal();
   const [isUnityReady, setIsUnityReady] = useState(false);
+  const [generateToken, setGenerateToken] = useState(false);
   const theme = useTheme();
   const router = useRouter();
   const { id: userCardId, selected: cardId } = router.query;
@@ -48,6 +49,8 @@ const Editor = () => {
   const [url, setUrl] = useState(null);
   // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
 
+  console.log("auth", auth);
+
   useEffect(() => {
     const runOnceAfterLogin = async () => {
       if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
@@ -59,9 +62,7 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
-
-  console.log("🧾 Saved token is:", localStorage.getItem('userToken'));
-
+  console.log('🧾 Saved token is:', localStorage.getItem('userToken'));
 
   useEffect(() => {
     const generateAndStoreToken = async () => {
@@ -75,18 +76,14 @@ const Editor = () => {
 
       if (data.token) {
         localStorage.setItem('userToken', data.token);
-        console.log("🔐 Token from API stored:", data.token);
+        console.log('🔐 Token from API stored:', data.token);
       } else {
-        console.error("❌ Failed to generate token:", data);
+        console.error('❌ Failed to generate token:', data);
       }
     };
 
     generateAndStoreToken();
-  }, [auth]);
-
-
-
-
+  }, [generateToken]);
 
   const getFrontCardDetail = async () => {
     try {
@@ -197,7 +194,7 @@ const Editor = () => {
 
       const token = localStorage.getItem('userToken');
 
-      console.log("token is ==========================", token);
+      console.log('token is ==========================', token);
 
       //sending qr link here
       instance.SendMessage(
@@ -370,7 +367,8 @@ const Editor = () => {
           console.log('response of save data===> ', response);
           setUserTemplateData(response?.data?.data);
           // openLogin();
-          if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
+          // if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
+          if (!auth?.isAuthenticated) {
             // setIsSave(true);
             // setUserId(userCardId);
             openLogin();
@@ -382,6 +380,39 @@ const Editor = () => {
           console.log('error in save data', error);
         }
       };
+
+      // callback when picker is click need to generate token
+      gameIframe.current.contentWindow.pickerClickCallBack = async (msg) => {
+        setGenerateToken(true);
+        console.log('----------msg when picker is clicked:', msg);
+      };
+
+      gameIframe.current.contentWindow.changeTemplate = async (id) => {
+
+        console.log('----------recieving id when template is changed:', id);
+
+        try {
+          const isAuth = auth?.isAuthenticated;
+          const response = await axios.post(
+            `${BASE_URL}/api/cards/update-data`,
+            {
+              id,
+              isAuthenticated: isAuth
+
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          console.log('response when template ===> ', response);
+          setUserTemplateData(response?.data?.data);
+        } catch (error) {
+          console.log('error in change template data', error);
+        }
+      };
+
     }
   };
 

@@ -41,8 +41,8 @@ const Upload = () => {
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  console.log('auth', auth);
-  console.log('token', token);
+  // console.log('auth', auth);
+  // console.log('token', token);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -53,6 +53,8 @@ const Upload = () => {
       try {
         setVerifyLoading(true);
         const res = await axios.post('/api/verify-token', { token });
+        console.log("res of verofy",res);
+
         if (res.data.success) {
           localStorage.setItem('token', token);
           auth.initialize();
