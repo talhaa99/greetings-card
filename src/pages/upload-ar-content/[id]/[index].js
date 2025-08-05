@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import {
-  Box, useTheme, useMediaQuery, Button, Alert, IconButton, Collapse
+  Box, useTheme, useMediaQuery, Button, Alert, IconButton, Collapse, Stack, CircularProgress
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -29,6 +29,8 @@ const Upload = () => {
   const router = useRouter();
   const { id, index, temp, token } = router.query;
   const [loading, setLoading] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(null);
+  const [verifyLoading, setVerifyLoading] = useState(false);
   const [videoLoading, setVideoLoading] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [open, setOpen] = useState(true);
@@ -39,19 +41,36 @@ const Upload = () => {
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  console.log("auth", auth);
-  console.log("token", token);
-
+  console.log('auth', auth);
+  console.log('token', token);
 
   useEffect(() => {
-    if (token && !auth.isAuthenticated) {
-      // store token and initialize manually
-      localStorage.setItem('token', token);
-      auth.initialize();
-    }
+    const verifyToken = async () => {
+      if (!token) {
+        return;
+      }
+
+      try {
+        setVerifyLoading(true);
+        const res = await axios.post('/api/verify-token', { token });
+        if (res.data.success) {
+          localStorage.setItem('token', token);
+          auth.initialize();
+          setIsTokenValid(true);
+          setVerifyLoading(false);
+        } else {
+          setIsTokenValid(false);
+          setVerifyLoading(false);
+        }
+      } catch (err) {
+        console.error('Token verification failed:', err);
+        setIsTokenValid(false);
+        setVerifyLoading(false);
+      }
+    };
+
+    verifyToken();
   }, [token]);
-
-
 
   const useStyles = styled((theme) => ({
     root: {
@@ -179,6 +198,7 @@ const Upload = () => {
       setShowWarning(false);
     }
   };
+
   return (<>
     <Head>
       <title>Upload Media | {APP_NAME}</title>
@@ -237,137 +257,147 @@ const Upload = () => {
         )
       }
 
-      <Box sx={{
-        width: '100%',
-        height: '100vh', // overflowY: 'auto',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        gap: 2
-      }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            alignItems: 'center',
-            p: 2,
-            gap: 1,
-            height: '50vh',
-            mt: { xs: 20, ipadPro: 33 },
-            width: '100%'
-            // overflowY: 'auto'
-          }}>
 
-          {previewUrls && (<Box sx={{
-            width: 150, height: 150,
+      {
+        verifyLoading ? (
+          <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+            <CircularProgress color="secondary"/>
+          </Stack>
+        ) : (
+          <Box sx={{
+            width: '100%',
+            height: '100vh', // overflowY: 'auto',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            position: 'relative'
+            flexDirection: 'column',
+            gap: 2
           }}>
-            {index === '0' && temp !== '4' &&(
-              <DeleteIcon
-                // disabled={}
-                onClick={() => delete0IndexContent(true)}
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                p: 2,
+                gap: 1,
+                height: '50vh',
+                mt: { xs: 20, ipadPro: 33 },
+                width: '100%'
+                // overflowY: 'auto'
+              }}>
+
+              {previewUrls && (<Box sx={{
+                width: 150, height: 150,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative'
+              }}>
+                {index === '0' && temp !== '4' && (
+                  <DeleteIcon
+                    // disabled={}
+                    onClick={() => delete0IndexContent(true)}
+                    sx={{
+                      position: 'absolute', bottom: 0, right: 0, color: '#c165a0', fontSize: 30
+                    }}/>)}
+                <img src={previewUrls} width="100%" height={'100%'}
+                     style={{ objectFit: 'cover', borderRadius: '8px' }}/></Box>)}
+            </Box>
+            {
+              temp !== '3' && (
+                <Button
+                  sx={{
+                    minWidth: { md: 150, xs: 100 },
+                    backgroundColor: '#c165a0 !important',
+                    color: 'white', // fontWeight: 700,
+                    borderRadius: '20px',
+                    '&:hover': {
+                      backgroundColor: '#c165a0 !important', color: 'white'
+                    }
+                  }}
+                  disabled={loading}
+                  onClick={() => document.getElementById('gallery-images').click()}
+                >
+                  {loading ? 'Uploading...' : 'Upload Image'}
+                </Button>
+              )
+            }
+
+
+            <input
+              type="file"
+              id="gallery-images"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageUpload}
+            />
+
+            {index === '0' && (temp === '3' || (temp !== '4' && temp !== '5')) && (<Button
+                disabled={videoLoading}
+                onClick={() => document.getElementById('gallery-videos').click()}
                 sx={{
-                  position: 'absolute', bottom: 0, right: 0, color: '#c165a0', fontSize: 30
-                }}/>)}
-            <img src={previewUrls} width="100%" height={'100%'}
-                 style={{ objectFit: 'cover', borderRadius: '8px' }}/></Box>)}
-        </Box>
-        {
-          temp !== '3' && (
-            <Button
-              sx={{
-                minWidth: { md: 150, xs: 100 },
-                backgroundColor: '#c165a0 !important',
-                color: 'white', // fontWeight: 700,
-                borderRadius: '20px',
-                '&:hover': {
-                  backgroundColor: '#c165a0 !important', color: 'white'
-                }
-              }}
-              disabled={loading}
-              onClick={() => document.getElementById('gallery-images').click()}
-            >
-              {loading ? 'Uploading...' : 'Upload Image'}
-            </Button>
-          )
-        }
+                  minWidth: { md: 150, xs: 100 },
+                  backgroundColor: '#c165a0 !important',
+                  color: 'white',
+                  borderRadius: '20px',
+                  '&:hover': { backgroundColor: '#c165a0 !important', color: 'white' }
+                }}
+              >
+                {videoLoading ? 'Uploading...' : 'Upload  Video'}
+              </Button>
+
+            )}
 
 
-        <input
-          type="file"
-          id="gallery-images"
-          accept="image/*"
-          style={{ display: 'none' }}
-          onChange={handleImageUpload}
-        />
+            <Box sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 1,
+              p: 2,
+              height: '50vh',
+              mb: 10,
+              width: '100%', // overflowY: 'auto',
+              justifyContent: 'center'
+            }}>
 
-        {index === '0' && (temp === '3' || (temp !== '4' && temp !== '5')) && (<Button
-            disabled={videoLoading}
-            onClick={() => document.getElementById('gallery-videos').click()}
-            sx={{
-              minWidth: { md: 150, xs: 100 },
-              backgroundColor: '#c165a0 !important',
-              color: 'white',
-              borderRadius: '20px',
-              '&:hover': { backgroundColor: '#c165a0 !important', color: 'white' }
-            }}
-          >
-            {videoLoading ? 'Uploading...' : 'Upload  Video'}
-          </Button>
-
-        )}
-
-
-        <Box sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 1,
-          p: 2,
-          height: '50vh',
-          mb: 10,
-          width: '100%', // overflowY: 'auto',
-          justifyContent: 'center'
-        }}>
-
-          {previewVideoUrls && (<Box sx={{
-            display: 'flex',
-            width: 150, height: 150,
-            justifyContent: 'center',
-            alignItems: 'center',
-            // height: '100%',
-            position: 'relative'
-          }}>
-            {index === '0' && temp !== '3' && (<DeleteIcon
-              // disabled={}
-              onClick={() => delete0IndexContent(false)}
-              sx={{
-                position: 'absolute',
-                fontSize: 30,
-                bottom: 0,
-                right: 0,
-                color: '#c165a0',
-                zIndex: 2
-              }}/>)}
-            <video src={previewVideoUrls} width="100%" height="100%" controls
-                   style={{ borderRadius: '8px' }}/>
-          </Box>)}
-        </Box>
+              {previewVideoUrls && (<Box sx={{
+                display: 'flex',
+                width: 150, height: 150,
+                justifyContent: 'center',
+                alignItems: 'center',
+                // height: '100%',
+                position: 'relative'
+              }}>
+                {index === '0' && temp !== '3' && (<DeleteIcon
+                  // disabled={}
+                  onClick={() => delete0IndexContent(false)}
+                  sx={{
+                    position: 'absolute',
+                    fontSize: 30,
+                    bottom: 0,
+                    right: 0,
+                    color: '#c165a0',
+                    zIndex: 2
+                  }}/>)}
+                <video src={previewVideoUrls} width="100%" height="100%" controls
+                       style={{ borderRadius: '8px' }}/>
+              </Box>)}
+            </Box>
 
 
-        <input
-          type="file"
-          id="gallery-videos"
-          accept="video/*"
-          style={{ display: 'none' }}
-          onChange={handleVideoUpload}
-        />
+            <input
+              type="file"
+              id="gallery-videos"
+              accept="video/*"
+              style={{ display: 'none' }}
+              onChange={handleVideoUpload}
+            />
 
-      </Box>
+          </Box>
+        )
+      }
+
 
     </Box>
     {/*)}*/}

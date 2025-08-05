@@ -59,7 +59,34 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
-  console.log('auth', auth);
+
+  console.log("🧾 Saved token is:", localStorage.getItem('userToken'));
+
+
+  useEffect(() => {
+    const generateAndStoreToken = async () => {
+      const res = await fetch('/api/generate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user: auth?.user || null })  // Send null for guest
+      });
+
+      const data = await res.json();
+
+      if (data.token) {
+        localStorage.setItem('userToken', data.token);
+        console.log("🔐 Token from API stored:", data.token);
+      } else {
+        console.error("❌ Failed to generate token:", data);
+      }
+    };
+
+    generateAndStoreToken();
+  }, [auth]);
+
+
+
+
 
   const getFrontCardDetail = async () => {
     try {
@@ -159,7 +186,6 @@ const Editor = () => {
         JSON.stringify(userTemplateData)
       );
 
-
       //send qrlink for user ar experience
       instance.SendMessage(
         'JsonDataHandlerAndParser',
@@ -169,13 +195,17 @@ const Editor = () => {
         )
       );
 
+      const token = localStorage.getItem('userToken');
+
+      console.log("token is ==========================", token);
+
       //sending qr link here
       instance.SendMessage(
         'JsonDataHandlerAndParser',
         'QrLink',
         JSON.stringify({
           qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`,
-          token: auth?.user?.token || ''
+          token: token
 
         })
       );
