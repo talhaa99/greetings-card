@@ -78,12 +78,13 @@ export const AuthProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const initialized = useRef(false);
 
-  const initialize = async () => {
+  const initialize = async (force = false) => {
 
     // Prevent from calling twice in development mode with React.StrictMode enabled
-    if (initialized.current) {
-      return;
-    }
+    if (initialized.current && !force) return;
+    // if (initialized.current) {
+    //   return;
+    // }
 
     initialized.current = true;
     console.log("hello going to call initializse");
