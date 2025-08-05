@@ -41,38 +41,79 @@ const Upload = () => {
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // console.log('auth', auth);
+  // console.log('auth', auth.initialize);
   // console.log('token', token);
-
   useEffect(() => {
+    if (!router.isReady) return;
+
     const verifyToken = async () => {
+      const { token } = router.query;
+
       if (!token) {
+        console.log("Token not found in query.");
         return;
       }
 
       try {
         setVerifyLoading(true);
+
         const res = await axios.post('/api/verify-token', { token });
-        console.log("res of verofy",res);
+        console.log("res of verify", res);
 
         if (res.data.success) {
           localStorage.setItem('token', token);
-          auth.initialize();
+
+          if (typeof auth.initialize === 'function') {
+            auth.initialize();
+          } else {
+            console.warn("auth.initialize is not a function");
+          }
+
           setIsTokenValid(true);
-          setVerifyLoading(false);
         } else {
           setIsTokenValid(false);
-          setVerifyLoading(false);
         }
       } catch (err) {
-        console.error('Token verification failed:', err);
+        console.error('Token verification error:', err);
         setIsTokenValid(false);
+      } finally {
         setVerifyLoading(false);
       }
     };
 
     verifyToken();
-  }, [token]);
+  }, [router.isReady, router.query.token]);
+
+  // useEffect(() => {
+  //   if (!router.isReady) return;
+  //   const verifyToken = async () => {
+  //     if (!token) return;
+  //
+  //     try {
+  //       setVerifyLoading(true);
+  //       const res = await axios.post('/api/verify-token', { token });
+  //       console.log("res of verify", res);
+  //
+  //       if (res.data.success) {
+  //         localStorage.setItem('token', token);
+  //         console.log("going to call initializse");
+  //         auth.initialize(); // this assumes it's a function
+  //         console.log("going to call initializse--------------");
+  //         setIsTokenValid(true);
+  //       } else {
+  //         setIsTokenValid(false);
+  //       }
+  //     } catch (err) {
+  //       console.error('Token verification failed:', err);
+  //       setIsTokenValid(false);
+  //     } finally {
+  //       setVerifyLoading(false);
+  //     }
+  //   };
+  //
+  //   verifyToken();
+  // }, [router.isReady, token]);
+
 
   const useStyles = styled((theme) => ({
     root: {

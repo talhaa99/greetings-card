@@ -49,7 +49,8 @@ const Editor = () => {
   const [url, setUrl] = useState(null);
   // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
 
-  console.log("auth", auth);
+  console.log('auth', auth);
+  console.log('generateToken', generateToken);
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
@@ -62,8 +63,6 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
-  console.log('🧾 Saved token is:', localStorage.getItem('userToken'));
-
   useEffect(() => {
     const generateAndStoreToken = async () => {
       const res = await fetch('/api/generate-token', {
@@ -73,7 +72,7 @@ const Editor = () => {
       });
 
       const data = await res.json();
-
+      setGenerateToken(false);
       if (data.token) {
         localStorage.setItem('userToken', data.token);
         console.log('🔐 Token from API stored:', data.token);
@@ -83,7 +82,7 @@ const Editor = () => {
     };
 
     generateAndStoreToken();
-  }, [generateToken]);
+  }, [auth]);
 
   const getFrontCardDetail = async () => {
     try {
@@ -382,9 +381,9 @@ const Editor = () => {
       };
 
       // callback when picker is click need to generate token
-      gameIframe.current.contentWindow.pickerClickCallBack = async (msg) => {
+      gameIframe.current.contentWindow.pickerClickCallBack = async () => {
+        console.log('----------msg when picker is clicked from website:');
         setGenerateToken(true);
-        console.log('----------msg when picker is clicked:', msg);
       };
 
       gameIframe.current.contentWindow.changeTemplate = async (id) => {
@@ -413,6 +412,7 @@ const Editor = () => {
         }
       };
 
+      console.log('generateToken after', generateToken);
     }
   };
 

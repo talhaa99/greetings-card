@@ -86,10 +86,11 @@ export const AuthProvider = (props) => {
     }
 
     initialized.current = true;
-
+    console.log("hello going to call initializse");
     try {
       const token = window.localStorage.getItem('token');
 
+      console.log("token in auth", token);
       if (token) {
         const response = await axios.get(API_BASE_URL + '/api/user/auth',
           {
@@ -99,6 +100,8 @@ export const AuthProvider = (props) => {
             }
           }
         );
+
+        console.log("response of calling auth",response);
         // window.location.reload();
         // delete response.data.data.token;
         dispatch({

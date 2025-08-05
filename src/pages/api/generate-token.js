@@ -11,7 +11,7 @@ export default function handler(req, res) {
   if (user && user._id) {
     // Authenticated user
     payload = {
-      id: user._id,
+      user_id: user._id,
       email: user.email
     };
   } else {
