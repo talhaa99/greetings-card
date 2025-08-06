@@ -44,47 +44,44 @@ const Upload = () => {
   // console.log('auth', auth.initialize);
   // console.log('token', token);
   useEffect(() => {
-    if (!router.isReady) {
+    if (!router.isReady) return;
+
+    const tokenFromQuery = router.query.token;
+
+    if (!tokenFromQuery) {
+      console.log('Token not found in query.');
       return;
     }
 
-    const verifyToken = async () => {
-      const { token } = router.query;
-
-      if (!token) {
-        console.log('Token not found in query.');
-        return;
-      }
-
+    const verifyAndInitialize = async () => {
       try {
-        console.log(':token before calling apu', token);
         setVerifyLoading(true);
 
-        const res = await axios.post('/api/verify-token', { token });
-        console.log('res of verify', res);
+        const res = await axios.post('/api/verify-token', { token: tokenFromQuery });
 
         if (res.data.success) {
-          await localStorage.setItem('token', token);
-          const checkToken = localStorage.getItem('token');
-          if (checkToken) {
-            auth.initialize();
-            console.log('done to call initialize');
-          }
-
+          localStorage.setItem('token', tokenFromQuery);
+          await auth.initialize(true); // 👈 force initialize if needed
           setIsTokenValid(true);
         } else {
           setIsTokenValid(false);
         }
-      } catch (err) {
-        console.error('Token verification error:', err);
+      } catch (error) {
+        console.error('Token verification failed:', error);
         setIsTokenValid(false);
       } finally {
         setVerifyLoading(false);
       }
     };
 
-    verifyToken();
+    verifyAndInitialize();
   }, [router.isReady, router.query.token]);
+
+// clean the url
+//   router.replace({
+//     pathname: router.pathname,
+//     query: { id, index, temp } // remove token from URL
+//   }, undefined, { shallow: true });
 
   // useEffect(() => {
   //   if (!router.isReady) return;

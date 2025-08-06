@@ -128,7 +128,8 @@ export const AuthProvider = (props) => {
     () => {
       initialize();
     },
-    [status === 'authenticated']
+    // [status === 'authenticated']
+    []
   );
   // useEff
   // if (status === 'authenticated') {

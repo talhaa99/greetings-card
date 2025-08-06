@@ -366,8 +366,8 @@ const Editor = () => {
           console.log('response of save data===> ', response);
           setUserTemplateData(response?.data?.data);
           // openLogin();
-          // if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
-          if (!auth?.isAuthenticated) {
+          if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
+          // if (!auth?.isAuthenticated) {
             // setIsSave(true);
             // setUserId(userCardId);
             openLogin();
@@ -395,7 +395,7 @@ const Editor = () => {
           const response = await axios.post(
             `${BASE_URL}/api/cards/update-data`,
             {
-              id,
+              id:userTemplateData._id,
               isAuthenticated: isAuth
 
             },
