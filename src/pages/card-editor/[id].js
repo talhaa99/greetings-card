@@ -65,7 +65,6 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
-
   useEffect(() => {
     const generateAndStoreToken = async () => {
       const res = await fetch('/api/generate-token', {
@@ -84,11 +83,8 @@ const Editor = () => {
       }
     };
 
-    if (generateToken) {
-      generateAndStoreToken();
-    }
-  }, [generateToken]);
-
+    generateAndStoreToken();
+  }, []);
 
   // useEffect(() => {
   //   const generateAndStoreToken = async () => {
@@ -394,7 +390,7 @@ const Editor = () => {
           setUserTemplateData(response?.data?.data);
           // openLogin();
           if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
-          // if (!auth?.isAuthenticated) {
+            // if (!auth?.isAuthenticated) {
             // setIsSave(true);
             // setUserId(userCardId);
             openLogin();
@@ -422,7 +418,7 @@ const Editor = () => {
           const response = await axios.post(
             `${BASE_URL}/api/cards/update-data`,
             {
-              id:userTemplateData._id,
+              id: userTemplateData._id,
               isAuthenticated: isAuth
 
             },
