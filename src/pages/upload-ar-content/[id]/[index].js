@@ -80,26 +80,33 @@ const Upload = () => {
   useEffect(() => {
     const verifyToken = async () => {
       setVerifyLoading(true);
+
       try {
         const response = await fetch(`/api/verify-token?token=${token}`);
         const result = await response.json();
 
         if (result.success) {
-          auth.initialize(result.user);
+          // 1. Save token
+          localStorage.setItem('token', token);
+
+          // 2. Re-initialize auth state properly
+          await auth.initialize(true); // or just auth.initialize() depending on your hook
+
           setIsTokenValid(true);
 
-          // ✅ Optional: Remove token from URL
+          // 3. Clean the URL (remove token from query string)
           router.replace({
             pathname: router.pathname,
-            query: { id, index, temp },
+            query: { id, index, temp }
           }, undefined, { shallow: true });
 
         } else {
-          setIsTokenValid(false); // 🔴 Invalid token
+          setIsTokenValid(false); // ❌ Invalid token
         }
+
       } catch (err) {
         console.error("Token verification failed:", err);
-        setIsTokenValid(false); // 🔴 Token is invalid or expired
+        setIsTokenValid(false);
       } finally {
         setVerifyLoading(false);
       }
@@ -109,6 +116,7 @@ const Upload = () => {
       verifyToken();
     }
   }, [token]);
+
 // clean the url
 //   router.replace({
 //     pathname: router.pathname,
