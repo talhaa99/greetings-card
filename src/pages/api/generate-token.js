@@ -18,8 +18,8 @@ export default function handler(req, res) {
   if (user && user._id) {
     // Authenticated user
     payload = {
-      user_id: user._id,
-      email: user.email
+      user_id: user._id
+      // email: user.email
     };
   } else {
     // Anonymous/Guest user – create random session ID
