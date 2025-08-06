@@ -72,7 +72,7 @@ const Editor = () => {
     }
 
     // only proceed if user is loaded and authenticated
-    if (!auth.isLoading && auth.isAuthenticated && auth.user?._id) {
+    if (auth.isAuthenticated && auth.user?._id) {
       console.log("auth.user", auth.user);
 
       const generateToken = async () => {
@@ -95,7 +95,7 @@ const Editor = () => {
 
       generateToken();
     }
-  }, [auth.isLoading, auth.isAuthenticated, auth.user]);
+  }, [auth.isAuthenticated, auth.user]);
 
   // useEffect(() => {
   //   const tokenFromStorage = localStorage.getItem('token');
