@@ -18,6 +18,6 @@ export default function handler(req, res) {
     console.log(":decoded of verufy", decoded);
     return res.status(200).json({ success: true, decoded });
   } catch (error) {
-    return res.status(401).json({ success: false, message: "Invalid or expired token." });
+    return res.status(401).json({ success: false, message: error });
   }
 }
