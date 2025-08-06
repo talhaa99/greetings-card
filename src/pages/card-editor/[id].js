@@ -64,7 +64,6 @@ const Editor = () => {
 
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
-
   useEffect(() => {
     const tokenFromStorage = localStorage.getItem('token');
     if (tokenFromStorage) {
@@ -72,23 +71,57 @@ const Editor = () => {
       return;
     }
 
-    const generateToken = async () => {
+    // only proceed if user is loaded and authenticated
+    if (!auth.isLoading && auth.isAuthenticated && auth.user?._id) {
+      console.log("auth.user", auth.user);
 
-      const res = await fetch('/api/generate-token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: auth?.user })
-      });
+      const generateToken = async () => {
+        try {
+          const res = await fetch('/api/generate-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: auth.user })
+          });
 
-      const data = await res.json();
-      if (data.token) {
-        setToken(data.token);
-        localStorage.setItem('token', data.token);
-      }
-    };
+          const data = await res.json();
+          if (data.token) {
+            setToken(data.token);
+            localStorage.setItem('token', data.token);
+          }
+        } catch (error) {
+          console.error("Error generating token", error);
+        }
+      };
 
-    generateToken();
-  }, [generateToken]);
+      generateToken();
+    }
+  }, [auth.isLoading, auth.isAuthenticated, auth.user]);
+
+  // useEffect(() => {
+  //   const tokenFromStorage = localStorage.getItem('token');
+  //   if (tokenFromStorage) {
+  //     setToken(tokenFromStorage);
+  //     return;
+  //   }
+  //
+  //   console.log("auth.user", auth.user);
+  //   const generateToken = async () => {
+  //
+  //     const res = await fetch('/api/generate-token', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ user: auth?.user })
+  //     });
+  //
+  //     const data = await res.json();
+  //     if (data.token) {
+  //       setToken(data.token);
+  //       localStorage.setItem('token', data.token);
+  //     }
+  //   };
+  //
+  //   generateToken();
+  // }, [generateToken]);
 
   // useEffect(() => { ==
   //   const generateAndStoreToken = async () => {
