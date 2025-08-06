@@ -9,6 +9,7 @@ export default function handler(req, res) {
   console.log(JWT_SECRET);
   console.log(expiresIn);
   console.log(req.body);
+  console.log("user in genrating token",user);
 
 
 
