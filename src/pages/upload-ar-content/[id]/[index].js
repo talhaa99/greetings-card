@@ -77,45 +77,49 @@ const Upload = () => {
   //
   //   verifyAndInitialize();
   // }, [router.isReady, router.query.token]);
+
   useEffect(() => {
     const verifyToken = async () => {
       setVerifyLoading(true);
 
       try {
-        const response = await fetch(`/api/verify-token?token=${token}`);
-        const result = await response.json();
+              setVerifyLoading(true);
+              const res = await axios.post('/api/verify-token', { token });
+              console.log("res of verify", res);
 
-        if (result.success) {
-          // 1. Save token
-          localStorage.setItem('token', token);
-
-          // 2. Re-initialize auth state properly
-          await auth.initialize(true); // or just auth.initialize() depending on your hook
-
-          setIsTokenValid(true);
-
-          // 3. Clean the URL (remove token from query string)
-          router.replace({
-            pathname: router.pathname,
-            query: { id, index, temp }
-          }, undefined, { shallow: true });
-
-        } else {
-          setIsTokenValid(false); // ❌ Invalid token
-        }
-
-      } catch (err) {
-        console.error("Token verification failed:", err);
-        setIsTokenValid(false);
-      } finally {
-        setVerifyLoading(false);
-      }
+              if (res.data.success) {
+                localStorage.setItem('token', token);
+                console.log("going to call initializse before");
+                auth.initialize(); // this assumes it's a function
+                console.log("going to call initializse after--------------");
+                setIsTokenValid(true);
+              } else {
+                setIsTokenValid(false);
+              }
+            } catch (err) {
+              console.error('Token verification failed:', err);
+              setIsTokenValid(false);
+            } finally {
+              setVerifyLoading(false);
+            }
     };
 
     if (token) {
       verifyToken();
     }
   }, [token]);
+
+
+  useEffect(() => {
+    if (token) {
+      auth.initialize(token);
+    }
+  }, [token]);
+  useEffect(() => {
+    if (router.isReady && token) {
+      auth.initialize(token);
+    }
+  }, [router.isReady, token]);
 
 // clean the url
 //   router.replace({
@@ -285,6 +289,24 @@ const Upload = () => {
       <title>Upload Media | {APP_NAME}</title>
     </Head>
 
+
+    {/*: isTokenValid ? (*/}
+    {/*<Box*/}
+    {/*  sx={{*/}
+    {/*    height: '80vh',*/}
+    {/*    display: 'flex',*/}
+    {/*    flexDirection: 'column',*/}
+    {/*    justifyContent: 'center',*/}
+    {/*    alignItems: 'center',*/}
+    {/*    gap: 2*/}
+    {/*  }}*/}
+    {/*>*/}
+    {/*  <Box sx={{ fontSize: 20, fontWeight: 600 }}>⚠️ Link is expire!</Box>*/}
+    {/*  /!*<Button variant="contained" onClick={() => router.push('/')}>Go to Home</Button>*!/*/}
+    {/*</Box>*/}
+    {/*)*/}
+
+
     {/*{isSmallScreen && (*/}
     <Box sx={{
       position: 'relative',
@@ -344,20 +366,6 @@ const Upload = () => {
           <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
             <CircularProgress color="secondary"/>
           </Stack>
-        ) : isTokenValid === false ? (
-          <Box
-            sx={{
-              height: '80vh',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 2
-            }}
-          >
-            <Box sx={{ fontSize: 20, fontWeight: 600 }}>⚠️ Link is expire!</Box>
-            {/*<Button variant="contained" onClick={() => router.push('/')}>Go to Home</Button>*/}
-          </Box>
         ) : (
           <Box sx={{
             width: '100%',
