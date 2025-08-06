@@ -43,40 +43,72 @@ const Upload = () => {
 
   // console.log('auth', auth.initialize);
   // console.log('token', token);
+
+  // useEffect(() => {
+  //   if (!router.isReady) {
+  //     return;
+  //   }
+  //
+  //   const tokenFromQuery = router.query.token;
+  //
+  //   if (!tokenFromQuery) {
+  //     console.log('Token not found in query.');
+  //     return;
+  //   }
+  //
+  //   const verifyAndInitialize = async () => {
+  //     try {
+  //       setVerifyLoading(true);
+  //
+  //       const res = await axios.post('/api/verify-token', { token: tokenFromQuery });
+  //
+  //       if (res.data.success) {
+  //         localStorage.setItem('token', tokenFromQuery);
+  //         await auth.initialize(true); // 👈 force initialize if needed
+  //         setIsTokenValid(true);
+  //       }
+  //     } catch (error) {
+  //       console.error('Token verification failed:', error);
+  //       // setIsTokenValid(false);
+  //     } finally {
+  //       setVerifyLoading(false);
+  //     }
+  //   };
+  //
+  //   verifyAndInitialize();
+  // }, [router.isReady, router.query.token]);
   useEffect(() => {
-    if (!router.isReady) return;
-
-    const tokenFromQuery = router.query.token;
-
-    if (!tokenFromQuery) {
-      console.log('Token not found in query.');
-      return;
-    }
-
-    const verifyAndInitialize = async () => {
+    const verifyToken = async () => {
+      setVerifyLoading(true);
       try {
-        setVerifyLoading(true);
+        const response = await fetch(`/api/verify-token?token=${token}`);
+        const result = await response.json();
 
-        const res = await axios.post('/api/verify-token', { token: tokenFromQuery });
-
-        if (res.data.success) {
-          localStorage.setItem('token', tokenFromQuery);
-          await auth.initialize(true); // 👈 force initialize if needed
+        if (result.success) {
+          auth.initialize(result.user);
           setIsTokenValid(true);
+
+          // ✅ Optional: Remove token from URL
+          router.replace({
+            pathname: router.pathname,
+            query: { id, index, temp },
+          }, undefined, { shallow: true });
+
         } else {
-          setIsTokenValid(false);
+          setIsTokenValid(false); // 🔴 Invalid token
         }
-      } catch (error) {
-        console.error('Token verification failed:', error);
-        setIsTokenValid(false);
+      } catch (err) {
+        console.error("Token verification failed:", err);
+        setIsTokenValid(false); // 🔴 Token is invalid or expired
       } finally {
         setVerifyLoading(false);
       }
     };
 
-    verifyAndInitialize();
-  }, [router.isReady, router.query.token]);
-
+    if (token) {
+      verifyToken();
+    }
+  }, [token]);
 // clean the url
 //   router.replace({
 //     pathname: router.pathname,
