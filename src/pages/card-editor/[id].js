@@ -66,13 +66,14 @@ const Editor = () => {
   }, [auth?.isAuthenticated]); // only depends on login state
 
   useEffect(() => {
-    const tokenFromStorage = localStorage.getItem('userToken');
+    const tokenFromStorage = localStorage.getItem('token');
     if (tokenFromStorage) {
       setToken(tokenFromStorage);
       return;
     }
 
     const generateToken = async () => {
+
       const res = await fetch('/api/generate-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -82,15 +83,15 @@ const Editor = () => {
       const data = await res.json();
       if (data.token) {
         setToken(data.token);
-        localStorage.setItem('userToken', data.token);
+        localStorage.setItem('token', data.token);
       }
     };
 
     generateToken();
-  }, [auth?.user]);
+  }, [generateToken == true]);
 
 
-  // useEffect(() => {
+  // useEffect(() => { ==
   //   const generateAndStoreToken = async () => {
   //     const res = await fetch('/api/generate-token', {
   //       method: 'POST',
@@ -179,12 +180,13 @@ const Editor = () => {
       // await getFrontCardDetail();
       // await getUserTemplateDesignData();
       setIsUnityReady(true);
-      if (data && userTemplateData && token) {
+      if (data && userTemplateData) {
         gameOnLoad();
       }
 
     };
-  }, [data && userTemplateData && token]);
+  }, [data && userTemplateData]);
+  // }, [data && userTemplateData && token]);
 
   const gameOnLoad = () => {
     const instance = gameIframe.current?.contentWindow?.gameInstance;
