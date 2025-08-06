@@ -66,25 +66,29 @@ const Editor = () => {
   }, [auth?.isAuthenticated]); // only depends on login state
 
   useEffect(() => {
-    const generateAndStoreToken = async () => {
+    const tokenFromStorage = localStorage.getItem('userToken');
+    if (tokenFromStorage) {
+      setToken(tokenFromStorage);
+      return;
+    }
+
+    const generateToken = async () => {
       const res = await fetch('/api/generate-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: auth?.user || null }) // Send null for guest
+        body: JSON.stringify({ user: auth?.user || null })
       });
 
       const data = await res.json();
       if (data.token) {
         setToken(data.token);
         localStorage.setItem('userToken', data.token);
-        console.log('🔐 Token stored:', data.token);
-      } else {
-        console.error('❌ Failed to generate token:', data);
       }
     };
 
-    generateAndStoreToken();
-  }, []);
+    generateToken();
+  }, [auth?.user]);
+
 
   // useEffect(() => {
   //   const generateAndStoreToken = async () => {
@@ -175,12 +179,12 @@ const Editor = () => {
       // await getFrontCardDetail();
       // await getUserTemplateDesignData();
       setIsUnityReady(true);
-      if (data && userTemplateData) {
+      if (data && userTemplateData && token) {
         gameOnLoad();
       }
 
     };
-  }, [data && userTemplateData]);
+  }, [data && userTemplateData && token]);
 
   const gameOnLoad = () => {
     const instance = gameIframe.current?.contentWindow?.gameInstance;
@@ -224,7 +228,7 @@ const Editor = () => {
         'QrLink',
         JSON.stringify({
           qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`,
-          token: token
+          token
 
         })
       );
@@ -390,7 +394,7 @@ const Editor = () => {
           setUserTemplateData(response?.data?.data);
           // openLogin();
           if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
-            // if (!auth?.isAuthenticated) {
+          // if (!auth?.isAuthenticated) {
             // setIsSave(true);
             // setUserId(userCardId);
             openLogin();
@@ -418,7 +422,7 @@ const Editor = () => {
           const response = await axios.post(
             `${BASE_URL}/api/cards/update-data`,
             {
-              id: userTemplateData._id,
+              id:userTemplateData._id,
               isAuthenticated: isAuth
 
             },
