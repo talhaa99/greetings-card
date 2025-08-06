@@ -79,42 +79,59 @@ const Upload = () => {
   //   verifyAndInitialize();
   // }, [router.isReady, router.query.token]);
 
-  useEffect(() => {
-    const verifyToken = async () => {
+  // useEffect(() => {
+  //   const verifyToken = async () => {
+  //     setVerifyLoading(true);
+  //
+  //     try {
+  //       setVerifyLoading(true);
+  //       // const res = await axios.post('/api/verify-token', { token });
+  //       // console.log('res of verify', res);
+  //
+  //       // if (res.data.success) {
+  //         localStorage.setItem('token', token);
+  //         console.log('going to call initializse before');
+  //         await auth.initialize(true);  // this assumes it's a function
+  //         console.log('going to call initializse after--------------');
+  //         setIsTokenValid(true);
+  //       // } else {
+  //       //   setIsTokenValid(false);
+  //       // }
+  //     } catch (err) {
+  //       console.error('Token verification failed:', err);
+  //       setIsTokenValid(false);
+  //     } finally {
+  //       setVerifyLoading(false);
+  //     }
+  //   };
+  //
+  //   if (token) {
+  //     verifyToken();
+  //   }
+  // }, [token]);
+
+  const verifyToken = async () => {
+    setVerifyLoading(true);
+
+    try {
       setVerifyLoading(true);
 
-      try {
-        setVerifyLoading(true);
-        const res = await axios.post('/api/verify-token', { token });
-        console.log('res of verify', res);
+      localStorage.setItem('token', token);
+      console.log('going to call initializse before');
+      await auth.initialize(true);
+      console.log('going to call initializse after--------------');
+      setIsTokenValid(true);
+    } catch (err) {
+      console.error('Token verification failed:', err);
+      setIsTokenValid(false);
+    }
+  };
 
-        if (res.data.success) {
-          localStorage.setItem('token', token);
-          console.log('going to call initializse before');
-          await auth.initialize(true);  // this assumes it's a function
-          console.log('going to call initializse after--------------');
-          setIsTokenValid(true);
-        } else {
-          setIsTokenValid(false);
-        }
-      } catch (err) {
-        console.error('Token verification failed:', err);
-        setIsTokenValid(false);
-      } finally {
-        setVerifyLoading(false);
-      }
-    };
-
+  useEffect(() => {
     if (token) {
       verifyToken();
     }
   }, [token]);
-
-  // useEffect(() => {
-  //   if (token) {
-  //     auth.initialize(token);
-  //   }
-  // }, [token]);
   // useEffect(() => {
   //   if (router.isReady && token) {
   //     auth.initialize(token);
@@ -382,7 +399,6 @@ const Upload = () => {
 
               )
             }
-
 
 
             {

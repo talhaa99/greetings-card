@@ -28,7 +28,7 @@ const Editor = () => {
   const { openLogin } = useLoginModal();
   const { isSave, setIsSave } = useSavedModal();
   const [isUnityReady, setIsUnityReady] = useState(false);
-  const [generateToken, setGenerateToken] = useState(false);
+  // const [generateToken, setGenerateToken] = useState(false);
   const theme = useTheme();
   const router = useRouter();
   const { id: userCardId, selected: cardId } = router.query;
@@ -51,8 +51,8 @@ const Editor = () => {
 
   // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
 
-  console.log('auth', auth);
-  console.log('generateToken', generateToken);
+  // console.log('auth', auth);
+  // console.log('generateToken', generateToken);
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
@@ -65,42 +65,23 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
-  console.log("auth hey", auth?.user)
-
-  useEffect(() => {
-    // const token = localStorage.getItem('token');
-    //
-    // if (token) {
-    //   setToken(token);
-    //   return;
-    // }
-
-    console.log("auth hey in", auth?.user)
-
-    // if (generateToken && auth.isAuthenticated && auth.user?._id) {
-
-
-      const generateToken = async () => {
-        try {
-          const res = await fetch('/api/generate-token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: auth?.user })
-          });
-
-          const data = await res.json();
-          if (data.token) {
-            setToken(data.token);
-            localStorage.setItem('token', data.token);
-          }
-        } catch (error) {
-          console.error("Error generating token", error);
-        }
-      };
-
-      generateToken();
-    // }
-  }, [generateToken]);
+  // const generateToken = async () => {
+  //   try {
+  //     const res = await fetch('/api/generate-token', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ user: auth?.user })
+  //     });
+  //
+  //     const data = await res.json();
+  //     if (data.token) {
+  //       setToken(data.token);
+  //       localStorage.setItem('token', data.token);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error generating token', error);
+  //   }
+  // };
 
   // useEffect(() => {
   //   const tokenFromStorage = localStorage.getItem('token');
@@ -257,9 +238,9 @@ const Editor = () => {
         )
       );
 
-      // const token = localStorage.getItem('userToken');
+      const token = localStorage.getItem('token');
 
-      console.log('token is from web ==========================', token);
+      // console.log('token is from web ==========================', token);
 
       //sending qr link here
       instance.SendMessage(
@@ -449,7 +430,8 @@ const Editor = () => {
       // callback when picker is click need to generate token
       gameIframe.current.contentWindow.pickerClickCallBack = async () => {
         console.log('----------msg when picker is clicked from website:');
-        setGenerateToken(true);
+        // await generateToken();
+        // setGenerateToken(true);
       };
 
       gameIframe.current.contentWindow.changeTemplate = async (id) => {
@@ -478,7 +460,7 @@ const Editor = () => {
         }
       };
 
-      console.log('generateToken after', generateToken);
+      // console.log('generateToken after', generateToken);
     }
   };
 
