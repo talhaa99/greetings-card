@@ -28,6 +28,7 @@ export default function handler(req, res) {
     };
   }
 
+  console.log("payload", payload);
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn:'1h' });
 
   return res.status(200).json({ token });
