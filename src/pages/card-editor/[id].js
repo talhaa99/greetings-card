@@ -64,23 +64,28 @@ const Editor = () => {
 
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
-  useEffect(() => {
-    const tokenFromStorage = localStorage.getItem('token');
-    if (tokenFromStorage) {
-      setToken(tokenFromStorage);
-      return;
-    }
 
-    // only proceed if user is loaded and authenticated
-    if (auth.isAuthenticated && auth.user?._id) {
-      console.log("auth.user", auth.user);
+  console.log("auth hey", auth?.user)
+
+  useEffect(() => {
+    // const token = localStorage.getItem('token');
+    //
+    // if (token) {
+    //   setToken(token);
+    //   return;
+    // }
+
+    console.log("auth hey in", auth?.user)
+
+    // if (generateToken && auth.isAuthenticated && auth.user?._id) {
+
 
       const generateToken = async () => {
         try {
           const res = await fetch('/api/generate-token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user: auth.user })
+            body: JSON.stringify({ user: auth?.user })
           });
 
           const data = await res.json();
@@ -94,8 +99,8 @@ const Editor = () => {
       };
 
       generateToken();
-    }
-  }, [auth.isAuthenticated, auth.user]);
+    // }
+  }, [generateToken]);
 
   // useEffect(() => {
   //   const tokenFromStorage = localStorage.getItem('token');

@@ -37,6 +37,7 @@ const Upload = () => {
   const [galleryImages, setGalleryImages] = useState(true);
   const [galleryVideos, setGalleryVideos] = useState(true);
   const [selectedGalleryImages, setSelectedGalleryImages] = useState([]);
+  const [showMsgAfterUploadContent, setShowMsgAfterUploadContent] = useState(false);
   const [previewUrls, setPreviewUrls] = useState('');
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -83,32 +84,31 @@ const Upload = () => {
       setVerifyLoading(true);
 
       try {
-              setVerifyLoading(true);
-              const res = await axios.post('/api/verify-token', { token });
-              console.log("res of verify", res);
+        setVerifyLoading(true);
+        const res = await axios.post('/api/verify-token', { token });
+        console.log('res of verify', res);
 
-              if (res.data.success) {
-                localStorage.setItem('token', token);
-                console.log("going to call initializse before");
-                auth.initialize(); // this assumes it's a function
-                console.log("going to call initializse after--------------");
-                setIsTokenValid(true);
-              } else {
-                setIsTokenValid(false);
-              }
-            } catch (err) {
-              console.error('Token verification failed:', err);
-              setIsTokenValid(false);
-            } finally {
-              setVerifyLoading(false);
-            }
+        if (res.data.success) {
+          localStorage.setItem('token', token);
+          console.log('going to call initializse before');
+          await auth.initialize(true);  // this assumes it's a function
+          console.log('going to call initializse after--------------');
+          setIsTokenValid(true);
+        } else {
+          setIsTokenValid(false);
+        }
+      } catch (err) {
+        console.error('Token verification failed:', err);
+        setIsTokenValid(false);
+      } finally {
+        setVerifyLoading(false);
+      }
     };
 
     if (token) {
       verifyToken();
     }
   }, [token]);
-
 
   // useEffect(() => {
   //   if (token) {
@@ -209,6 +209,7 @@ const Upload = () => {
           setPreviewUrls(res?.data?.data?.image);
           toast.success('Image uploaded!');
           setShowWarning(true);
+          setShowMsgAfterUploadContent(true);
         } catch (err) {
           console.error('Upload error:', err);
           toast.error(err?.response?.data?.msg);
@@ -250,6 +251,7 @@ const Upload = () => {
       toast.success('Video uploaded successfully.');
       setPreviewVideoUrls(res?.data?.data?.video);
       setShowWarning(true);
+      setShowMsgAfterUploadContent(true);
     } catch (err) {
       console.error('Upload failed image:', err);
       toast.error(err?.response?.data?.msg);
@@ -283,6 +285,8 @@ const Upload = () => {
       setShowWarning(false);
     }
   };
+
+  // console.log('showMsgAfterUploadContent-----------', showMsgAfterUploadContent);
 
   return (<>
     <Head>
@@ -324,184 +328,205 @@ const Upload = () => {
     }}>
       <LandingNav/>
 
-      {
-        showWarning && (
-          <Box className={classes.root} sx={{
-            position: 'absolute',
-            top: { xs: '10%', md: '15%' },
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: { xs: '90%', sm: '70%', md: '50%' }
-          }}>
-            <Collapse in={open}>
-              <Alert
-                // icon={<WarningIcon sx={{ color: 'black
-                //
-                // '}} />}
-                icon={<CheckCircleIcon sx={{ color: 'green', height: '100%' }}/>}
-                action={<IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setOpen(false);
-                    setShowWarning(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" sx={{
-                    stroke: 'black', strokeWidth: 1
-                  }}/>
-                </IconButton>}
-                sx={{ bgcolor: 'rgba(232, 207,222, 0.8 )', color: 'black', fontWeight: 700 }}>Please
-                Refresh Your Website</Alert>
-            </Collapse>
-          </Box>
-
-        )
-      }
+      {showMsgAfterUploadContent && (
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          fontSize: 24,
+          fontWeight: 'bold',
+          color: '#c165a0'
+        }}>
+          Thank You!
+        </Box>
+      )}
 
 
       {
-        verifyLoading ? (
-          <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
-            <CircularProgress color="secondary"/>
-          </Stack>
-        ) : (
-          <Box sx={{
-            width: '100%',
-            height: '100vh', // overflowY: 'auto',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            gap: 2
-          }}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                alignItems: 'center',
-                p: 2,
-                gap: 1,
-                height: '50vh',
-                mt: { xs: 20, ipadPro: 33 },
-                width: '100%'
-                // overflowY: 'auto'
-              }}>
+        !showMsgAfterUploadContent && (
+          <Box>
 
-              {previewUrls && (<Box sx={{
-                width: 150, height: 150,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative'
-              }}>
-                {index === '0' && temp !== '4' && (
-                  <DeleteIcon
-                    // disabled={}
-                    onClick={() => delete0IndexContent(true)}
-                    sx={{
-                      position: 'absolute', bottom: 0, right: 0, color: '#c165a0', fontSize: 30
-                    }}/>)}
-                <img src={previewUrls} width="100%" height={'100%'}
-                     style={{ objectFit: 'cover', borderRadius: '8px' }}/></Box>)}
-            </Box>
             {
-              temp !== '3' && (
-                <Button
-                  sx={{
-                    minWidth: { md: 150, xs: 100 },
-                    backgroundColor: '#c165a0 !important',
-                    color: 'white', // fontWeight: 700,
-                    borderRadius: '20px',
-                    '&:hover': {
-                      backgroundColor: '#c165a0 !important', color: 'white'
-                    }
-                  }}
-                  disabled={loading}
-                  onClick={() => document.getElementById('gallery-images').click()}
-                >
-                  {loading ? 'Uploading...' : 'Upload Image'}
-                </Button>
+              showWarning && (
+                <Box className={classes.root} sx={{
+                  position: 'absolute',
+                  top: { xs: '10%', md: '15%' },
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: { xs: '90%', sm: '70%', md: '50%' }
+                }}>
+                  <Collapse in={open}>
+                    <Alert
+                      // icon={<WarningIcon sx={{ color: 'black
+                      //
+                      // '}} />}
+                      icon={<CheckCircleIcon sx={{ color: 'green', height: '100%' }}/>}
+                      action={<IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpen(false);
+                          setShowWarning(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" sx={{
+                          stroke: 'black', strokeWidth: 1
+                        }}/>
+                      </IconButton>}
+                      sx={{ bgcolor: 'rgba(232, 207,222, 0.8 )', color: 'black', fontWeight: 700 }}>Please
+                      Refresh Your Website</Alert>
+                  </Collapse>
+                </Box>
+
               )
             }
 
 
-            <input
-              type="file"
-              id="gallery-images"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleImageUpload}
-            />
 
-            {index === '0' && (temp === '3' || (temp !== '4' && temp !== '5')) && (<Button
-                disabled={videoLoading}
-                onClick={() => document.getElementById('gallery-videos').click()}
-                sx={{
-                  minWidth: { md: 150, xs: 100 },
-                  backgroundColor: '#c165a0 !important',
-                  color: 'white',
-                  borderRadius: '20px',
-                  '&:hover': { backgroundColor: '#c165a0 !important', color: 'white' }
-                }}
-              >
-                {videoLoading ? 'Uploading...' : 'Upload  Video'}
-              </Button>
+            {
+              verifyLoading ? (
+                <Stack sx={{ color: 'grey.500' }} spacing={2} direction="row">
+                  <CircularProgress color="secondary"/>
+                </Stack>
+              ) : (
+                <Box sx={{
+                  width: '100%',
+                  height: '100vh', // overflowY: 'auto',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  gap: 2
+                }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      p: 2,
+                      gap: 1,
+                      height: '50vh',
+                      mt: { xs: 20, ipadPro: 33 },
+                      width: '100%'
+                      // overflowY: 'auto'
+                    }}>
 
-            )}
+                    {previewUrls && (<Box sx={{
+                      width: 150, height: 150,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      position: 'relative'
+                    }}>
+                      {index === '0' && temp !== '4' && (
+                        <DeleteIcon
+                          // disabled={}
+                          onClick={() => delete0IndexContent(true)}
+                          sx={{
+                            position: 'absolute', bottom: 0, right: 0, color: '#c165a0', fontSize: 30
+                          }}/>)}
+                      <img src={previewUrls} width="100%" height={'100%'}
+                           style={{ objectFit: 'cover', borderRadius: '8px' }}/></Box>)}
+                  </Box>
+                  {
+                    temp !== '3' && (
+                      <Button
+                        sx={{
+                          minWidth: { md: 150, xs: 100 },
+                          backgroundColor: '#c165a0 !important',
+                          color: 'white', // fontWeight: 700,
+                          borderRadius: '20px',
+                          '&:hover': {
+                            backgroundColor: '#c165a0 !important', color: 'white'
+                          }
+                        }}
+                        disabled={loading}
+                        onClick={() => document.getElementById('gallery-images').click()}
+                      >
+                        {loading ? 'Uploading...' : 'Upload Image'}
+                      </Button>
+                    )
+                  }
 
 
-            <Box sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 1,
-              p: 2,
-              height: '50vh',
-              mb: 10,
-              width: '100%', // overflowY: 'auto',
-              justifyContent: 'center'
-            }}>
+                  <input
+                    type="file"
+                    id="gallery-images"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleImageUpload}
+                  />
 
-              {previewVideoUrls && (<Box sx={{
-                display: 'flex',
-                width: 150, height: 150,
-                justifyContent: 'center',
-                alignItems: 'center',
-                // height: '100%',
-                position: 'relative'
-              }}>
-                {index === '0' && temp !== '3' && (<DeleteIcon
-                  // disabled={}
-                  onClick={() => delete0IndexContent(false)}
-                  sx={{
-                    position: 'absolute',
-                    fontSize: 30,
-                    bottom: 0,
-                    right: 0,
-                    color: '#c165a0',
-                    zIndex: 2
-                  }}/>)}
-                <video src={previewVideoUrls} width="100%" height="100%" controls
-                       style={{ borderRadius: '8px' }}/>
-              </Box>)}
-            </Box>
+                  {index === '0' && (temp === '3' || (temp !== '4' && temp !== '5')) && (<Button
+                      disabled={videoLoading}
+                      onClick={() => document.getElementById('gallery-videos').click()}
+                      sx={{
+                        minWidth: { md: 150, xs: 100 },
+                        backgroundColor: '#c165a0 !important',
+                        color: 'white',
+                        borderRadius: '20px',
+                        '&:hover': { backgroundColor: '#c165a0 !important', color: 'white' }
+                      }}
+                    >
+                      {videoLoading ? 'Uploading...' : 'Upload  Video'}
+                    </Button>
+
+                  )}
 
 
-            <input
-              type="file"
-              id="gallery-videos"
-              accept="video/*"
-              style={{ display: 'none' }}
-              onChange={handleVideoUpload}
-            />
+                  <Box sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                    p: 2,
+                    height: '50vh',
+                    mb: 10,
+                    width: '100%', // overflowY: 'auto',
+                    justifyContent: 'center'
+                  }}>
+
+                    {previewVideoUrls && (<Box sx={{
+                      display: 'flex',
+                      width: 150, height: 150,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // height: '100%',
+                      position: 'relative'
+                    }}>
+                      {index === '0' && temp !== '3' && (<DeleteIcon
+                        // disabled={}
+                        onClick={() => delete0IndexContent(false)}
+                        sx={{
+                          position: 'absolute',
+                          fontSize: 30,
+                          bottom: 0,
+                          right: 0,
+                          color: '#c165a0',
+                          zIndex: 2
+                        }}/>)}
+                      <video src={previewVideoUrls} width="100%" height="100%" controls
+                             style={{ borderRadius: '8px' }}/>
+                    </Box>)}
+                  </Box>
+
+
+                  <input
+                    type="file"
+                    id="gallery-videos"
+                    accept="video/*"
+                    style={{ display: 'none' }}
+                    onChange={handleVideoUpload}
+                  />
+
+                </Box>
+              )
+            }
 
           </Box>
-        )
-      }
-
-
+        )}
     </Box>
     {/*)}*/}
 

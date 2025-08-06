@@ -95,6 +95,8 @@ export const LandingNav = () => {
 
   const pathname = router.pathname;
   const isContact = pathname === '#contact';
+  const isUploadArContent = pathname.startsWith('/upload-ar-content');
+
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const [toggle, setToggle] = useState(false);
 
@@ -112,6 +114,8 @@ export const LandingNav = () => {
   const handleCloseAvatar = () => {
     setAnchorEl(null);
   };
+
+  console.log("isUploadArContent", isUploadArContent);
 
   const openAvatar = Boolean(anchorEl);
   const id = openAvatar ? 'simple-popover' : undefined;
@@ -462,12 +466,12 @@ export const LandingNav = () => {
     }
 
     const callBackendAfterLogin = async () => {
-       //  const name= session.user.name;
-       // const email=  session.user.email;
-      const name= loginUserData.name;
-      const email=  loginUserData.email;
+      //  const name= session.user.name;
+      // const email=  session.user.email;
+      const name = loginUserData.name;
+      const email = loginUserData.email;
       try {
-        await SignInWithGoogle({name, email});
+        await SignInWithGoogle({ name, email });
         // ✅ Block future calls and clear click flag
         localStorage.setItem('hasCalled', 'true');
         localStorage.removeItem('googleClicked');
@@ -481,8 +485,6 @@ export const LandingNav = () => {
 
     callBackendAfterLogin();
   }, [loginUserData, status]);
-
-
 
   const handleMyCards = () => {
 
@@ -696,10 +698,10 @@ export const LandingNav = () => {
 
                       <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
                         <li>
-                          <NextLink href='/myCards' passHref legacyBehavior>
-                          <button className="dropdown-item" onClick={handleMyCards}>
-                            My Cards
-                          </button>
+                          <NextLink href="/myCards" passHref legacyBehavior>
+                            <button className="dropdown-item" onClick={handleMyCards}>
+                              My Cards
+                            </button>
                           </NextLink>
                         </li>
                         <li>
@@ -734,7 +736,7 @@ export const LandingNav = () => {
 
             {/* User Dropdown on the LEFT */}
             {isAuthenticated && (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ alignItems: 'center' , display:isUploadArContent? 'none' :'flex'}}>
                 <Button
                   onClick={() => setGifZIndex(800)}
                   onBlur={() => setGifZIndex(1300)}
@@ -785,8 +787,8 @@ export const LandingNav = () => {
                 {/* Dropdown menu */}
                 <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
                   <li>
-                    <NextLink href='/myCards' passHref legacyBehavior>
-                    <button className="dropdown-item" onClick={handleMyCards}>My Cards</button>
+                    <NextLink href="/myCards" passHref legacyBehavior>
+                      <button className="dropdown-item" onClick={handleMyCards}>My Cards</button>
                     </NextLink>
                   </li>
                   <li>
@@ -802,7 +804,7 @@ export const LandingNav = () => {
             {/* Menu Icon - Always on Right */}
             <IconButton
               onClick={toggleDrawer(true)}
-              sx={{ color: 'white', ml: 'auto' }}  // 👈 This pushes it to the right
+              sx={{ color: 'white', ml: 'auto', display:isUploadArContent && 'none' }}  // 👈 This pushes it to the right
             >
               <SvgIcon fontSize="large">
                 <Bars3Icon/>
