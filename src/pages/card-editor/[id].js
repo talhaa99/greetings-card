@@ -84,10 +84,10 @@ const Editor = () => {
       }
     };
 
-    if (auth) {
+    if (generateToken) {
       generateAndStoreToken();
     }
-  }, [auth]);
+  }, [generateToken]);
 
 
   // useEffect(() => {
