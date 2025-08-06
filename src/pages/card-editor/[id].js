@@ -179,12 +179,12 @@ const Editor = () => {
       // await getFrontCardDetail();
       // await getUserTemplateDesignData();
       setIsUnityReady(true);
-      if (data && userTemplateData && token) {
+      if (data && userTemplateData) {
         gameOnLoad();
       }
 
     };
-  }, [data && userTemplateData && token]);
+  }, [data && userTemplateData]);
 
   const gameOnLoad = () => {
     const instance = gameIframe.current?.contentWindow?.gameInstance;
