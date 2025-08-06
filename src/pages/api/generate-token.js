@@ -10,7 +10,7 @@ export default function handler(req, res) {
   console.log(expiresIn);
   console.log(req.body);
 
-  
+
 
   let payload = {};
 
@@ -28,7 +28,7 @@ export default function handler(req, res) {
     };
   }
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn });
+  const token = jwt.sign(payload, JWT_SECRET, { expiresIn:'1h' });
 
   return res.status(200).json({ token });
 }
