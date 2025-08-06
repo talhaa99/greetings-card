@@ -77,7 +77,7 @@ const Editor = () => {
       const res = await fetch('/api/generate-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: auth?.user || null })
+        body: JSON.stringify({ user: auth?.user })
       });
 
       const data = await res.json();
@@ -89,7 +89,6 @@ const Editor = () => {
 
     generateToken();
   }, [generateToken]);
-
 
   // useEffect(() => { ==
   //   const generateAndStoreToken = async () => {
@@ -396,7 +395,7 @@ const Editor = () => {
           setUserTemplateData(response?.data?.data);
           // openLogin();
           if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
-          // if (!auth?.isAuthenticated) {
+            // if (!auth?.isAuthenticated) {
             // setIsSave(true);
             // setUserId(userCardId);
             openLogin();
@@ -424,7 +423,7 @@ const Editor = () => {
           const response = await axios.post(
             `${BASE_URL}/api/cards/update-data`,
             {
-              id:userTemplateData._id,
+              id: userTemplateData._id,
               isAuthenticated: isAuth
 
             },
