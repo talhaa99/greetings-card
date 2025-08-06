@@ -3,8 +3,12 @@ import jwt from 'jsonwebtoken';
 
 export default function handler(req, res) {
   const { user } = req.body;
-  const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET;
-  const expiresIn = process.env.NEXT_PUBLIC_EXPIREIN;
+  const JWT_SECRET = process.env.JWT_SECRET;
+  const expiresIn = process.env.JWT_EXPIRE_IN;
+
+  console.log(JWT_SECRET);
+  console.log(expiresIn);
+  console.log(req.body);
 
   let payload = {};
 
