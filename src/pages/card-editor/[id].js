@@ -47,6 +47,8 @@ const Editor = () => {
   const [video, setVideo] = useState(null);
   const [userTemplateData, setUserTemplateData] = useState(null);
   const [url, setUrl] = useState(null);
+  const [token, setToken] = useState(null);
+
   // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
 
   console.log('auth', auth);
@@ -63,26 +65,51 @@ const Editor = () => {
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
 
+
   useEffect(() => {
     const generateAndStoreToken = async () => {
       const res = await fetch('/api/generate-token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user: auth?.user || null })  // Send null for guest
+        body: JSON.stringify({ user: auth?.user || null }) // Send null for guest
       });
 
       const data = await res.json();
-      setGenerateToken(false);
       if (data.token) {
+        setToken(data.token);
         localStorage.setItem('userToken', data.token);
-        console.log('🔐 Token from API stored:', data.token);
+        console.log('🔐 Token stored:', data.token);
       } else {
         console.error('❌ Failed to generate token:', data);
       }
     };
 
-    generateAndStoreToken();
+    if (auth) {
+      generateAndStoreToken();
+    }
   }, [auth]);
+
+
+  // useEffect(() => {
+  //   const generateAndStoreToken = async () => {
+  //     const res = await fetch('/api/generate-token', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ user: auth?.user || null })  // Send null for guest
+  //     });
+  //
+  //     const data = await res.json();
+  //     setGenerateToken(false);
+  //     if (data.token) {
+  //       localStorage.setItem('userToken', data.token);
+  //       console.log('🔐 Token from API stored:', data.token);
+  //     } else {
+  //       console.error('❌ Failed to generate token:', data);
+  //     }
+  //   };
+  //
+  //   generateAndStoreToken();
+  // }, [auth]);
 
   const getFrontCardDetail = async () => {
     try {
@@ -152,12 +179,12 @@ const Editor = () => {
       // await getFrontCardDetail();
       // await getUserTemplateDesignData();
       setIsUnityReady(true);
-      if (data && userTemplateData) {
+      if (data && userTemplateData && token) {
         gameOnLoad();
       }
 
     };
-  }, [data && userTemplateData]);
+  }, [data && userTemplateData && token]);
 
   const gameOnLoad = () => {
     const instance = gameIframe.current?.contentWindow?.gameInstance;
@@ -191,9 +218,9 @@ const Editor = () => {
         )
       );
 
-      const token = localStorage.getItem('userToken');
+      // const token = localStorage.getItem('userToken');
 
-      console.log('token is ==========================', token);
+      console.log('token is from web ==========================', token);
 
       //sending qr link here
       instance.SendMessage(
