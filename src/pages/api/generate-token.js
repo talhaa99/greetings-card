@@ -10,6 +10,8 @@ export default function handler(req, res) {
   console.log(expiresIn);
   console.log(req.body);
 
+  
+
   let payload = {};
 
   if (user && user._id) {

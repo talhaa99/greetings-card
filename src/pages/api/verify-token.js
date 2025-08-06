@@ -1,6 +1,8 @@
 // pages/api/verify-token.js
 import jwt from 'jsonwebtoken';
 
+const secret = 'greetings-card-api-token-secure'
+console.log("secret", secret)
 export default function handler(req, res) {
   const token = req.body.token;
 
@@ -10,9 +12,9 @@ export default function handler(req, res) {
 
   try {
 
-    console.log("JWTTT: ", process.env.JWT_SECRET);
+    console.log("JWTTT: ", secret);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, secret);
     console.log(":decoded of verufy", decoded);
     return res.status(200).json({ success: true, decoded });
   } catch (error) {

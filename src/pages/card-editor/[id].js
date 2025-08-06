@@ -88,7 +88,7 @@ const Editor = () => {
     };
 
     generateToken();
-  }, [generateToken == true]);
+  }, [generateToken]);
 
 
   // useEffect(() => { ==
