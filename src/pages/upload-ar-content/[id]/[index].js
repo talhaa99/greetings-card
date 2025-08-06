@@ -110,16 +110,16 @@ const Upload = () => {
   }, [token]);
 
 
-  useEffect(() => {
-    if (token) {
-      auth.initialize(token);
-    }
-  }, [token]);
-  useEffect(() => {
-    if (router.isReady && token) {
-      auth.initialize(token);
-    }
-  }, [router.isReady, token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     auth.initialize(token);
+  //   }
+  // }, [token]);
+  // useEffect(() => {
+  //   if (router.isReady && token) {
+  //     auth.initialize(token);
+  //   }
+  // }, [router.isReady, token]);
 
 // clean the url
 //   router.replace({
