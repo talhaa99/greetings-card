@@ -495,7 +495,6 @@ const Upload = () => {
                 (index === '0' && (temp === '3' || (temp !== '4' && temp !== '5'))) // your old condition
               ) && (
 
-
                 <Button
                   disabled={videoLoading}
                   onClick={() => document.getElementById('gallery-videos').click()}

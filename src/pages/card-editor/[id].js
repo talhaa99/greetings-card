@@ -430,8 +430,6 @@ const Editor = () => {
       // callback when picker is click need to generate token
       gameIframe.current.contentWindow.pickerClickCallBack = async () => {
         console.log('----------msg when picker is clicked from website:');
-        // await generateToken();
-        // setGenerateToken(true);
       };
 
       gameIframe.current.contentWindow.changeTemplate = async (id) => {
@@ -460,7 +458,6 @@ const Editor = () => {
         }
       };
 
-      // console.log('generateToken after', generateToken);
     }
   };
 
@@ -475,9 +472,6 @@ const Editor = () => {
         width: '100%',
         height: '100vh !important',
         overflowY: 'hidden ',
-        // overflowX:'hidden',
-        // overflowY: 'hidden',
-        // minHeight: '100vh !important',
         backgroundImage: {
           xs: `url(${WEB_URL}/portrate.png)`,
           md: `url(${WEB_URL}/bg1.png)`
