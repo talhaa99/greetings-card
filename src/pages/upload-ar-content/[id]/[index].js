@@ -42,74 +42,6 @@ const Upload = () => {
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // console.log('auth', auth.initialize);
-  // console.log('token', token);
-
-  // useEffect(() => {
-  //   if (!router.isReady) {
-  //     return;
-  //   }
-  //
-  //   const tokenFromQuery = router.query.token;
-  //
-  //   if (!tokenFromQuery) {
-  //     console.log('Token not found in query.');
-  //     return;
-  //   }
-  //
-  //   const verifyAndInitialize = async () => {
-  //     try {
-  //       setVerifyLoading(true);
-  //
-  //       const res = await axios.post('/api/verify-token', { token: tokenFromQuery });
-  //
-  //       if (res.data.success) {
-  //         localStorage.setItem('token', tokenFromQuery);
-  //         await auth.initialize(true); // 👈 force initialize if needed
-  //         setIsTokenValid(true);
-  //       }
-  //     } catch (error) {
-  //       console.error('Token verification failed:', error);
-  //       // setIsTokenValid(false);
-  //     } finally {
-  //       setVerifyLoading(false);
-  //     }
-  //   };
-  //
-  //   verifyAndInitialize();
-  // }, [router.isReady, router.query.token]);
-
-  // useEffect(() => {
-  //   const verifyToken = async () => {
-  //     setVerifyLoading(true);
-  //
-  //     try {
-  //       setVerifyLoading(true);
-  //       // const res = await axios.post('/api/verify-token', { token });
-  //       // console.log('res of verify', res);
-  //
-  //       // if (res.data.success) {
-  //         localStorage.setItem('token', token);
-  //         console.log('going to call initializse before');
-  //         await auth.initialize(true);  // this assumes it's a function
-  //         console.log('going to call initializse after--------------');
-  //         setIsTokenValid(true);
-  //       // } else {
-  //       //   setIsTokenValid(false);
-  //       // }
-  //     } catch (err) {
-  //       console.error('Token verification failed:', err);
-  //       setIsTokenValid(false);
-  //     } finally {
-  //       setVerifyLoading(false);
-  //     }
-  //   };
-  //
-  //   if (token) {
-  //     verifyToken();
-  //   }
-  // }, [token]);
-
   const verifyToken = async () => {
     setVerifyLoading(true);
 
@@ -131,6 +63,7 @@ const Upload = () => {
       verifyToken();
     }
   }, [token]);
+
   // useEffect(() => {
   //   if (router.isReady && token) {
   //     auth.initialize(token);
@@ -312,7 +245,7 @@ const Upload = () => {
     if (showMsgAfterUploadContent) {
       const timer = setTimeout(() => {
         router.push(WEB_URL);
-      }, 10000); // 10,000 ms = 10 seconds
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
@@ -323,22 +256,6 @@ const Upload = () => {
       <title>Upload Media | {APP_NAME}</title>
     </Head>
 
-
-    {/*: isTokenValid ? (*/}
-    {/*<Box*/}
-    {/*  sx={{*/}
-    {/*    height: '80vh',*/}
-    {/*    display: 'flex',*/}
-    {/*    flexDirection: 'column',*/}
-    {/*    justifyContent: 'center',*/}
-    {/*    alignItems: 'center',*/}
-    {/*    gap: 2*/}
-    {/*  }}*/}
-    {/*>*/}
-    {/*  <Box sx={{ fontSize: 20, fontWeight: 600 }}>⚠️ Link is expire!</Box>*/}
-    {/*  /!*<Button variant="contained" onClick={() => router.push('/')}>Go to Home</Button>*!/*/}
-    {/*</Box>*/}
-    {/*)*/}
 
 
     {/*{isSmallScreen && (*/}
@@ -382,10 +299,8 @@ const Upload = () => {
       )}
 
 
-      {/*{*/}
-      {/*  !showMsgAfterUploadContent && (*/}
-      <Box>
 
+      <Box>
         {/*{*/}
         {/*  showWarning && (*/}
         {/*    <Box className={classes.root} sx={{*/}
@@ -577,7 +492,6 @@ const Upload = () => {
       </Box>
       {/*)}*/}
     </Box>
-    {/*)}*/}
 
   </>);
 };
