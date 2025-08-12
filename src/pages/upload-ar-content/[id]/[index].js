@@ -27,7 +27,7 @@ const Upload = () => {
   const auth = useAuth();
   const theme = useTheme();
   const router = useRouter();
-  const { id, index, temp, token, type } = router.query;
+  const { id, index, temp, type , token} = router.query;
   const [loading, setLoading] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(null);
   const [verifyLoading, setVerifyLoading] = useState(false);
@@ -43,11 +43,13 @@ const Upload = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   console.log("type", type);
+  console.log("token", token);
 
   const verifyToken = async () => {
     setVerifyLoading(true);
 
     try {
+      console.log("going to call verifyToken")
       localStorage.setItem('token', token);
       console.log('going to ca setVerifyLoading(true);ll initializse before');
       await auth.initialize(true);
