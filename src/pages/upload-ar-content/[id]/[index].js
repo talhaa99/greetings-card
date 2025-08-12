@@ -27,7 +27,7 @@ const Upload = () => {
   const auth = useAuth();
   const theme = useTheme();
   const router = useRouter();
-  const { id, index, temp, token, image, video } = router.query;
+  const { id, index, temp, token, type } = router.query;
   const [loading, setLoading] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(null);
   const [verifyLoading, setVerifyLoading] = useState(false);
@@ -308,6 +308,16 @@ const Upload = () => {
     }
   };
 
+  useEffect(() => {
+    if (showMsgAfterUploadContent) {
+      const timer = setTimeout(() => {
+        router.push(WEB_URL);
+      }, 10000); // 10,000 ms = 10 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [showMsgAfterUploadContent]);
+
   return (<>
     <Head>
       <title>Upload Media | {APP_NAME}</title>
@@ -365,7 +375,7 @@ const Upload = () => {
             // sx={{ position: 'absolute', top: {md: '25%', xs:'25%' }, right: {md: - 150, xs:-30 }, width: {md: '30%', xs:'50%' }, zIndex: 4 }}
             sx={{
 
-              width: '50%',
+              width: '50%'
             }}
           />
         </Box>
@@ -460,10 +470,15 @@ const Upload = () => {
                        style={{ objectFit: 'cover', borderRadius: '8px' }}/></Box>)}
               </Box>
 
+              {/*{(*/}
+              {/*  (index === '0' && ['1', '2'].includes(temp) && type === 'image') || (temp !== '3')*/}
+              {/*) && (*/}
+
               {(
-                (index === '0' && ['1', '2'].includes(temp) && image) || // case: index=0, temp=1/2, has image
-                (temp !== '3' && !(index === '0' && ['1', '2'].includes(temp) && video)) // hide image if index=0, temp=1/2 and video exists
+                (index === '0' && ['1', '2'].includes(temp) && type === 'image') ||
+                (temp !== '3')
               ) && (
+
                 <Button
                   sx={{
                     minWidth: { md: 150, xs: 100 },
@@ -491,11 +506,11 @@ const Upload = () => {
                 onChange={handleImageUpload}
               />
               {(
-                (index === '0' && ['1', '2'].includes(temp) && video) || // case: index=0, temp=1/2, has video
-                (index === '0' && (temp === '3' || (temp !== '4' && temp !== '5'))) // your old condition
+                (index === '0' && ['1', '2'].includes(temp) && type === 'video') ||
+                (index === '0' && (temp === '3' || (temp !== '4' && temp !== '5')))
               ) && (
 
-                <Button
+              <Button
                   disabled={videoLoading}
                   onClick={() => document.getElementById('gallery-videos').click()}
                   sx={{
