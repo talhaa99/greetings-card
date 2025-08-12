@@ -42,6 +42,8 @@ const Upload = () => {
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+  console.log("type", type);
+
   const verifyToken = async () => {
     setVerifyLoading(true);
 
@@ -389,7 +391,13 @@ const Upload = () => {
               {/*  (index === '0' && ['1', '2'].includes(temp) && type === 'image') || (temp !== '3')*/}
               {/*) && (*/}
 
-              {(
+              {
+                !(
+                  index === '0' &&
+                  ['1', '2'].includes(temp) &&
+                  type === 'video'
+                ) && (
+
                 (index === '0' && ['1', '2'].includes(temp) && type === 'image') ||
                 (temp !== '3')
               ) && (
@@ -420,7 +428,13 @@ const Upload = () => {
                 style={{ display: 'none' }}
                 onChange={handleImageUpload}
               />
-              {(
+              {
+                !(
+                  index === '0' &&
+                  ['1', '2'].includes(temp) &&
+                  type === 'image'
+                ) && (
+
                 (index === '0' && ['1', '2'].includes(temp) && type === 'video') ||
                 (index === '0' && (temp === '3' || (temp !== '4' && temp !== '5')))
               ) && (
