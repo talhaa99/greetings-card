@@ -171,8 +171,8 @@ const Editor = () => {
     return null;
   };
 
-  console.log('userTemplateData', userTemplateData);
-  console.log('url...........', url);
+  // console.log('userTemplateData', userTemplateData);
+  // console.log('url...........', url);
 
   const createTemplateData = async () => {
     const email = getUserEmail();
