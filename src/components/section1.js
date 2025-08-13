@@ -1606,12 +1606,12 @@ const Page = () => {
   //   return () => window.removeEventListener('resize', updateInfo);
   // }, []);
 
-  console.log('innerWidth', window.innerWidth);
-  console.log('innerHeight', window.innerHeight);
-  console.log('screenWidth', window.screen.width);
-  console.log('screenHeight', window.screen.height);
-  console.log('devicePixelRatio', window.devicePixelRatio);
-  console.log('isHDLap', isHDLap);
+  // console.log('innerWidth', window.innerWidth);
+  // console.log('innerHeight', window.innerHeight);
+  // console.log('screenWidth', window.screen.width);
+  // console.log('screenHeight', window.screen.height);
+  // console.log('devicePixelRatio', window.devicePixelRatio);
+  // console.log('isHDLap', isHDLap);
 
   return (
     <>

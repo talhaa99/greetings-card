@@ -75,6 +75,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export const LandingNav = () => {
+
   const { data: session, status } = useSession();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -115,7 +116,7 @@ export const LandingNav = () => {
     setAnchorEl(null);
   };
 
-  console.log("isUploadArContent", isUploadArContent);
+  // console.log("isUploadArContent", isUploadArContent);
 
   const openAvatar = Boolean(anchorEl);
   const id = openAvatar ? 'simple-popover' : undefined;

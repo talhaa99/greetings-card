@@ -4,13 +4,14 @@ import {
   CardContent,
   Container,
   Typography,
-  Grid
+  Grid,Box
 } from '@mui/material';
 import * as React from 'react';
 import CardMedia from '@mui/material/CardMedia';
 import LandingNav from '../layouts/landing-nav/landingLayout';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 
 const Page = () => {
 
@@ -19,12 +20,26 @@ const Page = () => {
       <Head>
         <title>Terms | {APP_NAME}</title>
       </Head>
+      <Box sx={{
+        position: 'relative',
+        width: '100%',
+        height: '100%  !important',
+        minHeight: '100vh !important',
+        overflowY: 'hidden ',
+        backgroundImage: {
+          xs: `url(${WEB_URL}/portrate.png)`, md: `url(${WEB_URL}/bg1.png)`
+        },
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+
+      }}>
       <LandingNav/>
-      <Container sx={{ my: '50px' }}>
+      <Container sx={{ my: '120px' }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
             <Card sx={{ p: { md: 4, sm: 2 } }}>
-              <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
+              <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center',mt:{xs:3, md:0} }}>
                 Terms of Use
               </Typography>
               <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
@@ -36,7 +51,7 @@ const Page = () => {
               </Typography>
               <CardMedia/>
               <CardContent>
-                <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                <Typography gutterBottom variant="h6" component="div" sx={{ mt: 0, mb: 3 }}>
                   1. Acceptance of the terms
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -146,13 +161,14 @@ const Page = () => {
                   For any questions regarding these Terms of Use, please contact us at:
                 </Typography>
                 <Typography variant="body2">
-                  <b>Email: team@brandongame.com</b>
+                  <b>Email: team@greetingsCard.com</b>
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
       </Container>
+      </Box>
     </>
   );
 };
