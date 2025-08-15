@@ -22,7 +22,7 @@ const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 import NextLink from 'next/link';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAuth } from '../../../hooks/use-auth';
-
+const isAuth = auth?.isAuthenticated;
 const Upload = () => {
   const auth = useAuth();
   const theme = useTheme();
@@ -240,6 +240,7 @@ const Upload = () => {
 
     }}>
       <LandingNav/>
+      <Box>{isAuth}</Box>
 
       {showMsgAfterUploadContent && (
         <Box sx={{
