@@ -45,6 +45,7 @@ const Upload = () => {
   const isAuth = auth?.isAuthenticated;
   console.log("type", type);
   console.log("token", token);
+  console.log("isAuth", isAuth);
 
   const verifyToken = async () => {
     setVerifyLoading(true);
@@ -242,7 +243,8 @@ const Upload = () => {
     }}>
       <LandingNav/>
 
-      <Box sx={{mt:10}}>{isAuth}</Box>
+      <Box sx={{ mt: 10, color: 'red' }}>{String(isAuth)}</Box>
+
 
       {showMsgAfterUploadContent && (
         <Box sx={{
