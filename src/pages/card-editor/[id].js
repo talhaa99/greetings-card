@@ -49,86 +49,18 @@ const Editor = () => {
   const [url, setUrl] = useState(null);
   const [token, setToken] = useState(null);
 
-  // const [content, setContent] = useState(`${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`);
-
-  // console.log('auth', auth);
-  // console.log('generateToken', generateToken);
-
   useEffect(() => {
     const runOnceAfterLogin = async () => {
       if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
         hasCreatedTemplateRef.current = true;
-        await createTemplateData();
+        // console.log('going to call create template 1');
+        await getFrontCardDetail();
+        // await createTemplateData();
       }
     };
 
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]); // only depends on login state
-
-  // const generateToken = async () => {
-  //   try {
-  //     const res = await fetch('/api/generate-token', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ user: auth?.user })
-  //     });
-  //
-  //     const data = await res.json();
-  //     if (data.token) {
-  //       setToken(data.token);
-  //       localStorage.setItem('token', data.token);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error generating token', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const tokenFromStorage = localStorage.getItem('token');
-  //   if (tokenFromStorage) {
-  //     setToken(tokenFromStorage);
-  //     return;
-  //   }
-  //
-  //   console.log("auth.user", auth.user);
-  //   const generateToken = async () => {
-  //
-  //     const res = await fetch('/api/generate-token', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ user: auth?.user })
-  //     });
-  //
-  //     const data = await res.json();
-  //     if (data.token) {
-  //       setToken(data.token);
-  //       localStorage.setItem('token', data.token);
-  //     }
-  //   };
-  //
-  //   generateToken();
-  // }, [generateToken]);
-
-  // useEffect(() => { ==
-  //   const generateAndStoreToken = async () => {
-  //     const res = await fetch('/api/generate-token', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ user: auth?.user || null })  // Send null for guest
-  //     });
-  //
-  //     const data = await res.json();
-  //     setGenerateToken(false);
-  //     if (data.token) {
-  //       localStorage.setItem('userToken', data.token);
-  //       console.log('🔐 Token from API stored:', data.token);
-  //     } else {
-  //       console.error('❌ Failed to generate token:', data);
-  //     }
-  //   };
-  //
-  //   generateAndStoreToken();
-  // }, [auth]);
 
   const getFrontCardDetail = async () => {
     try {
@@ -144,12 +76,18 @@ const Editor = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (!cardId) {
+  //     return;
+  //   }
+  //   getFrontCardDetail();
+  // }, [cardId && !auth?.isAuthenticated]);
   useEffect(() => {
-    if (!cardId) {
-      return;
+    if (cardId && !auth?.isAuthenticated) {
+      getFrontCardDetail();
     }
-    getFrontCardDetail();
-  }, [cardId]);
+  }, [cardId, auth?.isAuthenticated]);
+
 
   const getUserEmail = () => {
     if (!auth?.isAuthenticated) {
@@ -171,13 +109,10 @@ const Editor = () => {
     return null;
   };
 
-  // console.log('userTemplateData', userTemplateData);
-  // console.log('url...........', url);
-
   const createTemplateData = async () => {
     const email = getUserEmail();
     const isAuth = auth?.isAuthenticated;
-
+    console.log('going to call create template ');
     try {
       const res = await axios.post(`${BASE_URL}/api/cards/upload-card-id`, {
         uuid: cardId, userCardId, email, isAuthenticated: isAuth, userId: auth?.user?._id
@@ -195,8 +130,7 @@ const Editor = () => {
   useEffect(() => {
     window.UnityLoaded = async () => {
       console.log('Unity is loaded and ready from web');
-      // await getFrontCardDetail();
-      // await getUserTemplateDesignData();
+      ;
       setIsUnityReady(true);
       if (data && userTemplateData) {
         gameOnLoad();
