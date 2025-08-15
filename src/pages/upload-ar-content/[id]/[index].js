@@ -243,7 +243,7 @@ const Upload = () => {
     }}>
       <LandingNav/>
 
-      <Box sx={{ mt: 10, color: 'red' }}>{String(isAuth)}</Box>
+      {/*<Box sx={{ mt: 10, color: 'red' }}>{String(isAuth)}</Box>*/}
 
 
       {showMsgAfterUploadContent && (
