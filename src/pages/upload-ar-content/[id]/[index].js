@@ -22,7 +22,8 @@ const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 import NextLink from 'next/link';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAuth } from '../../../hooks/use-auth';
-const isAuth = auth?.isAuthenticated;
+
+
 const Upload = () => {
   const auth = useAuth();
   const theme = useTheme();
@@ -41,7 +42,7 @@ const Upload = () => {
   const [previewUrls, setPreviewUrls] = useState('');
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const isAuth = auth?.isAuthenticated;
   console.log("type", type);
   console.log("token", token);
 
@@ -240,7 +241,8 @@ const Upload = () => {
 
     }}>
       <LandingNav/>
-      <Box>{isAuth}</Box>
+
+      <Box sx={{mt:10}}>{isAuth}</Box>
 
       {showMsgAfterUploadContent && (
         <Box sx={{
