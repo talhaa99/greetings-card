@@ -107,6 +107,7 @@ const Upload = () => {
 
         const formData = new FormData();
         const isAuth = auth?.isAuthenticated;
+        console.log("isAuth in image", typeof isAuth , isAuth);
         formData.append('uuid', id);
         formData.append('isAuthenticated', isAuth);
         formData.append('index', index);
@@ -155,6 +156,7 @@ const Upload = () => {
     // setPreviewVideoUrls(res?.data?.data?.video);
     setVideoLoading(true);
     const authenticatedUser = auth?.isAuthenticated;
+    console.log("authenticatedUser in video", typeof authenticatedUser , authenticatedUser);
     const formData = new FormData();
     formData.append('uuid', id);
     formData.append('isAuthenticated', authenticatedUser);
