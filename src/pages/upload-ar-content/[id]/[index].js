@@ -43,6 +43,7 @@ const Upload = () => {
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const isAuth = auth?.isAuthenticated;
+
   console.log("type", type);
   console.log("token", token);
   console.log("isAuth", isAuth);
@@ -53,7 +54,7 @@ const Upload = () => {
     try {
       console.log("going to call verifyToken")
       localStorage.setItem('token', token);
-      console.log('going to ca setVerifyLoading(true);ll initializse before');
+      console.log('going to call initializse before');
       await auth.initialize(true);
       console.log('going to call initializse after--------------');
       setIsTokenValid(true);
