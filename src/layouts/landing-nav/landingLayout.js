@@ -546,15 +546,27 @@ export const LandingNav = () => {
                 <Box sx={{ width: 350, height: '1005', display: 'flex', alignItems: 'center' }}>
                   <Box
                     component="img"
-                    src={`${WEB_URL}/logo3.png`}
+                    src={`${WEB_URL}/logo.png`}
                     alt="logo"
                     sx={{
                       // bgcolor: 'yellow',
+                      width: '10%',
+                      pb: 1,pt:1,
+                      height: 'auto'
+                    }}
+                  />
+                  <Box
+                    component="img"
+                    src={`${WEB_URL}/logo3.png`}
+                    alt="logo"
+                    sx={{
+                      // bgcolor: 'red',
                       width: '35%',
                       pb: 2,
                       height: 'auto'
                     }}
-                  /></Box>
+                  />
+                </Box>
               </NextLink>
               <Typography
                 gutterBottom
@@ -835,8 +847,21 @@ export const LandingNav = () => {
             onKeyDown={toggleDrawer(false)}
           >
             <NextLink href="/" passHref legacyBehavior>
+              <Box>
+              <Box
+                component="img"
+                src={`${WEB_URL}/logo.png`}
+                alt="logo"
+                sx={{
+                  marginTop: '20px',
+                  // bgcolor: 'yellow',
+                  width: '20%',
+                  // pb: 1,
+                  height: 'auto'
+                }}
+              />
               <img src={`${WEB_URL}/logo3.png`} alt="Logo"
-                   style={{ height: 50, marginTop: '20px' }}/></NextLink>
+                   style={{ height: 50, marginTop: '20px' }}/></Box></NextLink>
             <Box
               sx={{
                 mt: 5,

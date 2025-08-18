@@ -1,6 +1,4 @@
 import { Button} from '@mui/material';
-
-
 const Checkout = () => {
 
   const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -15,7 +13,7 @@ const Checkout = () => {
 
       const data = await res.json();
 
-      console.log("data", data);
+      console.log("data in checkout", data);
 
 
       if (data.url) {
