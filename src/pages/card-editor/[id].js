@@ -112,9 +112,11 @@ const Editor = () => {
       console.log('CardPriceInAud', CardPriceInAud);
 
       const frontCardImage = data?.frontDesign?.startsWith('http')
-        ? data.frontDesign
-        : `${API_URL}${data?.frontDesign}`;
+        ? encodeURI(data.frontDesign) // encode special characters
+        : encodeURI(`${API_URL}${data?.frontDesign}`);
 
+
+      console.log("frontCardImage", frontCardImage);
       const productPayload = {
         title: data?.title,
         price: CardPriceInAud,
