@@ -118,8 +118,8 @@ const Editor = () => {
         price: CardPriceInAud,
         userId: auth?.user?._id,
         cardCustomizationId: cardData?._id,
-        // frontCardImage: data?.frontDesign
-        frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
+        frontCardImage: data?.frontDesign
+        // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
       };
 
       const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
