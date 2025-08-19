@@ -118,7 +118,7 @@ const Editor = () => {
         price: CardPriceInAud,
         userId: auth?.user?._id,
         cardCustomizationId: cardData?._id,
-        frontCardImage: data?.frontDesign
+        frontCardImage: `${API_URL}${data?.frontDesign}`
         // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
       };
 
