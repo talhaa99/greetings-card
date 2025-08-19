@@ -132,13 +132,14 @@ const Editor = () => {
 
       const response = await res.json();
       console.log('response in checkout', response);
-      // if (response.url) {
-      //   localStorage.setItem('checkoutProduct', JSON.stringify({
-      //     name: data?.title,
-      //     price: data?.price
-      //   }));
-      //   window.location.href = response.url;
-      // } else {
+      if (response.url) {
+        // localStorage.setItem('checkoutProduct', JSON.stringify({
+        //   name: data?.title,
+        //   price: data?.price
+        // }));
+        window.location.href = response.url;
+      }
+      // else {
       //   alert('Something went wrong!');
       // }
     } catch (error) {
@@ -353,6 +354,7 @@ const Editor = () => {
             }
           );
 
+          console.log("response of video uploaded successfully", response?.data?.data);
           const videoPath = response?.data?.data?.url;
           setVideo(videoPath);
 
@@ -473,8 +475,7 @@ const Editor = () => {
         }
       };
 
-    }
-    ;
+    };
   };
 
   return (
