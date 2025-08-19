@@ -104,21 +104,23 @@ const Editor = () => {
     fetchOtherCurrencies();
   }, []);
 
-
-
   const handleCheckout = async () => {
     try {
 
       const CardPriceInAud = Number((data?.price * currency['AUD']).toFixed(2));
 
-      console.log("CardPriceInAud", CardPriceInAud)
+      console.log('CardPriceInAud', CardPriceInAud);
+
+      const frontCardImage = data?.frontDesign?.startsWith('http')
+        ? data.frontDesign
+        : `${API_URL}${data?.frontDesign}`;
 
       const productPayload = {
         title: data?.title,
         price: CardPriceInAud,
         userId: auth?.user?._id,
         cardCustomizationId: cardData?._id,
-        frontCardImage: `${API_URL}${data?.frontDesign}`
+        frontCardImage
         // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
       };
 
@@ -203,8 +205,8 @@ const Editor = () => {
 
   };
 
-  console.log("cardData", cardData);
-  console.log("userTemplateData", userTemplateData);
+  console.log('cardData', cardData);
+  console.log('userTemplateData', userTemplateData);
 
   useEffect(() => {
     window.UnityLoaded = async () => {
@@ -354,7 +356,7 @@ const Editor = () => {
             }
           );
 
-          console.log("response of video uploaded successfully", response?.data?.data);
+          console.log('response of video uploaded successfully', response?.data?.data);
           const videoPath = response?.data?.data?.url;
           setVideo(videoPath);
 
@@ -475,7 +477,8 @@ const Editor = () => {
         }
       };
 
-    };
+    }
+    ;
   };
 
   return (
