@@ -86,81 +86,81 @@ const Editor = () => {
   // }, [cardId && !auth?.isAuthenticated]);
 
   //rest api
-  const fetchOtherCurrencies = async () => {
-    try {
-      const response = await axios.get(`https://open.er-api.com/v6/latest/EUR`, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      setCurrency(response.data.rates);
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.msg);
-    }
-  };
-  console.log('currency=', currency);
-  useEffect(() => {
-    fetchOtherCurrencies();
-  }, []);
-
-  const handleCheckout = async () => {
-    try {
-
-      const CardPriceInAud = Number((data?.price * currency['AUD']).toFixed(2));
-
-      console.log('CardPriceInAud', CardPriceInAud);
-
-      const frontCardImage = data?.frontDesign?.startsWith('http')
-        ? encodeURI(data.frontDesign) // encode special characters
-        : encodeURI(`${API_URL}${data?.frontDesign}`);
-
-
-      console.log("frontCardImage", frontCardImage);
-      const productPayload = {
-        title: data?.title,
-        price: CardPriceInAud,
-        userId: auth?.user?._id,
-        cardCustomizationId: cardData?._id,
-        frontCardImage
-        // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
-      };
-      console.log("productPayload", productPayload);
-      const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ product: productPayload })
-      });
-
-      const response = await res.json();
-      console.log('response in checkout', response);
-      if (response.url) {
-        // localStorage.setItem('checkoutProduct', JSON.stringify({
-        //   name: data?.title,
-        //   price: data?.price
-        // }));
-        window.location.href = response.url;
-      }
-      // else {
-      //   alert('Something went wrong!');
-      // }
-    } catch (error) {
-      console.error('Checkout error', error);
-      alert('Error initiating checkout');
-    }
-  };
-
-  useEffect(() => {
-    if (auth?.isAuthenticated) {
-      const shouldRedirect = localStorage.getItem('redirectToCheckout');
-      if (shouldRedirect === 'true') {
-        localStorage.removeItem('redirectToCheckout');
-        handleCheckout();
-      }
-    }
-  }, [auth?.isAuthenticated]);
+  // const fetchOtherCurrencies = async () => {
+  //   try {
+  //     const response = await axios.get(`https://open.er-api.com/v6/latest/EUR`, {
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       }
+  //     });
+  //     setCurrency(response.data.rates);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error(error.response.data.msg);
+  //   }
+  // };
+  // console.log('currency=', currency);
+  // useEffect(() => {
+  //   fetchOtherCurrencies();
+  // }, []);
+  //
+  // const handleCheckout = async () => {
+  //   try {
+  //
+  //     const CardPriceInAud = Number((data?.price * currency['AUD']).toFixed(2));
+  //
+  //     console.log('CardPriceInAud', CardPriceInAud);
+  //
+  //     const frontCardImage = data?.frontDesign?.startsWith('http')
+  //       ? encodeURI(data.frontDesign) // encode special characters
+  //       : encodeURI(`${API_URL}${data?.frontDesign}`);
+  //
+  //
+  //     console.log("frontCardImage", frontCardImage);
+  //     const productPayload = {
+  //       title: data?.title,
+  //       price: CardPriceInAud,
+  //       userId: auth?.user?._id,
+  //       cardCustomizationId: cardData?._id,
+  //       frontCardImage
+  //       // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
+  //     };
+  //     console.log("productPayload", productPayload);
+  //     const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ product: productPayload })
+  //     });
+  //
+  //     const response = await res.json();
+  //     console.log('response in checkout', response);
+  //     if (response.url) {
+  //       // localStorage.setItem('checkoutProduct', JSON.stringify({
+  //       //   name: data?.title,
+  //       //   price: data?.price
+  //       // }));
+  //       window.location.href = response.url;
+  //     }
+  //     // else {
+  //     //   alert('Something went wrong!');
+  //     // }
+  //   } catch (error) {
+  //     console.error('Checkout error', error);
+  //     alert('Error initiating checkout');
+  //   }
+  // };
+  //
+  // useEffect(() => {
+  //   if (auth?.isAuthenticated) {
+  //     const shouldRedirect = localStorage.getItem('redirectToCheckout');
+  //     if (shouldRedirect === 'true') {
+  //       localStorage.removeItem('redirectToCheckout');
+  //       handleCheckout();
+  //     }
+  //   }
+  // }, [auth?.isAuthenticated]);
 
   useEffect(() => {
     if (cardId && !auth?.isAuthenticated) {
