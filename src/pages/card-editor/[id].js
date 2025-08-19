@@ -22,7 +22,9 @@ const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 import NextLink from 'next/link';
 import QRCodeGenerator from '../../components/qrCode';
 import { useAuth } from '../../hooks/use-auth';
+import Checkout from '../../components/checkout';
 
+const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const Editor = () => {
   const auth = useAuth();
   const { openLogin } = useLoginModal();
@@ -53,14 +55,14 @@ const Editor = () => {
     const runOnceAfterLogin = async () => {
       if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
         hasCreatedTemplateRef.current = true;
-        // console.log('going to call create template 1');
+        console.log('going to call create template 1');
         await getFrontCardDetail();
         // await createTemplateData();
       }
     };
 
     runOnceAfterLogin();
-  }, [auth?.isAuthenticated]); // only depends on login state
+  }, [auth?.isAuthenticated]);
 
   const getFrontCardDetail = async () => {
     try {
@@ -68,6 +70,7 @@ const Editor = () => {
       const res = await axios.get(`${BASE_URL}/api/cards/get/data/game/${cardId}`);
       setData(res.data.data);
 
+      console.log("Res of getfront card", res);
       await createTemplateData();
 
       setLoading(false);
@@ -82,12 +85,62 @@ const Editor = () => {
   //   }
   //   getFrontCardDetail();
   // }, [cardId && !auth?.isAuthenticated]);
-  useEffect(() => {
-    if (cardId && !auth?.isAuthenticated) {
-      getFrontCardDetail();
-    }
-  }, [cardId, auth?.isAuthenticated]);
 
+  // const handleCheckout = async () => {
+  //   try {
+  //
+  //     const productPayload = {
+  //       title: data?.title,
+  //       price: data?.price,
+  //       // frontCardImage:data?.frontDesign
+  //       frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
+  //     };
+  //
+  //     const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ product: productPayload })
+  //     });
+  //
+  //     const response = await res.json();
+  //     console.log('response in checkout', response);
+  //
+  //     if (response.url) {
+  //       localStorage.setItem("checkoutProduct", JSON.stringify({
+  //         name: data?.title,
+  //         price: data?.price
+  //       }));
+  //       window.location.href = response.url;
+  //     } else {
+  //       alert('Something went wrong!');
+  //     }
+  //   } catch (error) {
+  //     console.error('Checkout error', error);
+  //     alert('Error initiating checkout');
+  //   }
+  // };
+
+
+  // useEffect(() => {
+  //   if (auth?.isAuthenticated) {
+  //     const shouldRedirect = localStorage.getItem('redirectToCheckout');
+  //     if (shouldRedirect === 'true') {
+  //       localStorage.removeItem('redirectToCheckout');
+  //       handleCheckout();
+  //     }
+  //   }
+  // }, [auth?.isAuthenticated]);
+
+
+
+
+  useEffect(() => {
+    // if (cardId && !auth?.isAuthenticated) {
+    getFrontCardDetail();
+    // }
+  }, [cardId, auth?.isAuthenticated]);
 
   const getUserEmail = () => {
     if (!auth?.isAuthenticated) {
@@ -141,259 +194,262 @@ const Editor = () => {
   // }, [data && userTemplateData && token]);
 
   const gameOnLoad = () => {
-    const instance = gameIframe.current?.contentWindow?.gameInstance;
+      const instance = gameIframe.current?.contentWindow?.gameInstance;
 
-    console.log('instance----', instance);
+      console.log('instance----', instance);
 
-    if (instance && data) {
+      if (instance && data) {
 
-      console.log('✅ Unity gameInstance loaded:', instance);
-      console.log('✅userTemplateData', userTemplateData);
-      console.log('data---', data);
+        console.log('✅ Unity gameInstance loaded:', instance);
+        console.log('✅userTemplateData', userTemplateData);
+        console.log('data---', data);
 
-      instance.SendMessage(
-        'JsonDataHandlerAndParser',
-        'LoadJsonData',
-        JSON.stringify(data)
-      );
+        instance.SendMessage(
+          'JsonDataHandlerAndParser',
+          'LoadJsonData',
+          JSON.stringify(data)
+        );
 
-      instance.SendMessage(
-        'JsonDataHandlerAndParser',
-        'LoadSavedData',
-        JSON.stringify(userTemplateData)
-      );
+        instance.SendMessage(
+          'JsonDataHandlerAndParser',
+          'LoadSavedData',
+          JSON.stringify(userTemplateData)
+        );
 
-      //send qrlink for user ar experience
-      instance.SendMessage(
-        'JsonDataHandlerAndParser',
-        'purchaseCardLink',
-        JSON.stringify(
-          `https://ar-experience-greetings-card.tecshield.net/${userTemplateData?._id}`
-        )
-      );
+        //send qrlink for user ar experience
+        instance.SendMessage(
+          'JsonDataHandlerAndParser',
+          'purchaseCardLink',
+          JSON.stringify(
+            `https://ar-experience-greetings-card.tecshield.net/${userTemplateData?._id}`
+          )
+        );
 
-      const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
 
-      // console.log('token is from web ==========================', token);
+        // console.log('token is from web ==========================', token);
 
-      //sending qr link here
-      instance.SendMessage(
-        'JsonDataHandlerAndParser',
-        'QrLink',
-        JSON.stringify({
-          qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`,
-          token
+        //sending qr link here
+        instance.SendMessage(
+          'JsonDataHandlerAndParser',
+          'QrLink',
+          JSON.stringify({
+            qrUrl: `${WEB_URL}/upload-ar-content/${userTemplateData?.uuid}`,
+            token
 
-        })
-      );
+          })
+        );
 
-      gameIframe.current.contentWindow.saveImage = async (array = [], int, index) => {
-        console.log('🖼️ Received array:', array);
-        console.log('index', index);
+        gameIframe.current.contentWindow.saveImage = async (array = [], int, index) => {
+          console.log('🖼️ Received array:', array);
+          console.log('index', index);
 
-        console.log('userId----------------------in else');
-        setIsUnityReady(false);
-        try {
-          const isAuth = auth?.isAuthenticated;
-          // Convert the input array to Uint8Array
-          const uint8Array = new Uint8Array(array);
+          console.log('userId----------------------in else');
+          setIsUnityReady(false);
+          try {
+            const isAuth = auth?.isAuthenticated;
+            // Convert the input array to Uint8Array
+            const uint8Array = new Uint8Array(array);
 
-          // Convert Uint8Array to a Blob (binary data)
-          const blob = new Blob([uint8Array], { type: 'image/png' }); // adjust MIME type if needed
+            // Convert Uint8Array to a Blob (binary data)
+            const blob = new Blob([uint8Array], { type: 'image/png' }); // adjust MIME type if needed
 
-          // Create FormData to send the image as a file
-          const formData = new FormData();
-          formData.append('uuid', userCardId);
-          formData.append('isAuthenticated', isAuth);
-          formData.append('index', index);
-          formData.append('image', blob, 'image.png'); // 'image.png' is filename
+            // Create FormData to send the image as a file
+            const formData = new FormData();
+            formData.append('uuid', userCardId);
+            formData.append('isAuthenticated', isAuth);
+            formData.append('index', index);
+            formData.append('image', blob, 'image.png'); // 'image.png' is filename
 
-          // Send POST request with multipart/form-data
-          const response = await axios.post(
-            `${BASE_URL}/api/cards/upload-image`,
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data'
+            // Send POST request with multipart/form-data
+            const response = await axios.post(
+              `${BASE_URL}/api/cards/upload-image`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
               }
-            }
-          );
-          const imagePath = response?.data?.data?.url;
+            );
+            const imagePath = response?.data?.data?.url;
 
-          // const userTemplateId = response?.data?.data?.card?.userId;
-          // setUserTemplateId(userTemplateId);
-          // localStorage.setItem('userTemplateId', userTemplateId);
+            // const userTemplateId = response?.data?.data?.card?.userId;
+            // setUserTemplateId(userTemplateId);
+            // localStorage.setItem('userTemplateId', userTemplateId);
 
-          // Construct full image URL with index as a query param
-          // const imageUrl = `${BASE_URL}/${imagePath}?index=${index}`;
-          setImage(imagePath);
-          setUserTemplateData(response?.data?.data?.card);
-          console.log('imagePath', imagePath);
-          console.log('✅ Image uploaded successfully:', response);
-          instance.SendMessage(
-            'JsonDataHandlerAndParser',
-            'LoadImage',
-            JSON.stringify(imagePath)
-          );
+            // Construct full image URL with index as a query param
+            // const imageUrl = `${BASE_URL}/${imagePath}?index=${index}`;
+            setImage(imagePath);
+            setUserTemplateData(response?.data?.data?.card);
+            console.log('imagePath', imagePath);
+            console.log('✅ Image uploaded successfully:', response);
+            instance.SendMessage(
+              'JsonDataHandlerAndParser',
+              'LoadImage',
+              JSON.stringify(imagePath)
+            );
 
-        } catch (error) {
-          console.error('❌ Error uploading image:', error);
-        }
-
-      };
-
-      gameIframe.current.contentWindow.UploadVideo = async (gameObjectName, methodName, url) => {
-        console.log('gameObjectName', gameObjectName);
-        console.log('url', url);
-        console.log('methodName', methodName);
-
-        setIsUnityReady(false);
-        console.log('userId----- in else', userCardId);
-        try {
-          const isAuth = auth?.isAuthenticated;
-          const blobResponse = await fetch(url);
-          const blob = await blobResponse.blob();
-
-          // 2. Convert blob to a File object (you can give a meaningful filename)
-          const file = new File([blob], 'recorded-video.mp4', {
-            type: blob.type || 'video/mp4'
-          });
-
-          const formData = new FormData();
-          formData.append('uuid', userCardId);
-          formData.append('isAuthenticated', isAuth);
-          formData.append('video', file);
-
-          // Send POST request with multipart/form-data
-          const response = await axios.post(
-            `${BASE_URL}/api/cards/upload-template-video`,
-            formData,
-            {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            }
-          );
-
-          const videoPath = response?.data?.data?.url;
-          setVideo(videoPath);
-
-          instance.SendMessage(
-            'JsonDataHandlerAndParser',
-            'LoadVideo',
-            JSON.stringify(videoPath)
-          );
-
-        } catch (error) {
-          console.error('❌ Error uploading video:', error);
-        }
-
-      };
-
-      gameIframe.current.contentWindow.deleteImage = async (isImage, index) => {
-
-        console.log('isImage', isImage);
-        console.log('index', index);
-
-        console.log('userId----------------------', userCardId);
-        try {
-          const isAuth = auth?.isAuthenticated;
-          const response = await axios.post(
-            `${BASE_URL}/api/user/edit-data`,
-            {
-              isAuthenticated: isAuth,
-              isImage,
-              index,
-              uuid: userCardId
-
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-          console.log('response to delete image---------------', response);
-
-        } catch (error) {
-          console.error('❌ Error deleting image:', error);
-        }
-
-      };
-
-      //unity developer call this function to send data to me  not in instance this function is call in window
-      gameIframe.current.contentWindow.saveData = async (json) => {
-
-        console.log('----------recieving json:', json);
-        const parsed = JSON.parse(json);
-        console.log('----------recieving json after parse:', parsed);
-
-        try {
-          const isAuth = auth?.isAuthenticated;
-          const response = await axios.post(
-            `${BASE_URL}/api/cards/upload-ar-data`,
-            {
-              uuid: userCardId,
-              data: parsed,
-              isAuthenticated: isAuth
-
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-          console.log('response of save data===> ', response);
-          setUserTemplateData(response?.data?.data);
-          // openLogin();
-          if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
-            // if (!auth?.isAuthenticated) {
-            // setIsSave(true);
-            // setUserId(userCardId);
-            openLogin();
-            // localStorage.setItem('pendingImageUpload', 'true');
-            // setIsSave(true);
-            // await saveUserArExperienceData();
+          } catch (error) {
+            console.error('❌ Error uploading image:', error);
           }
-        } catch (error) {
-          console.log('error in save data', error);
-        }
-      };
 
-      // callback when picker is click need to generate token
-      gameIframe.current.contentWindow.pickerClickCallBack = async () => {
-        console.log('----------msg when picker is clicked from website:');
-      };
+        };
 
-      gameIframe.current.contentWindow.changeTemplate = async (id) => {
+        gameIframe.current.contentWindow.UploadVideo = async (gameObjectName, methodName, url) => {
+          console.log('gameObjectName', gameObjectName);
+          console.log('url', url);
+          console.log('methodName', methodName);
 
-        console.log('----------recieving id when template is changed:', id);
+          setIsUnityReady(false);
+          console.log('userId----- in else', userCardId);
+          try {
+            const isAuth = auth?.isAuthenticated;
+            const blobResponse = await fetch(url);
+            const blob = await blobResponse.blob();
 
-        try {
-          const isAuth = auth?.isAuthenticated;
-          const response = await axios.post(
-            `${BASE_URL}/api/cards/update-data`,
-            {
-              id: userTemplateData._id,
-              isAuthenticated: isAuth
+            // 2. Convert blob to a File object (you can give a meaningful filename)
+            const file = new File([blob], 'recorded-video.mp4', {
+              type: blob.type || 'video/mp4'
+            });
 
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json'
+            const formData = new FormData();
+            formData.append('uuid', userCardId);
+            formData.append('isAuthenticated', isAuth);
+            formData.append('video', file);
+
+            // Send POST request with multipart/form-data
+            const response = await axios.post(
+              `${BASE_URL}/api/cards/upload-template-video`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
               }
-            }
-          );
-          console.log('response when template ===> ', response);
-          setUserTemplateData(response?.data?.data);
-        } catch (error) {
-          console.log('error in change template data', error);
-        }
-      };
+            );
 
-    }
-  };
+            const videoPath = response?.data?.data?.url;
+            setVideo(videoPath);
+
+            instance.SendMessage(
+              'JsonDataHandlerAndParser',
+              'LoadVideo',
+              JSON.stringify(videoPath)
+            );
+
+          } catch (error) {
+            console.error('❌ Error uploading video:', error);
+          }
+
+        };
+
+        gameIframe.current.contentWindow.deleteImage = async (isImage, index) => {
+
+          console.log('isImage', isImage);
+          console.log('index', index);
+
+          console.log('userId----------------------', userCardId);
+          try {
+            const isAuth = auth?.isAuthenticated;
+            const response = await axios.post(
+              `${BASE_URL}/api/user/edit-data`,
+              {
+                isAuthenticated: isAuth,
+                isImage,
+                index,
+                uuid: userCardId
+
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            );
+            console.log('response to delete image---------------', response);
+
+          } catch (error) {
+            console.error('❌ Error deleting image:', error);
+          }
+
+        };
+
+        //unity developer call this function to send data to me  not in instance this function is call in window
+        gameIframe.current.contentWindow.saveData = async (json) => {
+
+          console.log('----------recieving json:', json);
+          const parsed = JSON.parse(json);
+          console.log('----------recieving json after parse:', parsed);
+
+          try {
+            const isAuth = auth?.isAuthenticated;
+            const response = await axios.post(
+              `${BASE_URL}/api/cards/upload-ar-data`,
+              {
+                uuid: userCardId,
+                data: parsed,
+                isAuthenticated: isAuth
+
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            );
+            console.log('response of save data===> ', response);
+            setUserTemplateData(response?.data?.data);
+            if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
+              openLogin();
+            }
+
+            // if (parsed?.isCustomizationComplete) {
+            //   if (!auth?.isAuthenticated) {
+            //     localStorage.setItem('redirectToCheckout', 'true');
+            //     await openLogin();
+            //   }else{
+            //     handleCheckout();
+            //   }
+            // }
+          } catch (error) {
+            console.log('error in save data', error);
+          }
+        };
+
+        // callback when picker is click need to generate token
+        gameIframe.current.contentWindow.pickerClickCallBack = async () => {
+          console.log('----------msg when picker is clicked from website:');
+        };
+
+        gameIframe.current.contentWindow.changeTemplate = async (id) => {
+
+          console.log('----------recieving id when template is changed:', id);
+
+          try {
+            const isAuth = auth?.isAuthenticated;
+            const response = await axios.post(
+              `${BASE_URL}/api/cards/update-data`,
+              {
+                id: userTemplateData._id,
+                isAuthenticated: isAuth
+
+              },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            );
+            console.log('response when template ===> ', response);
+            setUserTemplateData(response?.data?.data);
+          } catch (error) {
+            console.log('error in change template data', error);
+          }
+        };
+
+      }
+      ;
+    };
 
   return (
     <>
