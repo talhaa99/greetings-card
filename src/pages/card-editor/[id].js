@@ -125,7 +125,7 @@ const Editor = () => {
         frontCardImage
         // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
       };
-
+      console.log("productPayload", productPayload);
       const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
         method: 'POST',
         headers: {
