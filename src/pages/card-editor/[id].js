@@ -116,8 +116,10 @@ const Editor = () => {
       const productPayload = {
         title: data?.title,
         price: CardPriceInAud,
-        frontCardImage: data?.frontDesign
-        // frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
+        userId: auth?.user?._id,
+        cardCustomizationId: cardData?._id,
+        // frontCardImage: data?.frontDesign
+        frontCardImage:'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
       };
 
       const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
@@ -130,16 +132,15 @@ const Editor = () => {
 
       const response = await res.json();
       console.log('response in checkout', response);
-
-      if (response.url) {
-        localStorage.setItem('checkoutProduct', JSON.stringify({
-          name: data?.title,
-          price: data?.price
-        }));
-        window.location.href = response.url;
-      } else {
-        alert('Something went wrong!');
-      }
+      // if (response.url) {
+      //   localStorage.setItem('checkoutProduct', JSON.stringify({
+      //     name: data?.title,
+      //     price: data?.price
+      //   }));
+      //   window.location.href = response.url;
+      // } else {
+      //   alert('Something went wrong!');
+      // }
     } catch (error) {
       console.error('Checkout error', error);
       alert('Error initiating checkout');
@@ -200,6 +201,9 @@ const Editor = () => {
     }
 
   };
+
+  console.log("cardData", cardData);
+  console.log("userTemplateData", userTemplateData);
 
   useEffect(() => {
     window.UnityLoaded = async () => {
