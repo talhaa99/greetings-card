@@ -108,7 +108,7 @@ const Upload = () => {
           return;
         }
         if (width > 4028 || height > 4028) {
-          toast.error(`Image too large (${width}x${height}). Max: 4028x4028px.`);
+          toast.error(`Image too large (${width}x${height}). Max allowed : 4028x4028px.`);
           return;
         }
         const formData = new FormData();
