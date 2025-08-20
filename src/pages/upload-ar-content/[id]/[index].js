@@ -107,7 +107,10 @@ const Upload = () => {
           toast.error(`Image too small (${width}x${height}). Min: 660x660px.`);
           return;
         }
-
+        if (width > 4028 || height > 4028) {
+          toast.error(`Image too large (${width}x${height}). Max: 4028x4028px.`);
+          return;
+        }
         const formData = new FormData();
         const isAuth = auth?.isAuthenticated;
         console.log("isAuth in image", typeof isAuth , isAuth);
