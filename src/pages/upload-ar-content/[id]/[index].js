@@ -329,7 +329,7 @@ const Upload = () => {
 
                   {previewUrls && (<Box sx={{
                     width: 150, height: 150,
-                    display: 'flex',
+                    display: showMsgAfterUploadContent ? 'none' : 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     position: 'relative'
@@ -340,6 +340,7 @@ const Upload = () => {
                         onClick={() => delete0IndexContent(true)}
                         sx={{
                           position: 'absolute', bottom: 0, right: 0, color: '#c165a0', fontSize: 30
+                          // display: showMsgAfterUploadContent ? 'none' : 'block'
                         }}/>)}
                     <img src={previewUrls} width="100%" height={'100%'}
                          style={{
@@ -431,7 +432,8 @@ const Upload = () => {
                 }}>
 
                   {previewVideoUrls && (<Box sx={{
-                    display: 'flex',
+                    // display: 'flex',
+                    display: showMsgAfterUploadContent ? 'none' : 'flex',
                     width: 150, height: 150,
                     justifyContent: 'center',
                     alignItems: 'center',
