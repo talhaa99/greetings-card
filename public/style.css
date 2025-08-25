@@ -147,3 +147,14 @@ body {
 /*  background-color: #c165a0;*/
 /*  color: white;*/
 /*}*/
+/* Change arrows to pink */
+.swiper-button-prev,
+.swiper-button-next {
+  color: #c165a0 !important;
+}
+
+/* Change progress bar to pink */
+/*.swiper-pagination-progressbar-fill {*/
+/*  !*margin-bottom: 100px;*!*/
+/*  background: #c165a0 !important;*/
+/*}*/

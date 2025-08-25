@@ -14,11 +14,12 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import NextLink from 'next/link';
 import ReactPaginate from 'react-paginate';
-
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useRouter } from 'next/router';
 import { useAuth } from '../hooks/use-auth';
 import LandingNav from '../layouts/landing-nav/landingLayout';
 import { v4 as uuidv4 } from 'uuid';
+import CardsCarousel from '../utils/swiper';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -76,8 +77,7 @@ const LoginUserCards = () => {
     getAllLoginUserCards();
   }, []);
 
-
-  // console.log('allCards', allCards);
+  console.log('allCards', allCards);
 
   const gotoEditor = (uuid, cardUUID) => {
     router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
@@ -103,17 +103,18 @@ const LoginUserCards = () => {
         backgroundRepeat: 'no-repeat'
       }}>
         <Box
-          data-aos="zoom-in"
-          data-aos-duration="600"
-          data-aos-easing="ease-in"
+          // data-aos="zoom-in"
+          // data-aos-duration="600"
+          // data-aos-easing="ease-in"
           sx={{
-            pl: { md: '20%', laptop: '25%', lg: '20%', xl: '30%', xs: '15%', ipad: '25%' },
-            pr: { md: '20%', laptop: '25%', lg: '20%', xl: '30%', xs: '15%', ipad: '25%' },
+            pl: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
+            pr: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
             // bgcolor:"blue",
-            pt: { md: 15, xs: 10 },
-            pb: 10,
+            pt: { md: 5, xs: 10 },
+            // pb: {xs: 5 },
             display: 'flex', justifyContent: 'center', alignItems: 'center',
-            flexDirection: 'column', height: '100%'
+            // bgcolor:'red',
+            flexDirection: 'column', height: '100%',   minHeight: '100vh'
           }}
         >
           <Box sx={{
@@ -149,30 +150,10 @@ const LoginUserCards = () => {
                           <Typography>No cards found.</Typography>
                         </Box>
                       ) : (
-                        allCards.map((data, index) => (
-                          <Grid md={4} lg={3} xs={6} key={index} sx={{
-                            p: 1, display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}>
-                            <Box
-                              onClick={() => gotoEditor(data?.uuid , data?.cardId?.uuid)}
-                              component="img"
-                              loading="lazy"
-                              src={`${BASE_URL}/${data?.cardId?.frontDesign}`}
-                              alt={data?.title}
-                              sx={{
-                                width: '100%',
-                                // width: { xl: '100%', lg: '90%' },
-                                // display: 'block',
-
-                                aspectRatio: '1 / 1.414',
-                                cursor: 'pointer'
-                              }}
-                            />
-                          </Grid>
-                        ))
-                      )}
+                          <CardsCarousel
+                            allCards={allCards}
+                          />
+                        )}
                     </>
                   )}
                 </Grid>
