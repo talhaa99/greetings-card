@@ -29,17 +29,104 @@ import toast from 'react-hot-toast';
 
 function OrderItem({ item, onQty }) {
   const line = (item.price * item.qty).toFixed(2);
+  const stackOnMd = Number(item.qty) >= 1000000;
+  console.log("stackOnMd", stackOnMd)
   return (
-    <Card variant="outlined" sx={{ borderRadius: 1.5, mb: 1.5 }}>
-      <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.25 }}>
+    // <Card variant="outlined" sx={{ borderRadius: 1.5, mb: 1.5 }}>
+    //   <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.25 }}>
+    //     <Box sx={{ flex: 1 }}>
+    //       <CardMedia
+    //         component="img"
+    //         image={item.image}
+    //         alt={item.title}
+    //         sx={{
+    //           width: 80,
+    //           height: 80,
+    //           borderRadius: 1,
+    //           objectFit: 'cover',
+    //           border: '1px solid #ddd'
+    //         }}
+    //       />
+    //       <Typography fontWeight={700} sx={{ ml: 0.5 }} noWrap>{item.title}</Typography>
+    //     </Box>
+    //
+    //     <Stack alignItems="flex-end" sx={{ minWidth: 100 }}>
+    //       <Typography fontWeight={700}>
+    //         ${item.price.toFixed(2)} <Typography component="span" variant="caption">Per
+    //         Card</Typography>
+    //       </Typography>
+    //       <Typography variant="caption" color="text.secondary">
+    //         ${item.price.toFixed(2)} × {item.qty} = <b>${line}</b>
+    //       </Typography>
+    //     </Stack>
+    //     <Box
+    //       sx={{
+    //         display: 'inline-flex',
+    //         alignItems: 'center',
+    //         border: '1px solid',
+    //         borderColor: 'divider',
+    //         borderRadius: 2,
+    //         height: 36,
+    //         px: 0.5,
+    //         gap: 0.5,
+    //         flexShrink: 0              // don’t squish the control
+    //       }}
+    //     >
+    //       <IconButton
+    //         size="small"
+    //         onClick={() => onQty(item.id, Math.max(1, item.qty - 1))}
+    //         sx={{ p: 0.5 }}
+    //         aria-label="decrease quantity"
+    //       >
+    //         <Remove fontSize="small"/>
+    //       </IconButton>
+    //
+    //       <InputBase
+    //         value={item.qty}
+    //         onChange={(e) => {
+    //           const v = e.target.value.replace(/\D+/g, '');      // numeric only
+    //           onQty(item.id, Math.max(1, Number(v || 1)));
+    //         }}
+    //         inputMode="numeric"
+    //         sx={{
+    //           textAlign: 'center',
+    //           fontWeight: 600,
+    //           lineHeight: 1,
+    //           px: 0.5,
+    //           // Grow with digits so the full value is always visible
+    //           width: `clamp(28px, ${String(item.qty).length + 1}ch, 220px)`
+    //         }}
+    //       />
+    //
+    //       <IconButton
+    //         size="small"
+    //         onClick={() => onQty(item.id, item.qty + 1)}
+    //         sx={{ p: 0.5 }}
+    //         aria-label="increase quantity"
+    //       >
+    //         <Add fontSize="small"/>
+    //       </IconButton>
+    //     </Box>
+    //   </CardContent>
+    // </Card>
+    <Card variant="outlined" sx={{
+      borderRadius: 1.5,
+      mb: 1.5,
+      width: '100%',
+      // display: 'flex',
+      // justifyContent:'center',
+      // alignItems:'center',
+      height: '100%'
+    }}>
+      <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.25 , flexDirection: stackOnMd ? 'column' : 'row' }}>
         <Box sx={{ flex: 1 }}>
           <CardMedia
             component="img"
             image={item.image}
             alt={item.title}
             sx={{
-              width: 80,
-              height: 80,
+              width: {md: 80, xs:100 },
+              height:{md: 80, xs:100 },
               borderRadius: 1,
               objectFit: 'cover',
               border: '1px solid #ddd'
@@ -47,63 +134,71 @@ function OrderItem({ item, onQty }) {
           />
           <Typography fontWeight={700} sx={{ ml: 0.5 }} noWrap>{item.title}</Typography>
         </Box>
-
-        <Stack alignItems="flex-end" sx={{ minWidth: 100 }}>
-          <Typography fontWeight={700}>
-            ${item.price.toFixed(2)} <Typography component="span" variant="caption">Per
-            Card</Typography>
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            ${item.price.toFixed(2)} × {item.qty} = <b>${line}</b>
-          </Typography>
-        </Stack>
-        <Box
-          sx={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 2,
-            height: 36,
-            px: 0.5,
-            gap: 0.5,
-            flexShrink: 0              // don’t squish the control
-          }}
-        >
-          <IconButton
-            size="small"
-            onClick={() => onQty(item.id, Math.max(1, item.qty - 1))}
-            sx={{ p: 0.5 }}
-            aria-label="decrease quantity"
-          >
-            <Remove fontSize="small"/>
-          </IconButton>
-
-          <InputBase
-            value={item.qty}
-            onChange={(e) => {
-              const v = e.target.value.replace(/\D+/g, '');      // numeric only
-              onQty(item.id, Math.max(1, Number(v || 1)));
-            }}
-            inputMode="numeric"
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'center',
+          gap:2,
+          alignItems: 'center',
+          height: '100%'
+        }}>
+          <Stack alignItems="flex-end" sx={{ width: '100%' }}>
+            <Typography fontWeight={700}>
+              ${item.price.toFixed(2)} <Typography component="span" variant="caption">Per
+              Card</Typography>
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              ${item.price.toFixed(2)} × {item.qty} = <b>${line}</b>
+            </Typography>
+          </Stack>
+          <Box
             sx={{
-              textAlign: 'center',
-              fontWeight: 600,
-              lineHeight: 1,
+              display: 'inline-flex',
+              alignItems: 'center',
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 2,
+              height: 36,
               px: 0.5,
-              // Grow with digits so the full value is always visible
-              width: `clamp(28px, ${String(item.qty).length + 1}ch, 220px)`
+              gap: 0.5,
+              flexShrink: 0              // don’t squish the control
             }}
-          />
-
-          <IconButton
-            size="small"
-            onClick={() => onQty(item.id, item.qty + 1)}
-            sx={{ p: 0.5 }}
-            aria-label="increase quantity"
           >
-            <Add fontSize="small"/>
-          </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => onQty(item.id, Math.max(1, item.qty - 1))}
+              sx={{ p: 0.5 }}
+              aria-label="decrease quantity"
+            >
+              <Remove fontSize="small"/>
+            </IconButton>
+
+            <InputBase
+              value={item.qty}
+              onChange={(e) => {
+                const v = e.target.value.replace(/\D+/g, '');      // numeric only
+                onQty(item.id, Math.max(1, Number(v || 1)));
+              }}
+              inputMode="numeric"
+              sx={{
+                textAlign: 'center',
+                fontWeight: 600,
+                lineHeight: 1,
+                px: 0.5,
+                // Grow with digits so the full value is always visible
+                width: `clamp(28px, ${String(item.qty).length + 1}ch, 220px)`
+              }}
+            />
+
+            <IconButton
+              size="small"
+              onClick={() => onQty(item.id, item.qty + 1)}
+              sx={{ p: 0.5 }}
+              aria-label="increase quantity"
+            >
+              <Add fontSize="small"/>
+            </IconButton>
+          </Box>
         </Box>
       </CardContent>
     </Card>
@@ -114,6 +209,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { id } = router.query;
   const [open, setOpen] = useState(false);
+  const [state, setState] = useState('South Australia');
   const [items, setItems] = React.useState([
     {
       id: 1,
@@ -171,14 +267,14 @@ export default function CheckoutPage() {
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
 
-  console.log('subtotal', subtotal);
+  // console.log('subtotal', subtotal);
   const shipping = 10;
   const total = subtotal + shipping;
 
   const onQty = (id, qty) => setItems((prev) => prev.map(i => i.id === id ? { ...i, qty } : i));
 
   // which country to fetch states for
-  const COUNTRY = 'Australia';
+  // const COUNTRY = 'Australia';
 
   const [states, setStates] = useState([]);
   const [data, setData] = useState('');
@@ -191,41 +287,39 @@ export default function CheckoutPage() {
   const [termAndConditions, setTermAndConditions] = useState(false);
   const [message, setMessage] = useState('');
   //get stats of australia
-  React.useEffect(() => {
-    let mounted = true;
-    const loadStates = async () => {
-      try {
-        setLoadingStates(true);
-        setStatesError('');
-        // Public endpoint: returns { data: { name, states:[{name}...] } }
-        const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ country: 'Australia' })
-        });
-        const data = await res.json();
-
-        const list = data?.data?.states?.map((s) => s.name).filter(Boolean) ?? [];
-
-        if (mounted) {
-          setStates(list.sort());
-        }
-      } catch (e) {
-        if (mounted) {
-          setAustraliaStates([]);
-          setStatesError('Failed to load states');
-        }
-      } finally {
-        if (mounted) {
-          setLoadingStates(false);
-        }
-      }
-    };
-    loadStates();
-    return () => { mounted = false; };
-  }, [COUNTRY]);
-
-  console.log('data', data);
+  // React.useEffect(() => {
+  //   let mounted = true;
+  //   const loadStates = async () => {
+  //     try {
+  //       setLoadingStates(true);
+  //       setStatesError('');
+  //       // Public endpoint: returns { data: { name, states:[{name}...] } }
+  //       const res = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify({ country: 'Australia' })
+  //       });
+  //       const data = await res.json();
+  //
+  //       const list = data?.data?.states?.map((s) => s.name).filter(Boolean) ?? [];
+  //
+  //       if (mounted) {
+  //         setStates(list.sort());
+  //       }
+  //     } catch (e) {
+  //       if (mounted) {
+  //         setAustraliaStates([]);
+  //         setStatesError('Failed to load states');
+  //       }
+  //     } finally {
+  //       if (mounted) {
+  //         setLoadingStates(false);
+  //       }
+  //     }
+  //   };
+  //   loadStates();
+  //   return () => { mounted = false; };
+  // }, [COUNTRY]);
 
   const fetchOtherCurrencies = async () => {
     try {
@@ -240,17 +334,17 @@ export default function CheckoutPage() {
       toast.error(error.response.data.msg);
     }
   };
-  console.log('currency=', currency);
+  // console.log('currency=', currency);
   useEffect(() => {
     fetchOtherCurrencies();
   }, []);
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (audCalculatedTotalPrice) => {
     try {
 
-      const CardPriceInAud = Number((data?.price * currency['AUD']).toFixed(2));
+      // const CardPriceInAud = Number((data?.price * currency['AUD']).toFixed(2));
 
-      console.log('CardPriceInAud', CardPriceInAud);
+      // console.log('CardPriceInAud', CardPriceInAud);
 
       const frontCardImage = data?.frontDesign?.startsWith('http')
         ? encodeURI(data.frontDesign) // encode special characters
@@ -259,10 +353,7 @@ export default function CheckoutPage() {
       console.log('frontCardImage', frontCardImage);
 
       const productPayload = {
-        title: data?.title,
-        price: CardPriceInAud,
-        userId: auth?.user?._id,
-        cardCustomizationId: cardData?._id,
+        price: audCalculatedTotalPrice,
         // frontCardImage
         frontCardImage: 'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
       };
@@ -278,15 +369,8 @@ export default function CheckoutPage() {
       const response = await res.json();
       console.log('response in checkout', response);
       if (response.url) {
-        // localStorage.setItem('checkoutProduct', JSON.stringify({
-        //   name: data?.title,
-        //   price: data?.price
-        // }));
         window.location.href = response.url;
       }
-      // else {
-      //   alert('Something went wrong!');
-      // }
     } catch (error) {
       console.error('Checkout error', error);
       alert('Error initiating checkout');
@@ -305,7 +389,7 @@ export default function CheckoutPage() {
 
   //create checkout details in transaction
 
-  console.log('items[0].qty', items[0].qty);
+  // console.log('items[0].qty', items[0].qty);
 
   const formik = useFormik({
     initialValues: {
@@ -320,10 +404,11 @@ export default function CheckoutPage() {
       postal_code: '',
       phone_number: '',
       newsAndOffers: false,
+      termsAccepted: false,
       submit: null
     },
     validationSchema: Yup.object({
-      title: Yup.string().trim().required('Title is required'),
+      // title: Yup.string().trim().required('Title is required'),
       delivery_address: Yup.string().trim().required(' Street address is required'),
       suburb: Yup.string().trim().required('Suburb is required'),
       state: Yup.string().trim().required('State is required'),
@@ -333,33 +418,26 @@ export default function CheckoutPage() {
       phone_number: Yup.string()
                        .matches(/^\+?[0-9\s()-]{7,20}$/, 'Enter a valid phone number')
                        .required('Phone number is required'),
-      newsAndOffers: Yup.boolean()
+      newsAndOffers: Yup.boolean(),
+      termsAccepted: Yup.boolean().oneOf([true], 'Please accept the terms and conditions')
 
     }),
     onSubmit: async (values, helpers) => {
       const loading = toast.loading(
         'order is  in process......',
         { duration: 15000 });
-      // const loading = toast.loading('login in process...');
+
       setLoading(true);
-      console.log('formik.values.state', values.state);
-      console.log('newsAndOffers', newsAndOffers);
 
       const audCalculatedTotalPrice = Number((total * currency['AUD']).toFixed(2));
-      console.log('audCalculatedTotalPrice', audCalculatedTotalPrice);
-
-      if (!termAndConditions) {
-        setMessage('Please check the terms and conditions');
-        return;
-      }
 
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.post(API_URL + '/api/transactions/create',
+        const response = await axios.post(`${API_URL}/api/transactions/create`,
           {
             cardCustomizationId: data?._id,
             title: data?.cardId?.title,
-            price: values.price ?? data?.cardId?.price,
+            price: data?.cardId?.price,
             quantity: items[0].qty,
             aud: audCalculatedTotalPrice,
             delivery_address: values.delivery_address,
@@ -367,18 +445,19 @@ export default function CheckoutPage() {
             state: values.state,
             postal_code: values.postal_code,
             phone_number: values.phone_number,
-            newsAndOffers: newsAndOffers || false
+            newsAndOffers: values.newsAndOffers
           },
           {
             headers: {
               'Content-Type': 'application/json',
               'x-access-token': token
             }
-          }
-        );
-        console.log("response", response);
+          });
+
+        console.log('response------------', response);
         toast.success('Order place successfully');
         formik.resetForm();
+        await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
         console.log('err', err);
@@ -417,14 +496,12 @@ export default function CheckoutPage() {
         }}>
           <form noValidate
                 onSubmit={formik.handleSubmit}>
-          <Grid container spacing={4}>
-
-              <Grid item xs={12} md={7}>
-                <Card variant="outlined" sx={{ borderRadius: 1.5, mb: 3 }}>
-                  <CardContent>
-
+            <Grid container spacing={2} >
+              <Grid item xs={12} md={7} >
+                <Card variant="outlined" sx={{ borderRadius: 1.5, pb:'0 !important'}}>
+                  <CardContent sx={{ p: 2 , pb:'0 !important'}}>
                     <Typography variant="h6" fontWeight={800}
-                                sx={{ mb: 1, color: ACCENT }}>Delivery Address</Typography>
+                                sx={{ mb: 2, color: ACCENT }}>Delivery Address</Typography>
                     <TextField fullWidth label="Street Address"
                                error={!!(formik.touched.delivery_address
                                  && formik.errors.delivery_address)}
@@ -434,9 +511,10 @@ export default function CheckoutPage() {
                                onBlur={formik.handleBlur}
                                onChange={formik.handleChange}
                                value={formik.values.delivery_address}
-                               sx={{ mb: 2 }}
+                               sx={{ mb: 3 }}
                     />
 
+                    <Box sx={{display:'flex', gap:1, flexDirection:{xs:'column', md:'row'}}}>
                     <TextField fullWidth label="Suburb"
                                error={!!(formik.touched.suburb
                                  && formik.errors.suburb)}
@@ -447,125 +525,110 @@ export default function CheckoutPage() {
                                onChange={formik.handleChange}
                                value={formik.values.suburb}
                                sx={{ mb: 2 }}/>
-                    <FormControl
-                      fullWidth
-                      error={Boolean(formik.touched.state && formik.errors.state)}
-                      disabled={loadingStates || states.length === 0}
-                    >
+                    <FormControl fullWidth
+                                 error={Boolean(formik.touched.state && formik.errors.state)}>
                       <InputLabel id="state-label">State</InputLabel>
                       <Select
                         labelId="state-label"
-                        id="state"
-                        name="state"
-                        sx={{ mb: 2 }}
                         label="State"
+                        name="state"
                         value={formik.values.state}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       >
-                        {states.map((s) => (
-                          <MenuItem key={s} value={s}>{s}</MenuItem>
-                        ))}
+                        {[
+                          'Australian Capital Territory',
+                          'New South Wales',
+                          'Victoria',
+                          'Queensland',
+                          'Northern Territory',
+                          'South Australia',
+                          'Tasmania',
+                          'Western Australia'
+                        ].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
                       </Select>
                       <FormHelperText>
-                        {formik.touched.state && formik.errors.state}
+                        {(formik.touched.state && formik.errors.state) || ' '}
                       </FormHelperText>
                     </FormControl>
-
-                    {/*<FormControl fullWidth>*/}
-                    {/*  <InputLabel id="state-label">State</InputLabel>*/}
-                    {/*  <Select*/}
-                    {/*    labelId="state-label"*/}
-                    {/*    label="State"*/}
-                    {/*    error={!!(formik.touched.state*/}
-                    {/*      && formik.errors.suburb)}*/}
-                    {/*    helperText={formik.touched.state*/}
-                    {/*      && formik.errors.state}*/}
-                    {/*    name="suburb"*/}
-                    {/*    onBlur={formik.handleBlur}*/}
-                    {/*    onChange={formik.handleChange}*/}
-                    {/*    value={formik.values.state}*/}
-                    {/*    value={australiaStates}*/}
-                    {/*    onChange={(e) => setAustraliaStates(e.target.value)}*/}
-                    {/*    disabled={loadingStates || states.length === 0}*/}
-                    {/*  >*/}
-                    {/*    {states.map((s) => (*/}
-                    {/*      <MenuItem key={s} value={s}>{s}</MenuItem>*/}
-                    {/*    ))}*/}
-                    {/*  </Select>*/}
-                    {/*  <FormHelperText>*/}
-                    {/*    {loadingStates ? 'Loading states…' : (statesError || ' ')}*/}
-                    {/*  </FormHelperText>*/}
-                    {/*</FormControl>*/}
-
-
-                    {/*<Select fullWidth value={state} onChange={(e)=>setState(e.target.value)} sx={{ mb: 2 }}>*/}
-                    {/*  {['South Australia','New South Wales','Victoria','Queensland'].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}*/}
-                    {/*</Select>*/}
-                    <Grid container spacing={2}>
-                      <Grid item xs={12} sm={6}><TextField fullWidth label="Postal Code"
-                                                           error={!!(formik.touched.postal_code
-                                                             && formik.errors.postal_code)}
-                                                           helperText={formik.touched.postal_code
-                                                             && formik.errors.postal_code}
-                                                           name="postal_code"
-                                                           onBlur={formik.handleBlur}
-                                                           onChange={formik.handleChange}
-                                                           value={formik.values.postal_code}
-                      /></Grid>
-                      <Grid item xs={12} sm={6}><TextField fullWidth label="Phone Number"
-                                                           error={!!(formik.touched.phone_number
-                                                             && formik.errors.phone_number)}
-                                                           helperText={formik.touched.phone_number
-                                                             && formik.errors.phone_number}
-                                                           name="phone_number"
-                                                           onBlur={formik.handleBlur}
-                                                           onChange={formik.handleChange}
-                                                           value={formik.values.phone_number}
-                      /></Grid>
-                      <Grid item xs={12}>
-                        <FormControlLabel
-                          control={<Checkbox size="small" checked={news}
-                                             onChange={(e) => setNews(e.target.checked)}/>}
-                          label="Email me with news and offers"
-                        />
-                        <FormControl error={!termAndConditions}>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                size="small"
-                                checked={termAndConditions}
-                                onChange={(e) => setTermAndConditions(e.target.checked)}
-                              />
-                            }
-                            label={
-                              <Typography onClick={handleClickOpen}>
-                                Terms and conditions
-                              </Typography>
-                            }
+                    </Box>
+                    <Box sx={{
+                      display: 'flex',
+                      flexDirection: { xs: 'column', md: 'row' },
+                      gap: { md: 1, xs: 2 },
+                      mb: 2
+                    }}>
+                      <TextField fullWidth label="Postal Code"
+                                 error={!!(formik.touched.postal_code
+                                   && formik.errors.postal_code)}
+                                 helperText={formik.touched.postal_code
+                                   && formik.errors.postal_code}
+                                 name="postal_code"
+                                 onBlur={formik.handleBlur}
+                                 onChange={formik.handleChange}
+                                 value={formik.values.postal_code}
+                      />
+                      <TextField fullWidth label="Phone Number"
+                                 error={!!(formik.touched.phone_number
+                                   && formik.errors.phone_number)}
+                                 helperText={formik.touched.phone_number
+                                   && formik.errors.phone_number}
+                                 name="phone_number"
+                                 onBlur={formik.handleBlur}
+                                 onChange={formik.handleChange}
+                                 value={formik.values.phone_number}
+                      />
+                    </Box>
+                    <Box >
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            size="small"
+                            name="newsAndOffers"
+                            checked={formik.values.newsAndOffers}
+                            onChange={formik.handleChange}
                           />
-                          {!termAndConditions && message && (
-                            <FormHelperText>{message}</FormHelperText>
-                          )}
-                        </FormControl>
-                      </Grid>
-                    </Grid>
+                        }
+                        label="Email me with news and offers"
+                      />
+                      <FormControl error={Boolean(formik.touched.termsAccepted
+                        && formik.errors.termsAccepted)}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              size="small"
+                              name="termsAccepted"
+                              checked={formik.values.termsAccepted}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                            />
+                          }
+                          label={<Typography onClick={handleClickOpen} sx={{ cursor: 'pointer' }}>Terms
+                            and conditions</Typography>}
+                        />
+                        <FormHelperText>
+                          {(formik.touched.termsAccepted && formik.errors.termsAccepted) || ' '}
+                        </FormHelperText>
+                      </FormControl>
+                    </Box>
+                    {/*</Box>*/}
                   </CardContent>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={5}>
-                <Card variant="outlined" sx={{ borderRadius: 1.5 }}>
-                  <CardContent>
+                <Card variant="outlined"
+                      sx={{ borderRadius: 1.5, width: '100%'}}>
+                  <CardContent sx={{ p: 2 }}>
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 3 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping
                           Price:</Typography>
                         <Typography fontWeight={700}>${shipping.toFixed(2)}</Typography></Box>
 
-                      <Divider sx={{ my: 1.5 }}/>
+                      <Divider sx={{ my: 1.2 }}/>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h6" fontWeight={900}
                                     sx={{ color: ACCENT }}>Total:</Typography>
@@ -575,10 +638,12 @@ export default function CheckoutPage() {
                     <Button
                       fullWidth
                       type="submit"
+                      // form="checkout-form"
                       variant="contained"
+                      disabled={formik.isSubmitting}
                       sx={{
                         mt: 3,
-                        py: 1.25,
+                        // py: 1.25,
                         borderRadius: 1.5,
                         bgcolor: '#c165a0',
                         '&:hover': { bgcolor: '#c165a0' }
@@ -587,10 +652,11 @@ export default function CheckoutPage() {
                       Place Order
                     </Button>
                   </CardContent>
+
                 </Card>
               </Grid>
 
-          </Grid>
+            </Grid>
           </form>
         </Container>
       </Box>
@@ -774,5 +840,5 @@ export default function CheckoutPage() {
         </Dialog>
       </React.Fragment>
     </>
-);
+  );
 }
