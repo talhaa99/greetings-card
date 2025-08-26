@@ -31,7 +31,6 @@ function OrderItem({ item, onQty }) {
   const line = (item.price * item.qty).toFixed(2);
   // const stackOnMd = Number(item.qty) >= 1000000;
   const stackOnMd = Number(item.qty) >= 100000;
-  console.log("stackOnMd", stackOnMd)
   return (
     // <Card variant="outlined" sx={{ borderRadius: 1.5, mb: 1.5 }}>
     //   <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.25 }}>
