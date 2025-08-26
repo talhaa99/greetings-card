@@ -169,7 +169,7 @@ export default function CardsCarousel({ allCards = [] }) {
             <Card
               elevation={3}
               sx={{
-                height: '100%',
+                // height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 transition: 'transform 120ms ease, box-shadow 120ms ease',
@@ -182,7 +182,8 @@ export default function CardsCarousel({ allCards = [] }) {
                   src={img}
                   alt={title}
                   loading="lazy"
-                  sx={{ width: '100%', aspectRatio: '1 / 1.414', objectFit: 'cover' }}
+                  // sx={{ width: '100%', aspectRatio: '1 / 1.414', objectFit: 'cover' }}
+                  sx={{ width: '100%',height:300, objectFit: 'cover' }}
                 />
                 <CardContent sx={{ pb: 1.5, pt: 1 }}>
                   <Typography variant="h6"
@@ -192,7 +193,8 @@ export default function CardsCarousel({ allCards = [] }) {
                   <Box
                     sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 'bolder' }}>
-                      {`${price} A$`}
+                      {/*{`${price} A$`}*/}
+                      {`${price} AUD`}
                     </Typography>
                     <Button
                       onClick={(e) => {

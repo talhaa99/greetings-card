@@ -29,7 +29,8 @@ import toast from 'react-hot-toast';
 
 function OrderItem({ item, onQty }) {
   const line = (item.price * item.qty).toFixed(2);
-  const stackOnMd = Number(item.qty) >= 1000000;
+  // const stackOnMd = Number(item.qty) >= 1000000;
+  const stackOnMd = Number(item.qty) >= 100000;
   console.log("stackOnMd", stackOnMd)
   return (
     // <Card variant="outlined" sx={{ borderRadius: 1.5, mb: 1.5 }}>
@@ -143,11 +144,23 @@ function OrderItem({ item, onQty }) {
           height: '100%'
         }}>
           <Stack alignItems="flex-end" sx={{ width: '100%'}}>
-            <Typography fontWeight={700}>
-              ${item.price.toFixed(2)} <Typography component="span" variant="caption">Per Card</Typography>
+            <Typography
+              fontWeight={700}
+              noWrap
+              sx={{ display: 'inline-flex', alignItems: 'baseline', gap: 0.5, whiteSpace: 'nowrap' }}
+            >
+              AUD {item.price.toFixed(2)}
+              <Typography
+                component="span"
+                variant="caption"
+                sx={{ display: 'inline', whiteSpace: 'nowrap' }}
+              >
+                Per Card
+              </Typography>
             </Typography>
+
             <Typography variant="caption" color="text.secondary">
-              ${item.price.toFixed(2)} × {item.qty} = <b>${line}</b>
+              AUD {item.price.toFixed(2)} × {item.qty} = <b>AUD {line}</b>
             </Typography>
           </Stack>
           <Box
@@ -617,7 +630,7 @@ export default function CheckoutPage() {
 
               <Grid item xs={12} md={5}>
                 <Card variant="outlined"
-                      sx={{ borderRadius: 1.5, width: '100%', minWidth:350}}>
+                      sx={{ borderRadius: 1.5, width: '100%', minWidth:400}}>
                   <CardContent sx={{ p: 2 }}>
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
 
@@ -625,13 +638,13 @@ export default function CheckoutPage() {
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping
                           Price:</Typography>
-                        <Typography fontWeight={700}>${shipping.toFixed(2)}</Typography></Box>
+                        <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
 
                       <Divider sx={{ my: 1.2 }}/>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h6" fontWeight={900}
                                     sx={{ color: ACCENT }}>Total:</Typography>
-                        <Typography variant="h6" fontWeight={900}>${total.toFixed(2)}</Typography>
+                        <Typography variant="h6" fontWeight={900}>AUD {total.toFixed(2)}</Typography>
                       </Box>
                     </Box>
                     <Button
