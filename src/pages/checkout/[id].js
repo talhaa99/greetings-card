@@ -457,7 +457,7 @@ export default function CheckoutPage() {
         console.log('response------------', response);
         toast.success('Order place successfully');
         formik.resetForm();
-        await handleCheckout(audCalculatedTotalPrice);
+        // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
         console.log('err', err);
