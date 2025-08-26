@@ -142,10 +142,9 @@ function OrderItem({ item, onQty }) {
           alignItems: 'center',
           height: '100%'
         }}>
-          <Stack alignItems="flex-end" sx={{ width: '100%' }}>
+          <Stack alignItems="flex-end" sx={{ width: '100%'}}>
             <Typography fontWeight={700}>
-              ${item.price.toFixed(2)} <Typography component="span" variant="caption">Per
-              Card</Typography>
+              ${item.price.toFixed(2)} <Typography component="span" variant="caption">Per Card</Typography>
             </Typography>
             <Typography variant="caption" color="text.secondary">
               ${item.price.toFixed(2)} × {item.qty} = <b>${line}</b>
@@ -618,7 +617,7 @@ export default function CheckoutPage() {
 
               <Grid item xs={12} md={5}>
                 <Card variant="outlined"
-                      sx={{ borderRadius: 1.5, width: '100%'}}>
+                      sx={{ borderRadius: 1.5, width: '100%', minWidth:350}}>
                   <CardContent sx={{ p: 2 }}>
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
 
