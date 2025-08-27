@@ -212,16 +212,16 @@ const Upload = () => {
 
   useEffect(() => {
     if (showMsgAfterUploadContent) {
-      const timer = setTimeout(() => {
+      // const timer = setTimeout(() => {
 
         localStorage.removeItem('token');
         router.push('https://www.google.com');
         // router.push(WEB_URL);
         // window.close();
 
-      }, 5000);
+      // }, 5000);
 
-      return () => clearTimeout(timer);
+      // return () => clearTimeout(timer);
     }
   }, [showMsgAfterUploadContent]);
 

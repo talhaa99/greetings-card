@@ -28,7 +28,7 @@ import toast from 'react-hot-toast';
 // === OrderItem (defensive) ===
 
 function OrderItem({ item, onQty }) {
-  const line = (item.price * item.qty).toFixed(2);
+  const line = (item.price * item.qty);
   // const stackOnMd = Number(item.qty) >= 1000000;
   const stackOnMd = Number(item.qty) >= 100000;
   return (
@@ -118,15 +118,21 @@ function OrderItem({ item, onQty }) {
       // alignItems:'center',
       height: '100%'
     }}>
-      <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 1.25 , flexDirection: stackOnMd ? 'column' : 'row' }}>
+      <CardContent sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1.5,
+        p: 1.25,
+        flexDirection: stackOnMd ? 'column' : 'row'
+      }}>
         <Box sx={{ flex: 1 }}>
           <CardMedia
             component="img"
             image={item.image}
             alt={item.title}
             sx={{
-              width: {md: 80, xs:100 },
-              height:{md: 80, xs:100 },
+              width: { md: 80, xs: 100 },
+              height: { md: 80, xs: 100 },
               borderRadius: 1,
               objectFit: 'cover',
               border: '1px solid #ddd'
@@ -138,17 +144,22 @@ function OrderItem({ item, onQty }) {
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: 'center',
-          gap:2,
+          gap: 2,
           alignItems: 'center',
           height: '100%'
         }}>
-          <Stack alignItems="flex-end" sx={{ width: '100%'}}>
+          <Stack alignItems="flex-end" sx={{ width: '100%' }}>
             <Typography
               fontWeight={700}
               noWrap
-              sx={{ display: 'inline-flex', alignItems: 'baseline', gap: 0.5, whiteSpace: 'nowrap' }}
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'baseline',
+                gap: 0.5,
+                whiteSpace: 'nowrap'
+              }}
             >
-              AUD {item.price.toFixed(2)}
+              AUD {item?.price}
               <Typography
                 component="span"
                 variant="caption"
@@ -159,7 +170,7 @@ function OrderItem({ item, onQty }) {
             </Typography>
 
             <Typography variant="caption" color="text.secondary">
-              AUD {item.price.toFixed(2)} × {item.qty} = <b>AUD {line}</b>
+              AUD {item?.price} × {item.qty} = <b>AUD {line}</b>
             </Typography>
           </Stack>
           <Box
@@ -220,6 +231,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { id } = router.query;
   const [open, setOpen] = useState(false);
+  const [expressShipping, setExpressShipping] = useState(false);
   const [state, setState] = useState('South Australia');
   const [items, setItems] = React.useState([
     {
@@ -276,14 +288,23 @@ export default function CheckoutPage() {
     getData();
   }, [id]);
 
-  const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+// calculate gst on shipping and express shipping price too
+  // const shipping = 10;
+  // const expressShippingRate = 10;
+  // const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  // const gst = expressShipping ? (subtotal + shipping + expressShippingRate) * 0.1 : (subtotal + shipping) * 0.1;
+  // const total = expressShipping ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2) : Number(subtotal + shipping + gst).toFixed(2);
 
-  // console.log('subtotal', subtotal);
   const shipping = 10;
-  const total = subtotal + shipping;
+  const expressShippingRate = 10;
+  const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const gst = (subtotal) * 0.1;
+  const total = expressShipping
+    ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2)
+    : Number(subtotal + shipping + gst).toFixed(2);
 
   const onQty = (id, qty) => setItems((prev) => prev.map(i => i.id === id ? { ...i, qty } : i));
-
+  const formatPrice = (value) => Number(value).toFixed(2);
   // which country to fetch states for
   // const COUNTRY = 'Australia';
 
@@ -415,7 +436,12 @@ export default function CheckoutPage() {
       postal_code: '',
       phone_number: '',
       newsAndOffers: false,
+      expressShipping: false,
+      expressShippingRate: '',
       termsAccepted: false,
+      shipping: '',
+      total: '',
+      gst: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -430,6 +456,7 @@ export default function CheckoutPage() {
                        .matches(/^\+?[0-9\s()-]{7,20}$/, 'Enter a valid phone number')
                        .required('Phone number is required'),
       newsAndOffers: Yup.boolean(),
+      expressShipping: Yup.boolean(),
       termsAccepted: Yup.boolean().oneOf([true], 'Please accept the terms and conditions')
 
     }),
@@ -456,7 +483,12 @@ export default function CheckoutPage() {
             state: values.state,
             postal_code: values.postal_code,
             phone_number: values.phone_number,
-            newsAndOffers: values.newsAndOffers
+            newsAndOffers: values.newsAndOffers,
+            expressShipping: values.expressShipping,
+            expressShippingRate: expressShipping ? expressShippingRate : 0,
+            shipping,
+            total,
+            gst: formatPrice(gst)
           },
           {
             headers: {
@@ -468,6 +500,7 @@ export default function CheckoutPage() {
         console.log('response------------', response);
         toast.success('Order place successfully');
         formik.resetForm();
+        setExpressShipping(false);
         // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
@@ -507,10 +540,10 @@ export default function CheckoutPage() {
         }}>
           <form noValidate
                 onSubmit={formik.handleSubmit}>
-            <Grid container spacing={2} >
-              <Grid item xs={12} md={7} >
-                <Card variant="outlined" sx={{ borderRadius: 1.5, pb:'0 !important'}}>
-                  <CardContent sx={{ p: 2 , pb:'0 !important'}}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={7}>
+                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important' }}>
+                  <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
                                 sx={{ mb: 2, color: ACCENT }}>Delivery Address</Typography>
                     <TextField fullWidth label="Street Address"
@@ -525,7 +558,8 @@ export default function CheckoutPage() {
                                sx={{ mb: 3 }}
                     />
 
-                    <Box sx={{display:'flex', gap:1, flexDirection:{xs:'column', md:'row'}}}>
+                    {/*<Box*/}
+                    {/*  sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', md: 'row' } }}>*/}
                     <TextField fullWidth label="Suburb"
                                error={!!(formik.touched.suburb
                                  && formik.errors.suburb)}
@@ -562,7 +596,7 @@ export default function CheckoutPage() {
                         {(formik.touched.state && formik.errors.state) || ' '}
                       </FormHelperText>
                     </FormControl>
-                    </Box>
+                    {/*</Box>*/}
                     <Box sx={{
                       display: 'flex',
                       flexDirection: { xs: 'column', md: 'row' },
@@ -590,10 +624,21 @@ export default function CheckoutPage() {
                                  value={formik.values.phone_number}
                       />
                     </Box>
-                    <Box >
+
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        width: '100%',
+                        mb: 2,
+                        flexDirection: { xs: 'column', md: 'row' },
+                        // gap: 2,
+                        alignItems: { md: 'center', xs: 'left' }
+                      }}
+                    >
                       <FormControlLabel
                         control={
                           <Checkbox
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: 12 } }}
                             size="small"
                             name="newsAndOffers"
                             checked={formik.values.newsAndOffers}
@@ -601,12 +646,26 @@ export default function CheckoutPage() {
                           />
                         }
                         label="Email me with news and offers"
+                        sx={{
+                          '& .MuiFormControlLabel-label': {
+                            fontSize: '14px'
+                          }
+                        }}
                       />
-                      <FormControl error={Boolean(formik.touched.termsAccepted
-                        && formik.errors.termsAccepted)}>
+
+                      <FormControl
+                        error={Boolean(formik.touched.termsAccepted && formik.errors.termsAccepted)}
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center', // ✅ keeps checkbox + label vertically centered
+                          m: 0 // remove extra margin
+                        }}
+                      >
                         <FormControlLabel
                           control={
                             <Checkbox
+                              sx={{ '& .MuiSvgIcon-root': { fontSize: 12 } }}
                               size="small"
                               name="termsAccepted"
                               checked={formik.values.termsAccepted}
@@ -614,36 +673,88 @@ export default function CheckoutPage() {
                               onBlur={formik.handleBlur}
                             />
                           }
-                          label={<Typography onClick={handleClickOpen} sx={{ cursor: 'pointer' }}>Terms
-                            and conditions</Typography>}
+                          label={
+                            <Typography
+                              onClick={handleClickOpen}
+                              sx={{ cursor: 'pointer', fontSize: '14px' }}
+                            >
+                              Terms and conditions
+                            </Typography>
+                          }
                         />
-                        <FormHelperText>
+                        <FormHelperText
+                          sx={{ position: 'absolute', mt: 7, display: 'flex', fontSize: '10px' }}>
                           {(formik.touched.termsAccepted && formik.errors.termsAccepted) || ' '}
                         </FormHelperText>
                       </FormControl>
+
+
                     </Box>
-                    {/*</Box>*/}
+
                   </CardContent>
                 </Card>
               </Grid>
 
               <Grid item xs={12} md={5}>
                 <Card variant="outlined"
-                      sx={{ borderRadius: 1.5, width: '100%', minWidth:400}}>
+                      sx={{ borderRadius: 1.5, width: '100%', minWidth: 400 }}>
                   <CardContent sx={{ p: 2 }}>
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              sx={{
+                                '& .MuiSvgIcon-root': {
+                                  fontSize: 14,       // size of the checkbox
+                                  strokeWidth: 2.5   // makes the tick bolder
+                                },
+                                '&.Mui-checked .MuiSvgIcon-root': {
+                                  fontWeight: 900    // simulates a "bold" look on checked state
+                                }
+                              }}
+                              size="small"
+                              name="expressShipping"
+                              // checked={formik.values.expressShipping}
+                              checked={expressShipping}
+                              // onChange={formik.handleChange}
+                              onChange={(e) => {
+                                setExpressShipping(e.target.checked);   // toggle true/false
+                                formik.setFieldValue('expressShipping', e.target.checked); // keep in formik
+                              }}
+                            />
+                          }
+                          label="Express shipping"
+                          sx={{
+                            '& .MuiFormControlLabel-label': {
+                              fontWeight: 900       // bold label
+                            },
+                            marginLeft: '-10px'
+                          }}
+                        />
+                        <Typography fontWeight={700}>
+                          {`AUD ${expressShippingRate}`}
+                        </Typography>
+                      </Box>
+                      <Divider sx={{ mt: 1 }}/>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping
                           Price:</Typography>
                         <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
 
-                      <Divider sx={{ my: 1.2 }}/>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography fontWeight={800}
+                                    sx={{ mb: .5, color: ACCENT }}>GST (10%):</Typography>
+                        <Typography fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
+
+
+                      <Divider sx={{ mt: 1 }}/>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="h6" fontWeight={900}
                                     sx={{ color: ACCENT }}>Total:</Typography>
-                        <Typography variant="h6" fontWeight={900}>AUD {total.toFixed(2)}</Typography>
+                        <Typography variant="h6" fontWeight={900}>AUD {total}</Typography>
                       </Box>
                     </Box>
                     <Button
@@ -660,7 +771,7 @@ export default function CheckoutPage() {
                         '&:hover': { bgcolor: '#c165a0' }
                       }}
                     >
-                      Place Order
+                      Checkout
                     </Button>
                   </CardContent>
 
@@ -682,7 +793,7 @@ export default function CheckoutPage() {
             sx: {
               width: '100%',
               maxWidth: '1000px'
-              // margin: "auto",
+              // margin: "auto"
               // backgroundImage: {
               //   xs: `url(${WEB_URL}/portrate.png)`,
               //   md: `url(${WEB_URL}/bg1.png)`,
@@ -704,147 +815,342 @@ export default function CheckoutPage() {
                     backgroundColor: 'transparent'
                   }
                 }}>
-                  <Typography gutterBottom variant="h6" padding="10px"
-                              sx={{ textAlign: 'center', mt: { xs: 3, md: 0 } }}>
-                    Terms of Use
-                  </Typography>
-                  <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
-                    Welcome to Greetings Card
-                  </Typography>
-                  <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
-                    By using our website and purchasing our virtual products, you agree to the
-                    following
-                    terms and conditions.
-                  </Typography>
-                  <CardMedia/>
-                  <CardContent>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 0, mb: 3 }}>
-                      1. Acceptance of the terms
+                    <Typography gutterBottom variant="h6" padding="10px"
+                                sx={{ textAlign: 'center', mt: { xs: 3, md: 0 } }}>
+                      TERMS & CONDITIONS
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      By accessing and using our website, you accept and agree to be bound by these
-                      terms and conditions.
+                    <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
+                      Welcome to Greetings Card
                     </Typography>
-                    <Typography gutterBottom variant="h6" padding="10px" sx={{ mt: 3, mb: 3 }}>
-                      IF YOU DO NOT AGREE TO THESE TERMS, DO NOT USE OUR WEBSITE OR PURCHASE
-                      OUR PRODUCTS.
+                    <Typography gutterBottom variant="bod1" padding="10px" sx={{ textAlign: 'center' }}>
+                      These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
+                      relationship with Tecshield website’ applications mobile application (the
+                      “Service”) operated by Tecshield. (“us”, “we”, or “our”).
+
+                      Please read these Terms and Conditions carefully before using our website and
+                      Tecshield’ mobile applications (the “Service”).
+
+                      Your access to and use of the Service is conditioned on your acceptance of and
+                      compliance with these Terms. These Terms apply to all visitors, users and others
+                      who access or use the Service.
+
+                      By accessing or using the Service you agree to be bound by these Terms. If you
+                      disagree with any part of the terms then you may not access the Service.
                     </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      2. Virtual products
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      2.1 All products sold on our website are virtual and digital in nature. There
-                      will
-                      be no physical
-                      delivery of products.
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      2.2 After the purchase, the product will be available for download, if the
-                      game
-                      cannot be
-                      downloaded please contact us by Email: team@brandongame.com and we will send
-                      it to
-                      you
-                      manually.
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      2.3 All sales are final due to the digital nature of our products. Returns,
-                      refunds or exchanges
-                      are not allowed.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      3. Use of the product
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      3.1 The virtual products are intended for one brand commercial use only.
-                      Redistribution, resale
-                      or commercial use without our express permission is prohibited.
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      3.2 Any unauthorized use or distribution of our virtual products is strictly
-                      prohibited and will
-                      result in termination of access and possible legal action
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      4. Payment
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      4.1 Payments for our virtual products will be made in advance and in full.
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      4.2 We use secure payment gateways for transactions. However, we cannot
-                      guarantee
-                      absolute
-                      security due to the risks inherent in online transactions.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      5. Warranty
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      5.1 All products are provided &quot;as is&quot; without any warranty of any
-                      kind, express or
-                      implied.
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      5.2 We are not responsible for any damage, loss of data or other problems
-                      arising
-                      from the use
-                      or download of our products.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      6. Changes to the terms and conditions
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      We reserve the right to change or update these terms and conditions at any
-                      time
-                      without notice.
-                      It is your responsibility to check them periodically.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      7. Law applies
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      These terms and conditions and any dispute related to these terms, the site or
-                      our
-                      products will
-                      be subject to the laws of Israel and will be interpreted in accordance with
-                      its
-                      conflict of law rules
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      8. Age restriction
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Our Services are not directed to persons under the age of 18. We do not
-                      knowingly
-                      collect
-                      personal information from children. If you are a parent or guardian and
-                      believe
-                      your child has
-                      provided us with personal information, please contact us to have that
-                      information
-                      removed
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      9. Cancellation
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Cancellation of a transaction in accordance with the Israeli Consumer
-                      Protection
-                      Law
-                      (Cancellation), CA-2010 and the Israeli Consumer Protection Law, 1981.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      10. Contact
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      For any questions regarding these Terms of Use, please contact us at:
-                    </Typography>
-                    <Typography variant="body2">
-                      <b>Email: team@greetingsCard.com</b>
-                    </Typography>
-                  </CardContent>
-                </Card>
+                    <CardMedia/>
+                    <CardContent>
+                      <Typography gutterBottom variant="h6" component="div" sx={{ mt: 0, mb: 3 }}>
+                        Purchases
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        If you wish to purchase any product or service made available through the
+                        Service (“Purchase”), you may be asked to supply certain information relevant to
+                        your Purchase including, without limitation, your credit card number, the
+                        expiration date of your credit card, your billing address, and your shipping
+                        information.
+
+                        You represent and warrant that: (i) you have the legal right to use any credit
+                        card(s) or other payment method(s) in connection with any Purchase; and that
+                        (ii) the information you supply to us is true, correct and complete.
+
+                        By submitting such information, you grant us the right to provide the
+                        information to third parties for purposes of facilitating the completion of
+                        Purchases.
+
+                        We reserve the right to refuse or cancel your order at any time for certain
+                        reasons including but not limited to: product or service availability, errors in
+                        the description or price of the product or service, error in your order or other
+                        reasons.
+
+                        We reserve the right to refuse or cancel your order if fraud or an unauthorised
+                        or illegal transaction is suspected.
+                      </Typography>
+                      <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                        Availability, Errors and Inaccuracies
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        We are constantly updating our offerings of products and services on the
+                        Service. The products or services available on our Service may be mispriced,
+                        described inaccurately, or unavailable, and we may experience delays in updating
+                        information on the Service and in our advertising on other web sites.
+
+                        We cannot and do not guarantee the accuracy or completeness of any information,
+                        including prices, product images, specifications, availability, and services. We
+                        reserve the right to change or update information and to correct errors,
+                        inaccuracies, or omissions at any time without prior notice.
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        2.2 After the purchase, the product will be available for download, if the game
+                        cannot be
+                        downloaded please contact us by Email: team@brandongame.com and we will send it
+                        to
+                        you
+                        manually.
+                      </Typography>
+                      <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                        Contests, Sweepstakes and Promotions
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Any contests, sweepstakes or other promotions (collectively, “Promotions”) made
+                        available through the Service may be governed by rules that are separate from
+                        these Terms. If you participate in any Promotions, please review the applicable
+                        rules as well as our Privacy Policy. If the rules for a Promotion conflict with
+                        these Terms, the Promotion rules will apply.
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Subscriptions
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Some parts of the Service are billed on a subscription basis
+                          (“Subscription(s)”). You will be billed in advance on a recurring and periodic
+                          basis (weekly, monthly, yearly). Billing cycles are set either on a monthly or
+                          annual basis, depending on the type of subscription plan you select when
+                          purchasing a Subscription.
+
+                          At the end of each Billing Cycle, your Subscription will automatically renew
+                          under the exact same conditions unless you cancel it or Tecshield. cancels it.
+                          You may cancel your Subscription renewal either through your online account
+                          management page.
+
+                          A valid payment method, including credit card or PayPal, is required to
+                          process the payment for your Subscription. You shall provide Tecshield with
+                          accurate and complete billing information including full name, address, state,
+                          zip code, telephone number, and a valid payment method information. By
+                          submitting such payment information, you automatically authorize Tecshield to
+                          charge all Subscription fees incurred through your account to any such payment
+                          instruments.
+
+                          Should automatic billing fail to occur for any reason, Tecshield will issue an
+                          electronic invoice indicating that you must proceed manually, within a certain
+                          deadline date, with the full payment corresponding to the billing period as
+                          indicated on the invoice.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Free Trial
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Tecshield may, at its sole discretion, offer a Subscription with a free trial
+                          for a limited period of time (“Free Trial”).
+
+                          You may be required to enter your billing information in order to sign up for
+                          the Free Trial.
+
+                          If you do enter your billing information when signing up for the Free Trial,
+                          you will not be charged by Tecshield until the Free Trial has expired. On the
+                          last day of the Free Trial period, unless you cancelled your Subscription, you
+                          will be automatically charged the applicable Subscription fees for the type of
+                          Subscription you have selected.
+
+                          At any time and without notice, Tecshield reserves the right to (i) modify the
+                          terms and conditions of the Free Trial offer, or (ii) cancel such Free Trial
+                          offer.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Fee Changes
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Tecshield, in its sole discretion and at any time, may modify the Subscription
+                          fees for the Subscriptions. Any Subscription fee change will become effective
+                          at the end of the then-current Billing Cycle.
+
+                          Tecshield will provide you with a reasonable prior notice of any change in
+                          Subscription fees to give you an opportunity to terminate your Subscription
+                          before such change becomes effective.
+
+                          Your continued use of the Service after the Subscription fee change comes into
+                          effect constitutes your agreement to pay the modified Subscription fee amount.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Refunds
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Except when required by law, paid Subscription fees are non-refundable.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Content
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Our Service allows you to post, link, store, share and otherwise make
+                          available certain information, text, graphics, videos, or other material
+                          (“Content”). You are responsible for the Content that you post to the Service,
+                          including its legality, reliability, and appropriateness.
+
+                          By posting Content to the Service, you grant us the right and license to use,
+                          modify, publicly perform, publicly display, reproduce, and distribute such
+                          Content on and through the Service. You retain any and all of your rights to
+                          any Content you submit, post or display on or through the Service and you are
+                          responsible for protecting those rights. You agree that this license includes
+                          the right for us to make your Content available to other users of the Service,
+                          who may also use your Content subject to these Terms.
+
+                          You represent and warrant that: (i) the Content is yours (you own it) or you
+                          have the right to use it and grant us the rights and license as provided in
+                          these Terms, and (ii) the posting of your Content on or through the Service
+                          does not violate the privacy rights, publicity rights, copyrights, contract
+                          rights or any other rights of any person
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Accounts
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          When you create an account with us, you must provide us information that is
+                          accurate, complete, and current at all times. Failure to do so constitutes a
+                          breach of the Terms, which may result in immediate termination of your account
+                          on our Service.
+
+                          You are responsible for safeguarding the password that you use to access the
+                          Service and for any activities or actions under your password, whether your
+                          password is with our Service or a third-party service.
+
+                          You agree not to disclose your password to any third party. You must notify us
+                          immediately upon becoming aware of any breach of security or unauthorized use
+                          of your account.
+
+                          You may not use as a username the name of another person or entity or that is
+                          not lawfully available for use, a name or trade mark that is subject to any
+                          rights of another person or entity other than you without appropriate
+                          authorization, or a name that is otherwise offensive, vulgar or obscene.
+
+                          If you sign into the Service with Facebook Connect we will collect information
+                          that is visible via your Facebook account such as: (1) your first and last
+                          name, (2) Facebook ID, (3) Profile Picture/URL, and (4) list of Facebook
+                          friends. Your Account may be used to publicly identify you as part of social
+                          features of the Service, which may include user-to-user interaction, chat or
+                          messaging functionality, public leaderboards, head-to-head competition, and
+                          other similar features. Your username will be public and will be shown to
+                          other users, but will only permit access to information that is considered
+                          public or that you have designated as public in your user profile settings.
+                          All info here is provided by the User voluntarily to simplify the
+                          authorization process and use of social features. Learn about how to remove
+                          your Facebook integration with our Service: HERE
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Copyright Policy
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          We respect the intellectual property rights of others. It is our policy to
+                          respond to any claim that Content posted on the Service infringes the
+                          copyright or other intellectual property infringement (“Infringement”) of any
+                          person.
+
+                          If you are a copyright owner or authorized on behalf of one, and you believe
+                          that the copyrighted work has been copied in a way that constitutes copyright
+                          infringement that is taking place through the Service, you must submit your
+                          notice in writing to the attention of “Copyright Infringement” of
+                          support@tecshield.io and include in your notice a detailed description of the
+                          alleged Infringement.
+
+                          You may be held accountable for damages (including costs and attorneys’ fees)
+                          for misrepresenting that any Content is infringing your copyright.
+                        </Typography>
+
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Intellectual Property
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          The Service and its original content (excluding Content provided by users),
+                          features and functionality are and will remain the exclusive property of
+                          Tecshield and its licensors. The Service is protected by copyright, trademark,
+                          and other laws of both the Singapore and foreign countries. Our trademarks and
+                          trade dress may not be used in connection with any product or service without
+                          the prior written consent of Tecshield.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Links To Other Web Sites
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Our Service may contain links to third-party web sites or services that are
+                          not owned or controlled by Tecshield.
+
+                          Tecshield has no control over, and assumes no responsibility for, the content,
+                          privacy policies, or practices of any third party web sites or services. You
+                          further acknowledge and agree that Tecshield shall not be responsible or
+                          liable, directly or indirectly, for any damage or loss caused or alleged to be
+                          caused by or in connection with use of or reliance on any such content, goods
+                          or services available on or through any such web sites or services.
+
+                          We strongly advise you to read the terms and conditions and privacy policies
+                          of any third-party web sites or services that you visit.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Termination
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          We may terminate or suspend your account immediately, without prior notice or
+                          liability, for any reason whatsoever, including without limitation if you
+                          breach the Terms.
+
+                          Upon termination, your right to use the Service will immediately cease. If you
+                          wish to terminate your account, you may simply discontinue using the Service.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Limitation Of Liability
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          In no event shall Tecshield, nor its directors, employees, partners, agents,
+                          suppliers, or affiliates, be liable for any indirect, incidental, special,
+                          consequential or punitive damages, including without limitation, loss of
+                          profits, data, use, goodwill, or other intangible losses, resulting from (i)
+                          your access to or use of or inability to access or use the Service; (ii) any
+                          conduct or content of any third party on the Service; (iii) any content
+                          obtained from the Service; and (iv) unauthorized access, use or alteration of
+                          your transmissions or content, whether based on warranty, contract, tort
+                          (including negligence) or any other legal theory, whether or not we have been
+                          informed of the possibility of such damage, and even if a remedy set forth
+                          herein is found to have failed of its essential purpose.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Disclaimer
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Your use of the Service is at your sole risk. The Service is provided on an
+                          “AS IS” and “AS AVAILABLE” basis. The Service is provided without warranties
+                          of any kind, whether express or implied, including, but not limited to,
+                          implied warranties of merchantability, fitness for a particular purpose,
+                          non-infringement or course of performance.
+
+                          Tecshield its subsidiaries, affiliates, and its licensors do not warrant that
+                          a) the Service will function uninterrupted, secure or available at any
+                          particular time or location; b) any errors or defects will be corrected; c)
+                          the Service is free of viruses or other harmful components; or d) the results
+                          of using the Service will meet your requirements.’ fees)
+                          for misrepresenting that any Content is infringing your copyright.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Governing Law
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          These Terms shall be governed and construed in accordance with the laws of
+                          Singapore, without regard to its conflict of law provisions.
+
+                          Our failure to enforce any right or provision of these Terms will not be
+                          considered a waiver of those rights. If any provision of these Terms is held
+                          to be invalid or unenforceable by a court, the remaining provisions of these
+                          Terms will remain in effect. These Terms constitute the entire agreement
+                          between us regarding our Service, and supersede and replace any prior
+                          agreements we might have between us regarding the Service.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Changes
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          We reserve the right, at our sole discretion, to modify or replace these Terms
+                          at any time. If a revision is material we will try to provide at least 15 days
+                          notice prior to any new terms taking effect. What constitutes a material
+                          change will be determined at our sole discretion.
+
+                          By continuing to access or use our Service after those revisions become
+                          effective, you agree to be bound by the revised terms. If you do not agree to
+                          the new terms, please stop using the Service.
+                        </Typography>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                          Contact Us
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          If you have any questions about these Terms, please contact us at <b>Email: team@greetingsCard.com</b>
+                        </Typography>
+                      </Typography>
+                    </CardContent>
+                  </Card>
               </Grid>
             </Grid>
           </DialogContent>
