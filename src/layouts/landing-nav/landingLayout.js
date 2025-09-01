@@ -555,17 +555,17 @@ export const LandingNav = () => {
                       height: 'auto'
                     }}
                   />
-                  <Box
-                    component="img"
-                    src={`${WEB_URL}/logo3.png`}
-                    alt="logo"
-                    sx={{
-                      // bgcolor: 'red',
-                      width: '35%',
-                      pb: 2,
-                      height: 'auto'
-                    }}
-                  />
+                  {/*<Box*/}
+                  {/*  component="img"*/}
+                  {/*  src={`${WEB_URL}/logo3.png`}*/}
+                  {/*  alt="logo"*/}
+                  {/*  sx={{*/}
+                  {/*    // bgcolor: 'red',*/}
+                  {/*    width: '35%',*/}
+                  {/*    pb: 2,*/}
+                  {/*    height: 'auto'*/}
+                  {/*  }}*/}
+                  {/*/>*/}
                 </Box>
               </NextLink>
               <Typography
@@ -855,7 +855,7 @@ export const LandingNav = () => {
             onKeyDown={toggleDrawer(false)}
           >
             <NextLink href="/" passHref legacyBehavior>
-              <Box>
+              <Box sx={{display:'flex', justifyContent:'center'}}>
               <Box
                 component="img"
                 src={`${WEB_URL}/logo.png`}
@@ -868,8 +868,9 @@ export const LandingNav = () => {
                   height: 'auto'
                 }}
               />
-              <img src={`${WEB_URL}/logo3.png`} alt="Logo"
-                   style={{ height: 50, marginTop: '20px' }}/></Box></NextLink>
+              {/*<img src={`${WEB_URL}/logo3.png`} alt="Logo"*/}
+              {/*     style={{ height: 50, marginTop: '20px' }}/>*/}
+              </Box></NextLink>
             <Box
               sx={{
                 mt: 5,

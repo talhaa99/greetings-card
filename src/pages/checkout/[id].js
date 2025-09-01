@@ -12,6 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -318,6 +319,7 @@ export default function CheckoutPage() {
   const [news, setNews] = useState(false);
   const [termAndConditions, setTermAndConditions] = useState(false);
   const [message, setMessage] = useState('');
+
   //get stats of australia
   // React.useEffect(() => {
   //   let mounted = true;
@@ -422,6 +424,7 @@ export default function CheckoutPage() {
   //create checkout details in transaction
 
   // console.log('items[0].qty', items[0].qty);
+  console.log("currency", currency);
 
   const formik = useFormik({
     initialValues: {
@@ -757,6 +760,64 @@ export default function CheckoutPage() {
                         <Typography variant="h6" fontWeight={900}>AUD {total}</Typography>
                       </Box>
                     </Box>
+                    {/* PayPal Buttons */}
+                    {/*<Box sx={{ mt: 2 }}>*/}
+                    {/*  <PayPalButtons*/}
+                    {/*    style={{ layout: 'vertical' }}*/}
+                    {/*    createOrder={async () => {*/}
+                    {/*      // Ensure you have a transaction row in DB first (you already do it on form submit).*/}
+                    {/*      // If you want to force creation-before-pay, call your /api/transactions/create here (or rely on your existing onSubmit).*/}
+
+                    {/*      // Use your calculated AUD total:*/}
+                    {/*      const audCalculatedTotalPrice = Number((total * currency['AUD']).toFixed(2));*/}
+
+                    {/*      // Tell backend to create PayPal order*/}
+                    {/*      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';*/}
+                    {/*      // Use the DB id you already created. If you want to link it:*/}
+                    {/*      const transactionId = (data && data._id) || null; // from your getData()*/}
+
+                    {/*      const resp = await fetch(`${API_URL}/api/paypal/create-order`, {*/}
+                    {/*        method: 'POST',*/}
+                    {/*        headers: {*/}
+                    {/*          'Content-Type': 'application/json',*/}
+                    {/*          ...(token ? { 'x-access-token': token } : {})*/}
+                    {/*        },*/}
+                    {/*        body: JSON.stringify({*/}
+                    {/*          amount: audCalculatedTotalPrice,*/}
+                    {/*          currency: 'AUD',*/}
+                    {/*          transactionId,*/}
+                    {/*          meta: {*/}
+                    {/*            title: data?.cardId?.title || 'Greetings Card'*/}
+                    {/*          }*/}
+                    {/*        })*/}
+                    {/*      });*/}
+
+                    {/*      const { id } = await resp.json();*/}
+                    {/*      return id; // PayPal needs this order id*/}
+                    {/*    }}*/}
+                    {/*    onApprove={async (data) => {*/}
+                    {/*      // Capture on your server*/}
+                    {/*      const resp = await fetch(`${API_URL}/api/paypal/capture/${data.orderID}`, { method: 'POST' });*/}
+                    {/*      const json = await resp.json();*/}
+
+                    {/*      if (json?.status === 'COMPLETED') {*/}
+                    {/*        toast.success('Payment completed ✅');*/}
+                    {/*        // redirect if you want*/}
+                    {/*        window.location.href = `${WEB_URL}/success`;*/}
+                    {/*      } else {*/}
+                    {/*        toast.error(`Payment status: ${json?.status || 'Unknown'}`);*/}
+                    {/*      }*/}
+                    {/*    }}*/}
+                    {/*    onError={(err) => {*/}
+                    {/*      console.error('PayPal error', err);*/}
+                    {/*      toast.error('Payment failed');*/}
+                    {/*    }}*/}
+                    {/*    onCancel={() => {*/}
+                    {/*      toast('Payment cancelled');*/}
+                    {/*    }}*/}
+                    {/*  />*/}
+                    {/*</Box>*/}
+
                     <Button
                       fullWidth
                       type="submit"
