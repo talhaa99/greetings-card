@@ -1,7 +1,8 @@
 // CheckoutPage.jsx
 import * as React from 'react';
 import {
-  Box, Container, Grid, Card, CardContent, CardMedia, TextField, Typography, InputBase,
+  Radio, RadioGroup,
+  Box, Container, Grid, Card, CardContent, CardMedia, TextField, Typography, InputBase,Autocomplete,
   Select, MenuItem, FormControlLabel, Checkbox, Divider, IconButton, InputAdornment, Button, Stack
 } from '@mui/material';
 import Add from '@mui/icons-material/Add';
@@ -13,7 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-
+import AddressAutocompleteLocationIQ from '../../components/locationIqAutocomplete';
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const ACCENT = '#000'; // headings in mock are black; change if needed
@@ -232,7 +233,11 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { id } = router.query;
   const [open, setOpen] = useState(false);
-  const [expressShipping, setExpressShipping] = useState(false);
+  // const [expressShipping, setExpressShipping] = useState(false);
+  const [shippingMethod, setShippingMethod] = useState('normal');
+  const SHIPPING_PRICES= { normal: 10, express: 20 };
+  const shippingRate = SHIPPING_PRICES[shippingMethod];
+
   const [state, setState] = useState('South Australia');
   const [items, setItems] = React.useState([
     {
@@ -296,13 +301,19 @@ export default function CheckoutPage() {
   // const gst = expressShipping ? (subtotal + shipping + expressShippingRate) * 0.1 : (subtotal + shipping) * 0.1;
   // const total = expressShipping ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2) : Number(subtotal + shipping + gst).toFixed(2);
 
-  const shipping = 10;
-  const expressShippingRate = 10;
+
+  //latest calculation:
+  // const shipping = 10;
+  // const expressShippingRate = 10;
+  // const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  // const gst = (subtotal) * 0.1;
+  // const total = expressShipping
+  //   ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2)
+  //   : Number(subtotal + shipping + gst).toFixed(2);
+
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-  const gst = (subtotal) * 0.1;
-  const total = expressShipping
-    ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2)
-    : Number(subtotal + shipping + gst).toFixed(2);
+  const gst = (subtotal + shippingRate) * 0.1;
+  const total = Number(subtotal + shippingRate + gst).toFixed(2);
 
   const onQty = (id, qty) => setItems((prev) => prev.map(i => i.id === id ? { ...i, qty } : i));
   const formatPrice = (value) => Number(value).toFixed(2);
@@ -439,10 +450,12 @@ export default function CheckoutPage() {
       postal_code: '',
       phone_number: '',
       newsAndOffers: false,
-      expressShipping: false,
-      expressShippingRate: '',
+      shippingMethod:'',
+    shippingRate:'',
+      // expressShipping: false,
+      // expressShippingRate: '',
       termsAccepted: false,
-      shipping: '',
+      // shipping: '',
       total: '',
       gst: '',
       submit: null
@@ -487,9 +500,11 @@ export default function CheckoutPage() {
             postal_code: values.postal_code,
             phone_number: values.phone_number,
             newsAndOffers: values.newsAndOffers,
-            expressShipping: values.expressShipping,
-            expressShippingRate: expressShipping ? expressShippingRate : 0,
-            shipping,
+            shippingMethod,
+            shippingRate,
+            // expressShipping: values.expressShipping,
+            // expressShippingRate: expressShipping ? expressShippingRate : 0,
+            // shipping,
             total,
             gst: formatPrice(gst)
           },
@@ -503,7 +518,8 @@ export default function CheckoutPage() {
         console.log('response------------', response);
         toast.success('Order place successfully');
         formik.resetForm();
-        setExpressShipping(false);
+        setShippingMethod('normal');
+        // setExpressShipping(false);
         // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
@@ -549,18 +565,23 @@ export default function CheckoutPage() {
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
                                 sx={{ mb: 2, color: ACCENT }}>Delivery Address</Typography>
-                    <TextField fullWidth label="Street Address"
-                               error={!!(formik.touched.delivery_address
-                                 && formik.errors.delivery_address)}
-                               helperText={formik.touched.delivery_address
-                                 && formik.errors.delivery_address}
-                               name="delivery_address"
-                               onBlur={formik.handleBlur}
-                               onChange={formik.handleChange}
-                               value={formik.values.delivery_address}
-                               sx={{ mb: 3 }}
+                    {/*<TextField fullWidth label="Street Address"*/}
+                    {/*           error={!!(formik.touched.delivery_address*/}
+                    {/*             && formik.errors.delivery_address)}*/}
+                    {/*           helperText={formik.touched.delivery_address*/}
+                    {/*             && formik.errors.delivery_address}*/}
+                    {/*           name="delivery_address"*/}
+                    {/*           onBlur={formik.handleBlur}*/}
+                    {/*           onChange={formik.handleChange}*/}
+                    {/*           value={formik.values.delivery_address}*/}
+                    {/*           sx={{ mb: 3 }}*/}
+                    {/*/>*/}
+                    <AddressAutocompleteLocationIQ
+                      formik={formik}
+                      stateValue={formik.values.state}     // pass selected state
+                      name="delivery_address"
+                      label="Street Address"
                     />
-
                     {/*<Box*/}
                     {/*  sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', md: 'row' } }}>*/}
                     <TextField fullWidth label="Suburb"
@@ -573,31 +594,63 @@ export default function CheckoutPage() {
                                onChange={formik.handleChange}
                                value={formik.values.suburb}
                                sx={{ mb: 2 }}/>
-                    <FormControl fullWidth
-                                 error={Boolean(formik.touched.state && formik.errors.state)}>
-                      <InputLabel id="state-label">State</InputLabel>
-                      <Select
-                        labelId="state-label"
-                        label="State"
-                        name="state"
-                        value={formik.values.state}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      >
-                        {[
-                          'Australian Capital Territory',
-                          'New South Wales',
-                          'Victoria',
-                          'Queensland',
-                          'Northern Territory',
-                          'South Australia',
-                          'Tasmania',
-                          'Western Australia'
-                        ].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
-                      </Select>
-                      <FormHelperText>
-                        {(formik.touched.state && formik.errors.state) || ' '}
-                      </FormHelperText>
+                    {/*<FormControl fullWidth*/}
+                    {/*             error={Boolean(formik.touched.state && formik.errors.state)}>*/}
+                    {/*  <InputLabel id="state-label">State</InputLabel>*/}
+                    {/*  <Select*/}
+                    {/*    labelId="state-label"*/}
+                    {/*    label="State"*/}
+                    {/*    name="state"*/}
+                    {/*    value={formik.values.state}*/}
+                    {/*    onChange={formik.handleChange}*/}
+                    {/*    onBlur={formik.handleBlur}*/}
+                    {/*  >*/}
+                    {/*    {[*/}
+                    {/*      'Australian Capital Territory',*/}
+                    {/*      'New South Wales',*/}
+                    {/*      'Victoria',*/}
+                    {/*      'Queensland',*/}
+                    {/*      'Northern Territory',*/}
+                    {/*      'South Australia',*/}
+                    {/*      'Tasmania',*/}
+                    {/*      'Western Australia'*/}
+                    {/*    ].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}*/}
+                    {/*  </Select>*/}
+                    {/*  <FormHelperText>*/}
+                    {/*    {(formik.touched.state && formik.errors.state) || ' '}*/}
+                    {/*  </FormHelperText>*/}
+                    {/*</FormControl>*/}
+                    <FormControl fullWidth error={Boolean(formik.touched.state && formik.errors.state)}>
+                      <InputLabel shrink id="state-label">
+                        State
+                      </InputLabel>
+
+                      <Autocomplete
+                        id="state"
+                        options={[
+                          "Australian Capital Territory",
+                          "New South Wales",
+                          "Victoria",
+                          "Queensland",
+                          "Northern Territory",
+                          "South Australia",
+                          "Tasmania",
+                          "Western Australia"
+                        ]}
+                        value={formik.values.state || null}
+                        onChange={(_, newValue) => formik.setFieldValue("state", newValue)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            label="State"
+                            name="state"
+                            onBlur={formik.handleBlur}
+                            error={Boolean(formik.touched.state && formik.errors.state)}
+                            helperText={(formik.touched.state && formik.errors.state) || " "}
+                          />
+                        )}
+                      />
                     </FormControl>
                     {/*</Box>*/}
                     <Box sx={{
@@ -632,7 +685,7 @@ export default function CheckoutPage() {
                       sx={{
                         display: 'flex',
                         width: '100%',
-                        mb: 2,
+                        mb: 4,
                         flexDirection: { xs: 'column', md: 'row' },
                         // gap: 2,
                         alignItems: { md: 'center', xs: 'left' }
@@ -705,52 +758,108 @@ export default function CheckoutPage() {
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              sx={{
-                                '& .MuiSvgIcon-root': {
-                                  fontSize: 14,       // size of the checkbox
-                                  strokeWidth: 2.5   // makes the tick bolder
-                                },
-                                '&.Mui-checked .MuiSvgIcon-root': {
-                                  fontWeight: 900    // simulates a "bold" look on checked state
-                                }
-                              }}
-                              size="small"
-                              name="expressShipping"
-                              // checked={formik.values.expressShipping}
-                              checked={expressShipping}
-                              // onChange={formik.handleChange}
-                              onChange={(e) => {
-                                setExpressShipping(e.target.checked);   // toggle true/false
-                                formik.setFieldValue('expressShipping', e.target.checked); // keep in formik
-                              }}
-                            />
-                          }
-                          label="Express shipping"
-                          sx={{
-                            '& .MuiFormControlLabel-label': {
-                              fontWeight: 900       // bold label
-                            },
-                            marginLeft: '-10px'
+                      {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
+                      {/*  <FormControlLabel*/}
+                      {/*    control={*/}
+                      {/*      <Checkbox*/}
+                      {/*        sx={{*/}
+                      {/*          '& .MuiSvgIcon-root': {*/}
+                      {/*            fontSize: 14,       // size of the checkbox*/}
+                      {/*            strokeWidth: 2.5   // makes the tick bolder*/}
+                      {/*          },*/}
+                      {/*          '&.Mui-checked .MuiSvgIcon-root': {*/}
+                      {/*            fontWeight: 900    // simulates a "bold" look on checked state*/}
+                      {/*          }*/}
+                      {/*        }}*/}
+                      {/*        size="small"*/}
+                      {/*        name="expressShipping"*/}
+                      {/*        // checked={formik.values.expressShipping}*/}
+                      {/*        checked={expressShipping}*/}
+                      {/*        // onChange={formik.handleChange}*/}
+                      {/*        onChange={(e) => {*/}
+                      {/*          setExpressShipping(e.target.checked);   // toggle true/false*/}
+                      {/*          formik.setFieldValue('expressShipping', e.target.checked); // keep in formik*/}
+                      {/*        }}*/}
+                      {/*      />*/}
+                      {/*    }*/}
+                      {/*    label="Express shipping"*/}
+                      {/*    sx={{*/}
+                      {/*      '& .MuiFormControlLabel-label': {*/}
+                      {/*        fontWeight: 900       // bold label*/}
+                      {/*      },*/}
+                      {/*      marginLeft: '-10px'*/}
+                      {/*    }}*/}
+                      {/*  />*/}
+                      {/*  <Typography fontWeight={700}>*/}
+                      {/*    {`AUD ${expressShippingRate}`}*/}
+                      {/*  </Typography>*/}
+                      {/*</Box>*/}
+                      <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+                        <RadioGroup
+                          row
+                          name="shippingMethod"
+                          value={shippingMethod}
+                          onChange={(e) => {
+                            const method = e.target.value === 'express' ? 'express' : 'normal';
+                            setShippingMethod(method);
+                            formik.setFieldValue('shippingMethod', method);
+                            formik.setFieldValue('shippingRate', SHIPPING_PRICES[method]);
                           }}
-                        />
-                        <Typography fontWeight={700}>
-                          {`AUD ${expressShippingRate}`}
-                        </Typography>
+                        >
+                          <FormControlLabel
+                            value="normal"
+                            control={<Radio size="small" sx={{
+                              '& .MuiSvgIcon-root': {
+                                fontSize: 16,
+                              },
+                            }} />}
+                            label="Normal shipping (AUD 10)"
+                            sx={{
+                              '& .MuiFormControlLabel-label': {
+                                // fontSize: '0.8rem', // smaller label text
+                                fontWeight: 600
+                              }
+                            }}
+                          />
+                          <FormControlLabel
+                            value="express"
+                            control={<Radio size="small" sx={{
+                              '& .MuiSvgIcon-root': {
+                                fontSize: 16,
+                              },
+                            }} />}
+                            label="Express shipping (AUD 20)"
+                            sx={{
+                              '& .MuiFormControlLabel-label': {
+                                // fontSize: '0.8rem', // smaller label text
+                                fontWeight: 600
+                              }
+                            }}
+                          />
+                        </RadioGroup>
                       </Box>
+
+
+
                       <Divider sx={{ mt: 1 }}/>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping
-                          Price:</Typography>
-                        <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
+                      {/*<Typography fontWeight={700}>AUD {shippingRate.toFixed(2)}</Typography>*/}
+                      {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
+                      {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping*/}
+                      {/*    Price:</Typography>*/}
+                      {/*  <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>*/}
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800}
                                     sx={{ mb: .5, color: ACCENT }}>GST (10%):</Typography>
                         <Typography fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
+
+                      {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
+                      {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>*/}
+                      {/*    Shipping Price:*/}
+                      {/*  </Typography>*/}
+                      {/*  -  <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography>*/}
+                      {/*  +  <Typography fontWeight={700}>AUD {shippingCost.toFixed(2)}</Typography>*/}
+                      {/*</Box>*/}
 
 
                       <Divider sx={{ mt: 1 }}/>

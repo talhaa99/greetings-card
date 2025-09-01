@@ -84,6 +84,7 @@ const Section2 = () => {
     }
   };
 
+  console.log("cARDS", cards)
   useEffect(() => {
     getAllFrontDesignCards();
   }, []);
