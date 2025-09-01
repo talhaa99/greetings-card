@@ -760,22 +760,22 @@ export default function CheckoutPage() {
                         <Typography variant="h6" fontWeight={900}>AUD {total}</Typography>
                       </Box>
                     </Box>
-                    {/* PayPal Buttons */}
+                     {/*PayPal Buttons */}
                     {/*<Box sx={{ mt: 2 }}>*/}
                     {/*  <PayPalButtons*/}
                     {/*    style={{ layout: 'vertical' }}*/}
                     {/*    createOrder={async () => {*/}
                     {/*      // Ensure you have a transaction row in DB first (you already do it on form submit).*/}
                     {/*      // If you want to force creation-before-pay, call your /api/transactions/create here (or rely on your existing onSubmit).*/}
-
+                    
                     {/*      // Use your calculated AUD total:*/}
                     {/*      const audCalculatedTotalPrice = Number((total * currency['AUD']).toFixed(2));*/}
-
+                    
                     {/*      // Tell backend to create PayPal order*/}
                     {/*      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';*/}
                     {/*      // Use the DB id you already created. If you want to link it:*/}
                     {/*      const transactionId = (data && data._id) || null; // from your getData()*/}
-
+                    
                     {/*      const resp = await fetch(`${API_URL}/api/paypal/create-order`, {*/}
                     {/*        method: 'POST',*/}
                     {/*        headers: {*/}
@@ -791,7 +791,7 @@ export default function CheckoutPage() {
                     {/*          }*/}
                     {/*        })*/}
                     {/*      });*/}
-
+                    
                     {/*      const { id } = await resp.json();*/}
                     {/*      return id; // PayPal needs this order id*/}
                     {/*    }}*/}
@@ -799,7 +799,7 @@ export default function CheckoutPage() {
                     {/*      // Capture on your server*/}
                     {/*      const resp = await fetch(`${API_URL}/api/paypal/capture/${data.orderID}`, { method: 'POST' });*/}
                     {/*      const json = await resp.json();*/}
-
+                    
                     {/*      if (json?.status === 'COMPLETED') {*/}
                     {/*        toast.success('Payment completed ✅');*/}
                     {/*        // redirect if you want*/}
