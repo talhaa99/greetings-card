@@ -123,8 +123,8 @@ const Section2 = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [group, setGroup] = useState(0);
-  const cardsPerPage = 2;
-  // const cardsPerPage = 20;
+  // const cardsPerPage = 2;
+  const cardsPerPage = 20;
   const totalPages = Math.ceil(filteredAndSortedCards.length / cardsPerPage);
 
   // const [currentPage, setCurrentPage] = useState(1);
