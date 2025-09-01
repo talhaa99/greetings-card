@@ -6,6 +6,10 @@
   <title>Unity Web Player | My project</title>
   <link rel="shortcut icon" href="TemplateData/favicon.ico">
   <link rel="stylesheet" href="TemplateData/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div id="unity-container"  style="width:100%; height:100%;">
@@ -23,8 +27,53 @@
 <!--    <div id="unity-build-title">My project</div>-->
 <!--  </div>-->
 </div>
-<div id="shade"></div>
-<div id="message">Please open the editor on a desktop device.</div>
+<!--<div class="alert  alert-danger alert-dismissible" id="msg">-->
+<!-- Please use a laptop or desktop device for optimal experience.-->
+<!--</div>-->
+<div class="alert alert-dismissible" id="message">
+  <div class="grid-container">
+    <!-- 3-column icon -->
+    <div class="grid-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+
+    <!-- 9-column content -->
+    <div class="grid-content">
+      <div class="warning-text">
+        Please use a laptop or desktop device for optimal experience.
+      </div>
+    </div>
+  </div>
+
+  <!-- Button outside grid, positioned bottom center -->
+  <div id="button-box">
+    <button onclick="document.getElementById('message').style.display='none'">Got it</button>
+  </div>
+</div>
+
+
+
+
+</div>
+
+<!--<div class="alert alert-dismissible" id="message">-->
+<!--  <div class="icon-text-wrapper">-->
+<!--    <div class="warning-icon">-->
+<!--      <i class="fas fa-exclamation-triangle"></i>-->
+<!--    </div>-->
+<!--    <div class="warning-text">-->
+<!--      Please use a laptop or desktop device for optimal experience.-->
+<!--    </div>-->
+<!--  </div>-->
+<!--<div id="button-box">-->
+<!--  <button onclick="document.getElementById('message').style.display='none'">Got it</button></div>-->
+<!--</div>-->
+
+
+
+
+<!--<div id="shade"></div>-->
+<!--<div id="message">Please use a laptop or desktop device for optimal experience.</div>-->
 <script>
   var canvas = document.querySelector("#unity-canvas");
   // Shows a temporary message banner/ribbon for a few seconds, or
@@ -51,7 +100,9 @@
     }
     updateBannerVisibility();
   }
-  var buildUrl = "Build";
+
+  var buildUrl = "https://greetings-card-build.tecshield.net";
+  // var buildUrl = "Build";
   // var buildUrl = "editor/Build";
   var loaderUrl = buildUrl + "/Greeting.loader.js";
   var gameInstance;
@@ -81,8 +132,9 @@
   // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
   // expected to change.
   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-    document.getElementById("shade").style.display = "block";
-    document.getElementById("message").style.display = "block";
+    // document.getElementById('message').style.display = 'block';
+    // document.getElementById('shade').style.display = 'block';
+    // document.getElementById('message').style.display = 'flex';
     // Mobile device style: fill the whole browser client area with the game canvas:
     var meta = document.createElement('meta');
     meta.name = 'viewport';
@@ -94,8 +146,8 @@
     // performance, uncomment the following line:
     // config.devicePixelRatio = 1;
   } else {
-    document.getElementById("shade").style.display = "none";
-    document.getElementById("message").style.display = "none";
+    // document.getElementById("shade").style.display = "none";
+    // document.getElementById("message").style.display = "none";
     // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
     // canvas.style.width = "100%";
     // canvas.style.height = "100%";
@@ -109,9 +161,13 @@
     }).then((unityInstance) => {
       gameInstance = unityInstance;
       document.querySelector("#unity-loading-bar").style.display = "none";
+
       // document.querySelector("#unity-fullscreen-button").onclick = () => {
       //   unityInstance.SetFullscreen(1);
       // };
+      // if (window.parent) {
+      //   window.parent.postMessage('UnityReady', '*');
+      // }
       if (window.parent && window.parent.UnityLoaded) {
         window.parent.UnityLoaded();
       }
@@ -120,6 +176,7 @@
     });
   };
   document.body.appendChild(script);
+
 </script>
 </body>
 </html>
