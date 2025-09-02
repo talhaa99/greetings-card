@@ -532,6 +532,8 @@ export default function CheckoutPage() {
     }
 
   });
+// put near the top of the component file
+  const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '';
 
   return (
     <>
@@ -870,20 +872,15 @@ export default function CheckoutPage() {
                       </Box>
                     </Box>
                      {/*PayPal Buttons */}
-                    {/*<Box sx={{ mt: 2 }}>*/}
+                    {/*<PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: 'AUD', intent: 'capture' }}>*/}
                     {/*  <PayPalButtons*/}
                     {/*    style={{ layout: 'vertical' }}*/}
                     {/*    createOrder={async () => {*/}
-                    {/*      // Ensure you have a transaction row in DB first (you already do it on form submit).*/}
-                    {/*      // If you want to force creation-before-pay, call your /api/transactions/create here (or rely on your existing onSubmit).*/}
+                    {/*      // ✅ amount already in AUD*/}
+                    {/*      const amountAud = Number(total).toFixed(2);*/}
                     
-                    {/*      // Use your calculated AUD total:*/}
-                    {/*      const audCalculatedTotalPrice = Number((total * currency['AUD']).toFixed(2));*/}
-                    
-                    {/*      // Tell backend to create PayPal order*/}
                     {/*      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';*/}
-                    {/*      // Use the DB id you already created. If you want to link it:*/}
-                    {/*      const transactionId = (data && data._id) || null; // from your getData()*/}
+                    {/*      const transactionId = (data && data._id) || undefined;*/}
                     
                     {/*      const resp = await fetch(`${API_URL}/api/paypal/create-order`, {*/}
                     {/*        method: 'POST',*/}
@@ -892,26 +889,29 @@ export default function CheckoutPage() {
                     {/*          ...(token ? { 'x-access-token': token } : {})*/}
                     {/*        },*/}
                     {/*        body: JSON.stringify({*/}
-                    {/*          amount: audCalculatedTotalPrice,*/}
+                    {/*          amount: amountAud,         // string like "12.34" is fine too*/}
                     {/*          currency: 'AUD',*/}
                     {/*          transactionId,*/}
-                    {/*          meta: {*/}
-                    {/*            title: data?.cardId?.title || 'Greetings Card'*/}
-                    {/*          }*/}
-                    {/*        })*/}
+                    {/*          meta: { title: data?.cardId?.title || 'Greetings Card' }*/}
+                    {/*        }),*/}
                     {/*      });*/}
                     
-                    {/*      const { id } = await resp.json();*/}
-                    {/*      return id; // PayPal needs this order id*/}
+                    {/*      if (!resp.ok) {*/}
+                    {/*        const err = await resp.json().catch(() => ({}));*/}
+                    {/*        console.error('create-order failed', err);*/}
+                    {/*        throw new Error(err?.error || 'Failed to create order');*/}
+                    {/*      }*/}
+                    
+                    {/*      const json = await resp.json();*/}
+                    {/*      if (!json?.id) throw new Error('No order id returned');*/}
+                    {/*      return json.id; // ✅ MUST return the order id*/}
                     {/*    }}*/}
-                    {/*    onApprove={async (data) => {*/}
-                    {/*      // Capture on your server*/}
-                    {/*      const resp = await fetch(`${API_URL}/api/paypal/capture/${data.orderID}`, { method: 'POST' });*/}
+                    {/*    onApprove={async ({ orderID }) => {*/}
+                    {/*      const resp = await fetch(`${API_URL}/api/paypal/capture/${orderID}`, { method: 'POST' });*/}
                     {/*      const json = await resp.json();*/}
                     
                     {/*      if (json?.status === 'COMPLETED') {*/}
                     {/*        toast.success('Payment completed ✅');*/}
-                    {/*        // redirect if you want*/}
                     {/*        window.location.href = `${WEB_URL}/success`;*/}
                     {/*      } else {*/}
                     {/*        toast.error(`Payment status: ${json?.status || 'Unknown'}`);*/}
@@ -921,11 +921,10 @@ export default function CheckoutPage() {
                     {/*      console.error('PayPal error', err);*/}
                     {/*      toast.error('Payment failed');*/}
                     {/*    }}*/}
-                    {/*    onCancel={() => {*/}
-                    {/*      toast('Payment cancelled');*/}
-                    {/*    }}*/}
+                    {/*    onCancel={() => toast('Payment cancelled')}*/}
                     {/*  />*/}
-                    {/*</Box>*/}
+                    {/*</PayPalScriptProvider>*/}
+
 
                     <Button
                       fullWidth

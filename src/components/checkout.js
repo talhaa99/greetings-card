@@ -36,17 +36,17 @@
 //
 //
 // export default Checkout;
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-
-const NEXT_PUBLIC_PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID; // add to your client .env
-
-export default function CheckoutPage() {
-  // ... existing state/effects
-
-  return (
-    <PayPalScriptProvider options={{ clientId: NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test', currency: 'AUD' }}>
-      {/* your existing JSX below */}
-      {/* ... */}
-    </PayPalScriptProvider>
-  );
-}
+// import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+//
+// const NEXT_PUBLIC_PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID; // add to your client .env
+//
+// export default function CheckoutPage() {
+//   // ... existing state/effects
+//
+//   return (
+//     <PayPalScriptProvider options={{ clientId: NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test', currency: 'AUD' }}>
+//       {/* your existing JSX below */}
+//       {/* ... */}
+//     </PayPalScriptProvider>
+//   );
+// }
