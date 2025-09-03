@@ -74,19 +74,47 @@ export default function AddressAutocompleteLocationIQ({
       getOptionLabel={(o) => o.label || ''}
       loading={loading}
       value={options.find(o => o.label === formik.values[name]) || null}
+      // inside <Autocomplete ... onChange={(_, val) => { ... }}>
       onChange={(_, val) => {
         const labelValue = val?.label || '';
         formik.setFieldValue(name, labelValue);
 
-        // Optional: autofill other fields from result address
         const a = val?.raw?.address || {};
-        // fill suburb (try multiple keys that AU results may use)
+
+        // AU street address: [unit] [house_number] [road]
+        const unit = a.unit || a.flat || a.level || '';
+        const house = a.house_number || '';
+        const road = a.road || a.pedestrian || a.footway || '';
+        const streetLine = [unit, [house, road].filter(Boolean).join(' ')].filter(Boolean).join('/');
+
+        // Suburb / Locality fallbacks (AU me yeh keys aate hain)
         const suburb =
-          a.suburb || a.neighbourhood || a.city || a.town || a.village || a.locality || '';
-        if (!formik.values.suburb && suburb) formik.setFieldValue('suburb', suburb);
-        if (!formik.values.postal_code && a.postcode) formik.setFieldValue('postal_code', a.postcode);
-        if (!formik.values.state && a.state) formik.setFieldValue('state', a.state);
+          a.suburb || a.neighbourhood || a.locality || a.village || a.town || a.city || '';
+
+        // State & postcode
+        const state = a.state || a.state_district || '';
+        const postcode = a.postcode || '';
+
+        // ✅ Fill all relevant fields (overwrite empty ya incorrect values)
+        if (streetLine) formik.setFieldValue('delivery_address', streetLine);
+        if (suburb)     formik.setFieldValue('suburb', suburb);
+        if (state)      formik.setFieldValue('state', state);
+        if (postcode)   formik.setFieldValue('postal_code', postcode);
       }}
+
+      // onChange={(_, val) => {
+      //   const labelValue = val?.label || '';
+      //   formik.setFieldValue(name, labelValue);
+      //
+      //   // Optional: autofill other fields from result address
+      //   const a = val?.raw?.address || {};
+      //   // fill suburb (try multiple keys that AU results may use)
+      //   const suburb =
+      //     a.suburb || a.neighbourhood || a.city || a.town || a.village || a.locality || '';
+      //   if (!formik.values.suburb && suburb) formik.setFieldValue('suburb', suburb);
+      //   if (!formik.values.postal_code && a.postcode) formik.setFieldValue('postal_code', a.postcode);
+      //   if (!formik.values.state && a.state) formik.setFieldValue('state', a.state);
+      // }}
       renderInput={(params) => (
         <TextField
           {...params}

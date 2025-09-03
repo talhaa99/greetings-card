@@ -231,8 +231,8 @@ const Section2 = () => {
           data-aos-duration="600"
           data-aos-easing="ease-in"
           sx={{
-            pl: { md: '20%', laptop: '25%', lg: '20%', xl: '30%', xs: '15%', ipad: '25%' },
-            pr: { md: '20%', laptop: '25%', lg: '20%', xl: '30%', xs: '15%', ipad: '25%' },
+            pl: { md: '20%', laptop: '15%', lg: '15%', xl: '25%', xs: '15%', ipad: '25%' },
+            pr: { md: '20%', laptop: '15%', lg: '15%', xl: '25%', xs: '15%', ipad: '25%' },
             // bgcolor:"blue",
             pt: { md: 2, xs: 0 },
             pb: 5,

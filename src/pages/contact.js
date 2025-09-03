@@ -126,7 +126,7 @@ const Contact = () => {
                 alignItems: 'center'
               }}>
                 <PhoneIcon sx={{
-                  color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                  color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                 }}/>
                 {/*<Box component='image' src={`${WEB_URL}/phone.png`}  />*/}
                 <Typography variant="body1" sx={{
@@ -146,7 +146,7 @@ const Contact = () => {
                 alignItems: 'center'
               }}>
                 <EmailIcon sx={{
-                  color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                  color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                 }}/>
                 {/*<img src={`${WEB_URL}/mail.png`}/>*/}
                 <Typography variant="body1" sx={{
@@ -166,7 +166,7 @@ const Contact = () => {
                 alignItems: 'center'
               }}>
                 <LocationOnIcon sx={{
-                  color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                  color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                 }}/>
                 {/*<img src={`${WEB_URL}/location.png`}/>*/}
                 <Typography variant="body1" sx={{
@@ -204,19 +204,19 @@ const Contact = () => {
               }}>
                 <NextLink href="/">
                   <PinterestIcon sx={{
-                    color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
                 <NextLink href="/">
                   <FacebookOutlinedIcon sx={{
-                    color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
                 <NextLink href="/">
                   <YouTubeIcon sx={{
-                    color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
                 <NextLink href="/">
                   <InstagramIcon sx={{
-                    color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
+                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
                 {/*<img src={`${WEB_URL}/pinterst.png`} style={{*/}
                 {/*  width: isSmallScreen ? '10%' : ''*/}
