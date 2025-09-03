@@ -550,7 +550,7 @@ export const LandingNav = () => {
                     alt="logo"
                     sx={{
                       // bgcolor: 'yellow',
-                      width: '10%',
+                      width: '15%',
                       pb: 1,pt:1,
                       height: 'auto'
                     }}
