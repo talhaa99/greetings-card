@@ -583,7 +583,7 @@ export const LandingNav = () => {
                   color: '#c09b9b'
                 }}
               >
-                Greetings Card
+                Incardible
               </Typography>
               <Box sx={{
                 width: 350,
