@@ -274,8 +274,8 @@ const Section2 = () => {
           data-aos-duration="600"
           data-aos-easing="ease-in"
           sx={{
-            pl: { md: '20%', laptop: '15%', lg: '15%', xl: '25%', xs: '5%', ipad: '25%' },
-            pr: { md: '20%', laptop: '15%', lg: '15%', xl: '25%', xs: '5%', ipad: '25%' },
+            pl: { md: '20%', laptop: '15%', lg: '15%', xl: '5%', xs: '5%', ipad: '25%' },
+            pr: { md: '20%', laptop: '15%', lg: '15%', xl: '5%', xs: '5%', ipad: '25%' },
             // bgcolor:"blue",
             pt: { md: 2, xs: 0 },
             pb: 5,
@@ -334,46 +334,64 @@ const Section2 = () => {
                     {tabData.map((tab) => (
                       <Box key={tab.value} sx={{ position: 'relative' }}>
                         <Box
+                          component="button"
                           type="button"
-                          // id={`dropDownBtn-${tab.value}`}
-                          className="btn dropdown-toggle"
-                          data-bs-toggle="dropdown"
-                          // onClick={() => handleTabClick(tab.value)}
-                          // aria-expanded="false"
-                          onClick={(e) => {
-                            e.stopPropagation(); // prevent switching tab
-                            handleDropdownClick(e, tab.value);
-                            handleTabClick(tab.value);
-                          }}
+                          // className="btn"  // (optional) or remove className entirely
+                          onClick={(e) => { e.stopPropagation(); handleDropdownClick(e, tab.value); handleTabClick(tab.value); }}
                           sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            height: '100%',
-                            alignItems: 'center',
-                            gap: 0,
-                            border: 0,
-                            p: { xs: 1 },
-                            px: { md: 2 },
-                            py: { md: 1 },
-                            borderRadius: '12px !important',
-                            fontWeight: 900,
-                            cursor: 'pointer',
-                            bgcolor: value === tab.value ? '#c165a0' : 'transparent',
-                            color: value === tab.value ? 'white' : 'black',
-                            '&:hover': {
-                              backgroundColor: '#c165a0',
-                              color: 'white'
-                            }
-
+                            display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center',
+                            minWidth:{ xs: 90, md: 120 }, px:2, py:{ md:1, xs:1 },
+                            border:0, borderRadius:'12px !important', cursor:'pointer',
+                            bgcolor: value===tab.value ? '#c165a0' : 'transparent',
+                            color: value===tab.value ? 'white' : 'black',
+                            '&:hover': { backgroundColor:'#c165a0', color:'white' }
                           }}
                         >
-                          {/*<Typography sx={{*/}
-                          {/*  fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' },*/}
-                          {/*  fontWeight: 900*/}
-                          {/*}}>{tab.label}</Typography>*/}
-                          <Typography sx={{ fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' }, fontWeight: 900 }}>
+                          <Typography sx={{ width:'100%', textAlign:'center', fontWeight:900, fontSize:{ md:'18px', lg:'20px', xl:'22px', xs:'12px' }}}>
                             {tab.label === 'Category' ? `${cardType}` : tab.label}
                           </Typography>
+
+                        {/*<Box*/}
+                        {/*  type="button"*/}
+                        {/*  // id={`dropDownBtn-${tab.value}`}*/}
+                        {/*  className="btn dropdown-toggle"*/}
+                        {/*  data-bs-toggle="dropdown"*/}
+                        {/*  // onClick={() => handleTabClick(tab.value)}*/}
+                        {/*  // aria-expanded="false"*/}
+                        {/*  onClick={(e) => {*/}
+                        {/*    e.stopPropagation(); // prevent switching tab*/}
+                        {/*    handleDropdownClick(e, tab.value);*/}
+                        {/*    handleTabClick(tab.value);*/}
+                        {/*  }}*/}
+                        {/*  sx={{*/}
+                        {/*    display: 'flex',*/}
+                        {/*    justifyContent: 'center',*/}
+                        {/*    height: '100%',*/}
+                        {/*    alignItems: 'center',*/}
+                        {/*    gap: 0,*/}
+                        {/*    border: 0,*/}
+                        {/*    p: { xs: 1 },*/}
+                        {/*    px: { md: 2 },*/}
+                        {/*    py: { md: 1 },*/}
+                        {/*    borderRadius: '12px !important',*/}
+                        {/*    fontWeight: 900,*/}
+                        {/*    cursor: 'pointer',*/}
+                        {/*    bgcolor: value === tab.value ? '#c165a0' : 'transparent',*/}
+                        {/*    color: value === tab.value ? 'white' : 'black',*/}
+                        {/*    '&:hover': {*/}
+                        {/*      backgroundColor: '#c165a0',*/}
+                        {/*      color: 'white'*/}
+                        {/*    }*/}
+
+                        {/*  }}*/}
+                        {/*>*/}
+                        {/*  /!*<Typography sx={{*!/*/}
+                        {/*  /!*  fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' },*!/*/}
+                        {/*  /!*  fontWeight: 900*!/*/}
+                        {/*  /!*}}>{tab.label}</Typography>*!/*/}
+                        {/*  <Typography sx={{ fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' }, fontWeight: 900 }}>*/}
+                        {/*    {tab.label === 'Category' ? `${cardType}` : tab.label}*/}
+                        {/*  </Typography>*/}
 
 
                           {/*<IconButton*/}
