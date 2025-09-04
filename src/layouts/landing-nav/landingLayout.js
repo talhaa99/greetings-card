@@ -865,7 +865,7 @@ export const LandingNav = () => {
                 sx={{
                   marginTop: '20px',
                   // bgcolor: 'yellow',
-                  width: '20%',
+                  width: '30%',
                   // pb: 1,
                   height: 'auto'
                 }}

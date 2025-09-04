@@ -372,7 +372,7 @@ const Section2 = () => {
                           {/*  fontWeight: 900*/}
                           {/*}}>{tab.label}</Typography>*/}
                           <Typography sx={{ fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' }, fontWeight: 900 }}>
-                            {tab.label === 'Category' ? `Category: ${cardType}` : tab.label}
+                            {tab.label === 'Category' ? `${cardType}` : tab.label}
                           </Typography>
 
 
