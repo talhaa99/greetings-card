@@ -44,7 +44,7 @@ const Page = () => {
                   TERMS & CONDITIONS
                 </Typography>
                 <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
-                  Welcome to Greetings Card
+                  Welcome to Incardible
                 </Typography>
                 <Typography gutterBottom variant="bod1" padding="10px" sx={{ textAlign: 'center' }}>
                   These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
