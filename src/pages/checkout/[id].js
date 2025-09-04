@@ -113,7 +113,8 @@ function OrderItem({ item, onQty }) {
     // </Card>
     <Card variant="outlined" sx={{
       borderRadius: 1.5,
-      mb: 1.5,
+      minWidth:{md:400},
+      mb: 2.5,
       width: '100%',
       // display: 'flex',
       // justifyContent:'center',
@@ -127,12 +128,13 @@ function OrderItem({ item, onQty }) {
         p: 1.25,
         flexDirection: stackOnMd ? 'column' : 'row'
       }}>
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ width:'100%', display:'flex', justifyContent:'center', alignItems:'flex-start', height:'100%', flexDirection:'column'}}>
           <CardMedia
             component="img"
             image={item.image}
             alt={item.title}
             sx={{
+              // mt:1,
               width: { md: 80, xs: 100 },
               height: { md: 80, xs: 100 },
               borderRadius: 1,
@@ -140,18 +142,24 @@ function OrderItem({ item, onQty }) {
               border: '1px solid #ddd'
             }}
           />
-          <Typography fontWeight={700} sx={{ ml: 0.5 }} noWrap>{item.title}</Typography>
+          <Typography fontWeight={700} sx={{ ml: 0.5,
+            alignItems: 'baseline',
+            gap: 0.5,
+            whiteSpace: 'wrap'}} noWrap>{item.title}</Typography>
         </Box>
         <Box sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
+          flexDirection: { xs: 'column', md: 'column' },
           justifyContent: 'center',
+          // bgcolor:'red',
+          width:'100%',
           gap: 2,
-          alignItems: 'center',
+          alignItems: 'flex-start',
           height: '100%'
         }}>
-          <Stack alignItems="flex-end" sx={{ width: '100%' }}>
+          <Stack alignItems="flex-start" sx={{ width: '100%' }}>
             <Typography
+              variant='h4'
               fontWeight={700}
               noWrap
               sx={{
@@ -163,6 +171,7 @@ function OrderItem({ item, onQty }) {
             >
               AUD {item?.price}
               <Typography
+                // variant='h5'
                 component="span"
                 variant="caption"
                 sx={{ display: 'inline', whiteSpace: 'nowrap' }}
@@ -171,7 +180,7 @@ function OrderItem({ item, onQty }) {
               </Typography>
             </Typography>
 
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="h7" sx={{mt:1}} color="text.secondary">
               AUD {item?.price} × {item.qty} = <b>AUD {line}</b>
             </Typography>
           </Stack>
@@ -233,7 +242,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { id } = router.query;
   const [open, setOpen] = useState(false);
-  // const [expressShipping, setExpressShipping] = useState(false);
+  const [expressShipping, setExpressShipping] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('normal');
   const SHIPPING_PRICES= { normal: 10, express: 20 };
   const shippingRate = SHIPPING_PRICES[shippingMethod];
@@ -303,17 +312,18 @@ export default function CheckoutPage() {
 
 
   //latest calculation:
-  // const shipping = 10;
-  // const expressShippingRate = 10;
-  // const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-  // const gst = (subtotal) * 0.1;
-  // const total = expressShipping
-  //   ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2)
-  //   : Number(subtotal + shipping + gst).toFixed(2);
-
+  const shipping = 10;
+  const expressShippingRate = 20;
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-  const gst = (subtotal + shippingRate) * 0.1;
-  const total = Number(subtotal + shippingRate + gst).toFixed(2);
+  const gst = expressShipping ? (subtotal + shipping + expressShippingRate) * 0.1 : (subtotal + shipping) * 0.1;
+  // const gst = (subtotal) * 0.1;
+  const total = expressShipping
+    ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2)
+    : Number(subtotal + shipping + gst).toFixed(2);
+
+  // const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  // const gst = (subtotal + shippingRate) * 0.1;
+  // const total = Number(subtotal + shippingRate + gst).toFixed(2);
 
   const onQty = (id, qty) => setItems((prev) => prev.map(i => i.id === id ? { ...i, qty } : i));
   const formatPrice = (value) => Number(value).toFixed(2);
@@ -450,12 +460,12 @@ export default function CheckoutPage() {
       postal_code: '',
       phone_number: '',
       newsAndOffers: false,
-      shippingMethod:'',
-    shippingRate:'',
-      // expressShipping: false,
-      // expressShippingRate: '',
+    //   shippingMethod:'',
+    // shippingRate:'',
+      expressShipping: false,
+      expressShippingRate: '',
       termsAccepted: false,
-      // shipping: '',
+      shipping: '',
       total: '',
       gst: '',
       submit: null
@@ -500,11 +510,11 @@ export default function CheckoutPage() {
             postal_code: values.postal_code,
             phone_number: values.phone_number,
             newsAndOffers: values.newsAndOffers,
-            shippingMethod,
-            shippingRate,
-            // expressShipping: values.expressShipping,
-            // expressShippingRate: expressShipping ? expressShippingRate : 0,
-            // shipping,
+            // shippingMethod,
+            // shippingRate,
+            expressShipping: values.expressShipping,
+            expressShippingRate: expressShipping ? expressShippingRate : 0,
+            shipping,
             total,
             gst: formatPrice(gst)
           },
@@ -519,7 +529,7 @@ export default function CheckoutPage() {
         toast.success('Order place successfully');
         formik.resetForm();
         setShippingMethod('normal');
-        // setExpressShipping(false);
+        setExpressShipping(false);
         // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
@@ -550,7 +560,7 @@ export default function CheckoutPage() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}>
-        <Container sx={{
+        <Container  sx={{
           mt: { xs: 5, md: 0 },
           mb: { xs: 5, md: 0 },
           display: 'flex',
@@ -562,8 +572,8 @@ export default function CheckoutPage() {
           <form noValidate
                 onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={7}>
-                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important' }}>
+              <Grid item xs={12} md={6}>
+                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',minWidth:{md:400}}}>
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
                                 sx={{ mb: 2, color: ACCENT }}>Delivery Address</Typography>
@@ -583,6 +593,9 @@ export default function CheckoutPage() {
                       stateValue={formik.values.state}     // pass selected state
                       name="delivery_address"
                       label="Street Address"
+                      sx={{
+                         mb: 0
+                      }}
                     />
                     {/*<Box*/}
                     {/*  sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', md: 'row' } }}>*/}
@@ -753,107 +766,111 @@ export default function CheckoutPage() {
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={5}>
+              <Grid item xs={12} md={6}>
                 <Card variant="outlined"
-                      sx={{ borderRadius: 1.5, width: '100%', minWidth: 400 }}>
+                      sx={{ borderRadius: 1.5, width: '100%' }}>
                   <CardContent sx={{ p: 2 }}>
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
-                      {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
-                      {/*  <FormControlLabel*/}
-                      {/*    control={*/}
-                      {/*      <Checkbox*/}
-                      {/*        sx={{*/}
-                      {/*          '& .MuiSvgIcon-root': {*/}
-                      {/*            fontSize: 14,       // size of the checkbox*/}
-                      {/*            strokeWidth: 2.5   // makes the tick bolder*/}
-                      {/*          },*/}
-                      {/*          '&.Mui-checked .MuiSvgIcon-root': {*/}
-                      {/*            fontWeight: 900    // simulates a "bold" look on checked state*/}
-                      {/*          }*/}
-                      {/*        }}*/}
-                      {/*        size="small"*/}
-                      {/*        name="expressShipping"*/}
-                      {/*        // checked={formik.values.expressShipping}*/}
-                      {/*        checked={expressShipping}*/}
-                      {/*        // onChange={formik.handleChange}*/}
-                      {/*        onChange={(e) => {*/}
-                      {/*          setExpressShipping(e.target.checked);   // toggle true/false*/}
-                      {/*          formik.setFieldValue('expressShipping', e.target.checked); // keep in formik*/}
-                      {/*        }}*/}
-                      {/*      />*/}
-                      {/*    }*/}
-                      {/*    label="Express shipping"*/}
-                      {/*    sx={{*/}
-                      {/*      '& .MuiFormControlLabel-label': {*/}
-                      {/*        fontWeight: 900       // bold label*/}
-                      {/*      },*/}
-                      {/*      marginLeft: '-10px'*/}
+
+                      {/*<Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>*/}
+                      {/*  <RadioGroup*/}
+                      {/*    row*/}
+                      {/*    name="shippingMethod"*/}
+                      {/*    value={shippingMethod}*/}
+                      {/*    onChange={(e) => {*/}
+                      {/*      const method = e.target.value === 'express' ? 'express' : 'normal';*/}
+                      {/*      setShippingMethod(method);*/}
+                      {/*      formik.setFieldValue('shippingMethod', method);*/}
+                      {/*      formik.setFieldValue('shippingRate', SHIPPING_PRICES[method]);*/}
                       {/*    }}*/}
-                      {/*  />*/}
-                      {/*  <Typography fontWeight={700}>*/}
-                      {/*    {`AUD ${expressShippingRate}`}*/}
-                      {/*  </Typography>*/}
+                      {/*  >*/}
+                      {/*    <FormControlLabel*/}
+                      {/*      value="normal"*/}
+                      {/*      control={<Radio size="small" sx={{*/}
+                      {/*        '& .MuiSvgIcon-root': {*/}
+                      {/*          fontSize: 16,*/}
+                      {/*        },*/}
+                      {/*      }} />}*/}
+                      {/*      label="Normal shipping (AUD 10)"*/}
+                      {/*      sx={{*/}
+                      {/*        '& .MuiFormControlLabel-label': {*/}
+                      {/*          // fontSize: '0.8rem', // smaller label text*/}
+                      {/*          fontWeight: 600*/}
+                      {/*        }*/}
+                      {/*      }}*/}
+                      {/*    />*/}
+                      {/*    <FormControlLabel*/}
+                      {/*      value="express"*/}
+                      {/*      control={<Radio size="small" sx={{*/}
+                      {/*        '& .MuiSvgIcon-root': {*/}
+                      {/*          fontSize: 16,*/}
+                      {/*        },*/}
+                      {/*      }} />}*/}
+                      {/*      label="Express shipping (AUD 20)"*/}
+                      {/*      sx={{*/}
+                      {/*        '& .MuiFormControlLabel-label': {*/}
+                      {/*          // fontSize: '0.8rem', // smaller label text*/}
+                      {/*          fontWeight: 600*/}
+                      {/*        }*/}
+                      {/*      }}*/}
+                      {/*    />*/}
+                      {/*  </RadioGroup>*/}
                       {/*</Box>*/}
-                      <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
-                        <RadioGroup
-                          row
-                          name="shippingMethod"
-                          value={shippingMethod}
-                          onChange={(e) => {
-                            const method = e.target.value === 'express' ? 'express' : 'normal';
-                            setShippingMethod(method);
-                            formik.setFieldValue('shippingMethod', method);
-                            formik.setFieldValue('shippingRate', SHIPPING_PRICES[method]);
-                          }}
-                        >
-                          <FormControlLabel
-                            value="normal"
-                            control={<Radio size="small" sx={{
-                              '& .MuiSvgIcon-root': {
-                                fontSize: 16,
-                              },
-                            }} />}
-                            label="Normal shipping (AUD 10)"
-                            sx={{
-                              '& .MuiFormControlLabel-label': {
-                                // fontSize: '0.8rem', // smaller label text
-                                fontWeight: 600
-                              }
-                            }}
-                          />
-                          <FormControlLabel
-                            value="express"
-                            control={<Radio size="small" sx={{
-                              '& .MuiSvgIcon-root': {
-                                fontSize: 16,
-                              },
-                            }} />}
-                            label="Express shipping (AUD 20)"
-                            sx={{
-                              '& .MuiFormControlLabel-label': {
-                                // fontSize: '0.8rem', // smaller label text
-                                fontWeight: 600
-                              }
-                            }}
-                          />
-                        </RadioGroup>
-                      </Box>
 
 
 
                       <Divider sx={{ mt: 1 }}/>
                       {/*<Typography fontWeight={700}>AUD {shippingRate.toFixed(2)}</Typography>*/}
-                      {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
-                      {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping*/}
-                      {/*    Price:</Typography>*/}
-                      {/*  <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>*/}
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping
+                          Price:</Typography>
+                        <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
+
+                    <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              sx={{
+                                '& .MuiSvgIcon-root': {
+                                  fontSize: 14,       // size of the checkbox
+                                  strokeWidth: 2.5   // makes the tick bolder
+                                },
+                                '&.Mui-checked .MuiSvgIcon-root': {
+                                  fontWeight: 900    // simulates a "bold" look on checked state
+                                }
+                              }}
+                              size="small"
+                              name="expressShipping"
+                              // checked={formik.values.expressShipping}
+                              checked={expressShipping}
+                              // onChange={formik.handleChange}
+                              onChange={(e) => {
+                                setExpressShipping(e.target.checked);   // toggle true/false
+                                formik.setFieldValue('expressShipping', e.target.checked); // keep in formik
+                              }}
+                            />
+                          }
+                          label="Express shipping"
+                          sx={{
+                            '& .MuiFormControlLabel-label': {
+                              fontWeight: 900       // bold label
+                            },
+                            marginLeft: '-10px'
+                          }}
+                        />
+                        <Typography fontWeight={700}>
+                          {`AUD ${expressShippingRate}`}
+                        </Typography>
+                      </Box>
+
+
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography fontWeight={800}
+                        <Typography fontWeight={800} variant="body2"
                                     sx={{ mb: .5, color: ACCENT }}>GST (10%):</Typography>
-                        <Typography fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
+                        <Typography variant="body2" fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
 
                       {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
                       {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>*/}
@@ -866,7 +883,7 @@ export default function CheckoutPage() {
 
                       <Divider sx={{ mt: 1 }}/>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="h6" fontWeight={900}
+                        <Typography  variant="h6" fontWeight={900}
                                     sx={{ color: ACCENT }}>Total:</Typography>
                         <Typography variant="h6" fontWeight={900}>AUD {total}</Typography>
                       </Box>
@@ -933,7 +950,7 @@ export default function CheckoutPage() {
                       variant="contained"
                       disabled={formik.isSubmitting}
                       sx={{
-                        mt: 3,
+                        mt: 2,
                         // py: 1.25,
                         borderRadius: 1.5,
                         bgcolor: '#c165a0',

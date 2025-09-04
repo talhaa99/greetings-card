@@ -543,7 +543,7 @@ export const LandingNav = () => {
               }}
             >
               <NextLink href="/" passHref legacyBehavior>
-                <Box sx={{ width: 350, height: '1005', display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ width: 350, height: '100%', display: 'flex', alignItems: 'center' }}>
                   <Box
                     component="img"
                     src={`${WEB_URL}/logo.png`}
@@ -551,7 +551,7 @@ export const LandingNav = () => {
                     sx={{
                       // bgcolor: 'yellow',
                       width: '15%',
-                      pb: 1,pt:1,
+                      pb: 1,pt:0.7,
                       height: 'auto'
                     }}
                   />
@@ -574,11 +574,12 @@ export const LandingNav = () => {
                 // padding="10px"
                 sx={{
                   // fontFamily: 'Calibri !important',
+                  fontFamily: '"Inter", Calibri',
                   // bgcolor: 'red',
                   // textAlign: 'center',
-                  fontSize: { md: '45px', xs: '20px' },
+                  fontSize: { md: '50px', xs: '20px' },
                   fontWeight: 'bolder',
-                  pt: 1,
+                  pt: 1.3,
                   // ml: 10,
                   color: '#c09b9b'
                 }}

@@ -336,7 +336,8 @@ const AboutUs = () => {
                 </Typography>
                 <Typography gutterBottom variant="body1" sx={{
                   textAlign: 'center',
-                  color: 'grey'
+                  color: 'grey',
+                  fontSize:  '20px'
                 }}>
                   About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis

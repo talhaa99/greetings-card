@@ -49,13 +49,52 @@ export default function AddressAutocompleteLocationIQ({
     const res = await fetch(url.toString());
     const data = await res.json();
 
-    const items = (Array.isArray(data) ? data : []).map(d => ({
-      id: d.place_id || `${d.osm_type}-${d.osm_id}`,
-      label: d.display_place && d.display_address
-        ? `${d.display_place}, ${d.display_address}`
-        : (d.display_name || ''),
-      raw: d
-    }));
+    // const items = (Array.isArray(data) ? data : []).map(d => ({
+    //   id: d.place_id || `${d.osm_type}-${d.osm_id}`,
+    //   label: d.display_place && d.display_address
+    //     ? `${d.display_place}, ${d.display_address}`
+    //     : (d.display_name || ''),
+    //   raw: d
+    // }));
+
+    // fetchSuggestions ke andar, items map ko yeh bana do:
+    // const items = (Array.isArray(data) ? data : []).map(d => {
+    //   const a = d.address || {};
+    //   const house = a.house_number || '';
+    //   const road  = a.road || a.pedestrian || a.footway || a.cycleway || '';
+    //   const suburb =
+    //     a.suburb || a.neighbourhood || a.locality || a.village || a.town || a.city || '';
+    //
+    //   // AU-style concise label: "12 George St, Parramatta"
+    //   const shortLabel = [ [house, road].filter(Boolean).join(' '), suburb ].filter(Boolean).join(', ');
+    //
+    //   return {
+    //     id: d.place_id || `${d.osm_type}-${d.osm_id}`,
+    //     label: shortLabel || d.display_name || '',
+    //     raw: d
+    //   };
+    // });
+// fetchSuggestions ke andar items mapping replace:
+    const items = (Array.isArray(data) ? data : []).map(d => {
+      const a = d.address || {};
+      const house = a.house_number || '';
+      const road  = a.road || a.pedestrian || a.footway || a.cycleway || '';
+      const suburb =
+        a.suburb || a.neighbourhood || a.locality || a.village || a.town || a.city || '';
+      const postcode = a.postcode || '';
+
+      const street = [house, road].filter(Boolean).join(' ');
+      // ✅ AU display: "12 George St, Parramatta 2150"
+      const shortLabel = [street, [suburb, postcode].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+
+      return {
+        id: d.place_id || `${d.osm_type}-${d.osm_id}`,
+        label: shortLabel,
+        raw: d
+      };
+    });
+
+
 
     setOptions(items);
     setLoading(false);
@@ -69,60 +108,49 @@ export default function AddressAutocompleteLocationIQ({
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      options={options}
-      filterOptions={(x) => x} // keep server order
+      options={options}                 // items: {id,label,raw}  (label = "12 George St, Parramatta 2150")
+      filterOptions={(x) => x}
       getOptionLabel={(o) => o.label || ''}
+      renderOption={(props, option) => (
+        <li {...props}>{option.label}</li>   // dropdown me AU format
+      )}
       loading={loading}
-      value={options.find(o => o.label === formik.values[name]) || null}
-      // inside <Autocomplete ... onChange={(_, val) => { ... }}>
+
+      /* textbox ko sirf street value se control karo */
+      value={null}
+      inputValue={formik.values[name]}
+
       onChange={(_, val) => {
-        const labelValue = val?.label || '';
-        formik.setFieldValue(name, labelValue);
-
         const a = val?.raw?.address || {};
-
-        // AU street address: [unit] [house_number] [road]
-        const unit = a.unit || a.flat || a.level || '';
-        const house = a.house_number || '';
-        const road = a.road || a.pedestrian || a.footway || '';
-        const streetLine = [unit, [house, road].filter(Boolean).join(' ')].filter(Boolean).join('/');
-
-        // Suburb / Locality fallbacks (AU me yeh keys aate hain)
-        const suburb =
+        const house    = a.house_number || '';
+        const road     = a.road || a.pedestrian || a.footway || a.cycleway || '';
+        const suburb   =
           a.suburb || a.neighbourhood || a.locality || a.village || a.town || a.city || '';
-
-        // State & postcode
-        const state = a.state || a.state_district || '';
+        const state    = a.state || a.state_district || '';
         const postcode = a.postcode || '';
 
-        // ✅ Fill all relevant fields (overwrite empty ya incorrect values)
-        if (streetLine) formik.setFieldValue('delivery_address', streetLine);
-        if (suburb)     formik.setFieldValue('suburb', suburb);
-        if (state)      formik.setFieldValue('state', state);
-        if (postcode)   formik.setFieldValue('postal_code', postcode);
+        const streetOnly = [house, road].filter(Boolean).join(' ').trim(); // "12 George St"
+
+        formik.setFieldValue(name, streetOnly);      // delivery_address
+        if (suburb)   formik.setFieldValue('suburb', suburb);
+        if (state)    formik.setFieldValue('state', state);
+        if (postcode) formik.setFieldValue('postal_code', postcode);
       }}
 
-      // onChange={(_, val) => {
-      //   const labelValue = val?.label || '';
-      //   formik.setFieldValue(name, labelValue);
-      //
-      //   // Optional: autofill other fields from result address
-      //   const a = val?.raw?.address || {};
-      //   // fill suburb (try multiple keys that AU results may use)
-      //   const suburb =
-      //     a.suburb || a.neighbourhood || a.city || a.town || a.village || a.locality || '';
-      //   if (!formik.values.suburb && suburb) formik.setFieldValue('suburb', suburb);
-      //   if (!formik.values.postal_code && a.postcode) formik.setFieldValue('postal_code', a.postcode);
-      //   if (!formik.values.state && a.state) formik.setFieldValue('state', a.state);
-      // }}
+      freeSolo
+      selectOnFocus
+      handleHomeEndKeys
+      clearOnBlur={false}
+
       renderInput={(params) => (
         <TextField
           {...params}
           label={label}
+          // placeholder="e.g. 12 George St, Parramatta 2150"
           value={formik.values[name]}
           onChange={(e) => {
-            formik.setFieldValue(name, e.target.value);
-            fetchSuggestions(e.target.value, bbox);
+            formik.setFieldValue(name, e.target.value); // street-only textbox
+            fetchSuggestions(e.target.value, bbox);     // AU suggestions (with suburb+postcode)
           }}
           onBlur={formik.handleBlur}
           error={!!(formik.touched[name] && formik.errors[name])}
@@ -139,5 +167,68 @@ export default function AddressAutocompleteLocationIQ({
         />
       )}
     />
+
+
+    // <Autocomplete
+    //   fullWidth
+    //   open={open}
+    //   onOpen={() => setOpen(true)}
+    //   onClose={() => setOpen(false)}
+    //   options={options}
+    //   filterOptions={(x) => x}
+    //   getOptionLabel={(o) => o.label || ''}
+    //   loading={loading}
+    //   value={null}
+    //   inputValue={formik.values[name]}
+    //
+    //   onChange={(_, val) => {
+    //     const a = val?.raw?.address || {};
+    //     const house = a.house_number || '';
+    //     const road  = a.road || a.pedestrian || a.footway || a.cycleway || '';
+    //
+    //     // ✅ Street-only textbox value
+    //     const streetOnly = [house, road].filter(Boolean).join(' ').trim();
+    //
+    //     const suburb =
+    //       a.suburb || a.neighbourhood || a.locality || a.village || a.town || a.city || '';
+    //     const state  = a.state || a.state_district || '';
+    //     const postcode = a.postcode || '';
+    //
+    //     // Set all fields — textbox me sirf street dikhega
+    //     formik.setFieldValue(name, streetOnly);
+    //     if (suburb)   formik.setFieldValue('suburb', suburb);
+    //     if (state)    formik.setFieldValue('state', state);
+    //     if (postcode) formik.setFieldValue('postal_code', postcode);
+    //   }}
+    //   freeSolo
+    //   selectOnFocus
+    //   handleHomeEndKeys
+    //   clearOnBlur={false}
+    //
+    //
+    //   renderInput={(params) => (
+    //     <TextField
+    //       {...params}
+    //       label={label}
+    //       value={formik.values[name]}
+    //       onChange={(e) => {
+    //         formik.setFieldValue(name, e.target.value);  // street-only text control
+    //         fetchSuggestions(e.target.value, bbox);
+    //       }}
+    //       onBlur={formik.handleBlur}
+    //       error={!!(formik.touched[name] && formik.errors[name])}
+    //       helperText={(formik.touched[name] && formik.errors[name]) || ' '}
+    //       InputProps={{
+    //         ...params.InputProps,
+    //         endAdornment: (
+    //           <>
+    //             {loading ? <CircularProgress size={18} /> : null}
+    //             {params.InputProps.endAdornment}
+    //           </>
+    //         ),
+    //       }}
+    //     />
+    //   )}
+    // />
   );
 }

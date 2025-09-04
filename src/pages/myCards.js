@@ -107,10 +107,12 @@ const LoginUserCards = () => {
           // data-aos-duration="600"
           // data-aos-easing="ease-in"
           sx={{
-            pl: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
-            pr: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
+            pl: { md: '20%', laptop: '10%', lg: '10%', xl: '15%', xs: '5%', ipad: '25%' },
+            pr: { md: '20%', laptop: '10%', lg: '10%', xl: '15%', xs: '5%', ipad: '25%' },
+            // pl: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
+            // pr: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
             // bgcolor:"blue",
-            pt: { md: 5, xs: 10 },
+            pt: { md: 10, xs: 10 },
             // pb: {xs: 5 },
             display: 'flex', justifyContent: 'center', alignItems: 'center',
             // bgcolor:'red',
@@ -138,7 +140,7 @@ const LoginUserCards = () => {
                 flexDirection: 'column'
               }}>
 
-                <Grid container sx={{ mt: 5 }}>
+                <Grid container sx={{ mt: 2 }}>
                   {loading ? (
                     <Box sx={{ width: '100%', textAlign: 'center' }}>
                       <CircularProgress/>

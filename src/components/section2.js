@@ -155,16 +155,27 @@ const Section2 = () => {
   //   }
   // };
 
+  // const handleCardType = (tabValue, option) => {
+  //   setOpenDropdown(null); // close dropdown
+  //   if (tabValue === '2') {
+  //     setCardType(option);
+  //   } else if (tabValue === '3') {
+  //     setCardPrice(option);
+  //   } else if (tabValue === '4') {
+  //     setCardPrice(option);
+  //   }
+  // };
   const handleCardType = (tabValue, option) => {
-    setOpenDropdown(null); // close dropdown
+    setOpenDropdown(null);
     if (tabValue === '2') {
-      setCardType(option);
+      setCardType(option);      // Category
     } else if (tabValue === '3') {
-      setCardPrice(option);
+      setCardPrice(option);     // Price
     } else if (tabValue === '4') {
-      setCardPrice(option);
+      setCardSorted(option);    // Arranged by ✅
     }
   };
+
 
   // console.log('displayedCards', displayedCards);
 
@@ -324,10 +335,15 @@ const Section2 = () => {
 
                           }}
                         >
-                          <Typography sx={{
-                            fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' },
-                            fontWeight: 900
-                          }}>{tab.label}</Typography>
+                          {/*<Typography sx={{*/}
+                          {/*  fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' },*/}
+                          {/*  fontWeight: 900*/}
+                          {/*}}>{tab.label}</Typography>*/}
+                          <Typography sx={{ fontSize: { md: '18px', lg: '20px', xl: '22px', xs: '12px' }, fontWeight: 900 }}>
+                            {tab.label === 'Category' ? `Category: ${cardType}` : tab.label}
+                          </Typography>
+
+
                           {/*<IconButton*/}
                           {/*  size="small"*/}
                           {/*  sx={{ color: value === tab.value ? 'white' : 'black', p: 0 }}*/}
