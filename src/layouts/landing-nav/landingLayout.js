@@ -575,6 +575,7 @@ export const LandingNav = () => {
                 sx={{
                   // fontFamily: 'Calibri !important',
                   fontFamily: '"Inter", Calibri',
+                  fontStyle:'italic',
                   // bgcolor: 'red',
                   // textAlign: 'center',
                   fontSize: { md: '50px', xs: '20px' },

@@ -529,6 +529,14 @@ export default function CheckoutPage() {
         toast.success('Order place successfully');
         formik.resetForm();
         setShippingMethod('normal');
+        // setItems([{
+        //   id: 1,
+        //   title: '',
+        //   // price: 0,
+        //   qty: 1,
+        //   image: ''
+        //
+        // }]);
         setExpressShipping(false);
         // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');

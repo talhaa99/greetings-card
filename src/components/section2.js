@@ -95,31 +95,66 @@ const Section2 = () => {
     { label: 'Arranged by', value: '4', options: ['CreatedAt(Ascending)', 'CreatedAt(Descending)'] }
   ]);
 
+
+
+//  new  helpers (top of component)
+  const norm = (s) => String(s || '').trim().toLowerCase();
+  const matchesCategory = (card, selected) => {
+    if (selected === 'All') return true;
+    const target = norm(selected);
+    const types = Array.isArray(card.cardType) ? card.cardType : [card.cardType];
+    return types.filter(Boolean).map(norm).some(t => t === target);
+  };
+
+
+  // const filteredAndSortedCards = useMemo(() => {
+  //   let result = [...cards];
+  //
+  //   // Filter by card type
+  //   if (cardType !== 'All') {
+  //     result = result.filter(card =>
+  //       Array.isArray(card.cardType) &&
+  //       card.cardType.some(type => type.toLowerCase() === cardType.toLowerCase())
+  //     );
+  //   }
+  //
+  //   // Sort by price and sortedby
+  //
+  //   if (cardPrice === 'Low to High') {
+  //     result.sort((a, b) => Number(a.price) - Number(b.price));
+  //   } else if (cardPrice === 'High to Low') {
+  //     result.sort((a, b) => Number(b.price) - Number(a.price));
+  //   } else if (cardPrice === 'CreatedAt(Ascending)') {
+  //     result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  //   } else if (cardPrice === 'CreatedAt(Descending)') {
+  //     result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  //   }
+  //
+  //   return result;
+  // }, [cards, cardType, cardPrice, cardSorted]);
+
   const filteredAndSortedCards = useMemo(() => {
-    let result = [...cards];
+    const byCategory = cards.filter((c) => matchesCategory(c, cardType));
 
-    // Filter by card type
-    if (cardType !== 'All') {
-      result = result.filter(card =>
-        Array.isArray(card.cardType) &&
-        card.cardType.some(type => type.toLowerCase() === cardType.toLowerCase())
-      );
-    }
+    const cmpPrice = (a, b) => {
+      const ap = Number(a.price) || 0, bp = Number(b.price) || 0;
+      return cardPrice === 'Low to High' ? ap - bp : bp - ap;
+    };
 
-    // Sort by price and sortedby
+    const cmpDate = (a, b) => {
+      const ad = new Date(a.createdAt).getTime() || 0;
+      const bd = new Date(b.createdAt).getTime() || 0;
+      return cardSorted === 'CreatedAt(Ascending)' ? ad - bd : bd - ad;
+    };
 
-    if (cardPrice === 'Low to High') {
-      result.sort((a, b) => Number(a.price) - Number(b.price));
-    } else if (cardPrice === 'High to Low') {
-      result.sort((a, b) => Number(b.price) - Number(a.price));
-    } else if (cardPrice === 'CreatedAt(Ascending)') {
-      result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    } else if (cardPrice === 'CreatedAt(Descending)') {
-      result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    }
-
-    return result;
+    // primary: price, secondary: createdAt
+    return [...byCategory].sort((a, b) => {
+      const p = cmpPrice(a, b);
+      return p !== 0 ? p : cmpDate(a, b);
+    });
   }, [cards, cardType, cardPrice, cardSorted]);
+
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [group, setGroup] = useState(0);
@@ -127,33 +162,17 @@ const Section2 = () => {
   const cardsPerPage = 20;
   const totalPages = Math.ceil(filteredAndSortedCards.length / cardsPerPage);
 
-  // const [currentPage, setCurrentPage] = useState(1);
 
   //
-  // const totalPages = Math.ceil(filteredAndSortedCards.length / cardsPerPage);
-  // console.log('totalPages', totalPages);
-  // console.log('filteredAndSortedCards', filteredAndSortedCards);
-
-  // console.log("filteredAndSortedCards", filteredAndSortedCards);
-  // console.log("totalPages", totalPages);
+  // const displayedCards = useMemo(() => {
+  //   return filteredAndSortedCards.slice((currentPage - 1) * cardsPerPage,
+  //     currentPage * cardsPerPage);
+  // }, [filteredAndSortedCards, currentPage]);
 
   const displayedCards = useMemo(() => {
-    return filteredAndSortedCards.slice((currentPage - 1) * cardsPerPage,
-      currentPage * cardsPerPage);
+    const start = (currentPage - 1) * cardsPerPage;
+    return filteredAndSortedCards.slice(start, start + cardsPerPage);
   }, [filteredAndSortedCards, currentPage]);
-
-  // const handleCardType = (tabValue, option) => {
-  //   handleClose(tabValue);
-  //
-  //   if (tabValue === '2') {
-  //     setCardType(option);
-  //   } else if (tabValue === '3') {
-  //     setCardPrice(option);
-  //   } else if (tabValue === '4') {
-  //     // setCardSorted(option);
-  //     setCardPrice(option);
-  //   }
-  // };
 
   // const handleCardType = (tabValue, option) => {
   //   setOpenDropdown(null); // close dropdown
@@ -226,6 +245,19 @@ const Section2 = () => {
     router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
   };
 
+
+  //new
+  useEffect(() => {
+    setCurrentPage(1);
+    setGroup(0);
+  }, [cardType, cardPrice, cardSorted]);
+
+  useEffect(() => {
+    const max = Math.max(1, Math.ceil(filteredAndSortedCards.length / cardsPerPage));
+    if (currentPage > max) setCurrentPage(1);
+  }, [filteredAndSortedCards.length]);
+
+
   return (
     <>
       <Head>
@@ -282,7 +314,7 @@ const Section2 = () => {
                 alignItems: 'center',
                 flexDirection: 'column'
               }}>
-                <TabContext value={value} sx={{ width: '100%', overflow: 'hidden' }}>
+                <TabContext value={value} sx={{ width: '100%', overflow: 'visible' }}>
                   <Box
                     ref={dropdownRef}
                     sx={{
@@ -368,7 +400,9 @@ const Section2 = () => {
                               // borderRadius: '30px !important',
                               listStyle: 'none',
                               marginTop: 10,
-                              zIndex: 1000
+                              // zIndex: 1000,
+                              zIndex: 1500,
+                              pointerEvents: 'auto'
                             }}
                           >
                             {tab.label === 'Category' && tab.options.length === 0 ? (
@@ -451,7 +485,7 @@ const Section2 = () => {
                     ) : (
                       <>
                         {displayedCards.length === 0 ? (
-                          <Box sx={{ width: '100%', textAlign: 'center' }}>
+                          <Box sx={{ width: '100%', textAlign: 'center' , pointerEvents: 'none' }}>
                             <Typography>No cards found.</Typography>
                           </Box>
                         ) : (
