@@ -652,7 +652,7 @@ export default function CheckoutPage() {
                     {/*  </FormHelperText>*/}
                     {/*</FormControl>*/}
                     <FormControl fullWidth error={Boolean(formik.touched.state && formik.errors.state)}>
-                      <InputLabel shrink id="state-label">
+                      <InputLabel  id="state-label">
                         State
                       </InputLabel>
 
@@ -679,6 +679,7 @@ export default function CheckoutPage() {
                             onBlur={formik.handleBlur}
                             error={Boolean(formik.touched.state && formik.errors.state)}
                             helperText={(formik.touched.state && formik.errors.state) || " "}
+                            InputLabelProps={{ shrink: false }}
                           />
                         )}
                       />
@@ -770,7 +771,7 @@ export default function CheckoutPage() {
                           }
                         />
                         <FormHelperText
-                          sx={{ position: 'absolute', mt: 7, display: 'flex', fontSize: {md: '10px', xl:'14px' }}}>
+                          sx={{ position: 'absolute', mt: 7, display: 'flex', whiteSpace: 'nowrap', fontSize: {md: '10px', xl:'14px' }}}>
                           {(formik.touched.termsAccepted && formik.errors.termsAccepted) || ' '}
                         </FormHelperText>
                       </FormControl>

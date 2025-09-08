@@ -580,28 +580,61 @@ export const LandingNav = () => {
               {/*    // height: 'auto'*/}
               {/*  }}*/}
               {/*/>*/}
-
-<Box sx={{width:350}}>
-              <Typography
-                gutterBottom
-                variant="h3"
-                // padding="10px"
+              <Box
                 sx={{
-                  fontFamily: 'Calibri !important',
-                  // fontFamily:  '"Monsieur La Doulaise", cursive',
-                  // fontFamily:  'j. mach wust',
-                  // fontStyle:'italic',
+                  width: 350,
+                  // height: '100px',  // or '100vh' for full screen height
                   // bgcolor: 'red',
-                  textAlign: 'center',
-                  fontSize: { md: '50px', xs: '20px' },
-                  fontWeight: 'bolder',
-                  mt: 2,
-                  // ml: 10,
-                  color: '#c09b9b'
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                Incardible
-              </Typography></Box>
+                <Typography
+                  gutterBottom
+                  variant="h3"
+                  sx={{
+                    mt:2,
+                    height: '100%',
+                    // bgcolor: 'yellow',
+                    fontFamily: '"Eden Meadow", serif !important',
+                    fontSize: '40pt',
+                    textAlign: 'center',
+                    fontWeight: 'normal',
+                    color: '#c09b9b',
+                    display: 'flex',              // ensure text centers inside yellow box too
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  Incardible
+                </Typography>
+              </Box>
+
+
+
+
+              {/*<Box sx={{width:350}}>*/}
+{/*              <Typography*/}
+{/*                gutterBottom*/}
+{/*                variant="h3"*/}
+{/*                // padding="10px"*/}
+{/*                sx={{*/}
+{/*                  fontFamily: 'Calibri !important',*/}
+{/*                  // fontFamily:  '"Monsieur La Doulaise", cursive',*/}
+{/*                  // fontFamily:  'j. mach wust',*/}
+{/*                  // fontStyle:'italic',*/}
+{/*                  // bgcolor: 'red',*/}
+{/*                  textAlign: 'center',*/}
+{/*                  fontSize: { md: '50px', xs: '20px' },*/}
+{/*                  fontWeight: 'bolder',*/}
+{/*                  mt: 2,*/}
+{/*                  // ml: 10,*/}
+{/*                  color: '#c09b9b'*/}
+{/*                }}*/}
+{/*              >*/}
+{/*                Incardible*/}
+{/*              </Typography></Box>*/}
               <Box sx={{
                 width: 350,
                 // bgcolor: 'yellow',

@@ -5,6 +5,16 @@
   font-style: normal;
 }
 
+
+@font-face {
+  font-family: 'Eden Meadow';
+  src: url('/font/eden-meadow/Eden Meadow DEMO.ttf') format('truetype');
+  font-weight: 400;
+  /*font-size: 26pt;*/
+  font-style: normal;
+}
+
+
 html
 {
   /*ALLOW scrollinh for smoothnes component taging*/
