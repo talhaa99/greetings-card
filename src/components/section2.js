@@ -19,6 +19,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/router';
 import { useAuth } from '../hooks/use-auth';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -28,6 +30,12 @@ const Section2 = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const islargeUp = useMediaQuery(theme.breakpoints.up('xxl'));
   const isIpadScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+
+
+  const [animKey, setAnimKey] = useState(0);
+  const gridTopRef = useRef(null);
+
+
 
   const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
   const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
@@ -50,8 +58,16 @@ const Section2 = () => {
 
   // const displayedCards = cards.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage);
 
+
+
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
+    setAnimKey(k => k + 1);
+
+    // smooth scroll to the grid top
+    if (gridTopRef.current) {
+      gridTopRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const handleTabClick = (val) => {
@@ -106,6 +122,7 @@ const Section2 = () => {
     const types = Array.isArray(card.cardType) ? card.cardType : [card.cardType];
     return types.filter(Boolean).map(norm).some(t => t === target);
   };
+
 
 
   // const filteredAndSortedCards = useMemo(() => {
@@ -196,6 +213,20 @@ const Section2 = () => {
     }
   };
 
+
+  useEffect(() => {
+    AOS.init({
+      duration: 550,
+      easing: 'ease-out-quart',
+      once: true,
+      offset: 0
+    });
+  }, []);
+
+  useEffect(() => {
+    // whenever page or filters change, refresh AOS just in case
+    AOS.refreshHard();
+  }, [cardsPerPage, cardType, cardPrice, cardSorted]);
 
   // console.log('displayedCards', displayedCards);
 

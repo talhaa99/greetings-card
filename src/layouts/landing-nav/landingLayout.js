@@ -586,8 +586,8 @@ export const LandingNav = () => {
                 variant="h3"
                 // padding="10px"
                 sx={{
-                  // fontFamily: 'Calibri !important',
-                  fontFamily:  '"Monsieur La Doulaise", cursive',
+                  fontFamily: 'Calibri !important',
+                  // fontFamily:  '"Monsieur La Doulaise", cursive',
                   // fontFamily:  'j. mach wust',
                   // fontStyle:'italic',
                   // bgcolor: 'red',
