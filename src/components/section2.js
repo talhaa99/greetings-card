@@ -410,13 +410,13 @@ const Section2 = () => {
                               // top: 'calc(100% + 8px)',
 
                               // 👉 shift only the Category dropdown a bit to the right
-                              left: tab.value === '2' ? 'calc(50% + 28px)' : '50%',
+                              left: tab.value === '2' ? 'calc(50% + 15px)' : '50%',
                               top: '100%',
                               // left: '50%', // start from center of button
                               transform: 'translateX(-50%)',
                               // backgroundColor:'red',
                               backgroundColor: 'rgba(232, 207, 222, 0.3)',
-                              width: isSmallScreen ? '170px'  : islargeUp ? '280px' : '200px',
+                              width: isSmallScreen ? '170px'  : islargeUp ? '250px' : '200px',
                               maxHeight: tab.label === 'Category' ? '250px' : 'auto',
                               overflowY: tab.label === 'Category' ? 'auto' : 'visible',
                               padding: 0,
