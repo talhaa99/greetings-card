@@ -324,7 +324,7 @@ const Section2 = () => {
                       p: { md: 1, xs: 1 },
                       borderRadius: '20px',
                       width: '100%',
-                      maxWidth: { md: '550px', xs: '300px' },
+                      maxWidth: { md: '550px', xs: '300px' , xxl:'700px'},
                       display: 'flex',
                       flexDirection: { md: 'row', xs: 'row' },
                       justifyContent: { md: 'space-around', xs: 'center' },
