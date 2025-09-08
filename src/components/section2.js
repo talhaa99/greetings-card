@@ -531,7 +531,49 @@ const Section2 = () => {
                     ))}
                   </Box>
 
-                  <Grid container sx={{ mt: 5 }}>
+                  {/*<Grid container sx={{ mt: 5 }}>*/}
+                  {/*  {loading ? (*/}
+                  {/*    <Box sx={{ width: '100%', textAlign: 'center' }}>*/}
+                  {/*      <CircularProgress/>*/}
+                  {/*    </Box>*/}
+                  {/*  ) : (*/}
+                  {/*    <>*/}
+                  {/*      {displayedCards.length === 0 ? (*/}
+                  {/*        <Box sx={{ width: '100%', textAlign: 'center' , pointerEvents: 'none' }}>*/}
+                  {/*          <Typography>No cards found.</Typography>*/}
+                  {/*        </Box>*/}
+                  {/*      ) : (*/}
+                  {/*        displayedCards.map((data, index) => (*/}
+
+                  {/*          <Grid md={4} lg={3} xs={6} key={index}       data-aos="fade-up"*/}
+                  {/*                data-aos-delay={delay} sx={{*/}
+                  {/*            p: 1, display: 'flex',*/}
+                  {/*            justifyContent: 'center',*/}
+                  {/*            alignItems: 'center'*/}
+
+                  {/*          }}>*/}
+                  {/*            <Box*/}
+                  {/*              onClick={() => gotoEditor(data.uuid)}*/}
+                  {/*              component="img"*/}
+                  {/*              loading="lazy"*/}
+                  {/*              src={`${BASE_URL}/${data?.frontDesign}`}*/}
+                  {/*              alt={data?.title}*/}
+                  {/*              sx={{*/}
+                  {/*                width: '100%',*/}
+                  {/*                // width: { xl: '100%', lg: '90%' },*/}
+                  {/*                // display: 'block',*/}
+
+                  {/*                aspectRatio: '1 / 1.414',*/}
+                  {/*                cursor: 'pointer'*/}
+                  {/*              }}*/}
+                  {/*            />*/}
+                  {/*          </Grid>*/}
+                  {/*        ))*/}
+                  {/*      )}*/}
+                  {/*    </>*/}
+                  {/*  )}*/}
+                  {/*</Grid>*/}
+                  <Grid container key={animKey} sx={{ mt: 5 }}>
                     {loading ? (
                       <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <CircularProgress/>
@@ -539,33 +581,33 @@ const Section2 = () => {
                     ) : (
                       <>
                         {displayedCards.length === 0 ? (
-                          <Box sx={{ width: '100%', textAlign: 'center' , pointerEvents: 'none' }}>
+                          <Box sx={{ width: '100%', textAlign: 'center', pointerEvents: 'none' }}>
                             <Typography>No cards found.</Typography>
                           </Box>
                         ) : (
-                          displayedCards.map((data, index) => (
-                            <Grid md={4} lg={3} xs={6} key={index} sx={{
-                              p: 1, display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center'
-                            }}>
-                              <Box
-                                onClick={() => gotoEditor(data.uuid)}
-                                component="img"
-                                loading="lazy"
-                                src={`${BASE_URL}/${data?.frontDesign}`}
-                                alt={data?.title}
-                                sx={{
-                                  width: '100%',
-                                  // width: { xl: '100%', lg: '90%' },
-                                  // display: 'block',
-
-                                  aspectRatio: '1 / 1.414',
-                                  cursor: 'pointer'
-                                }}
-                              />
-                            </Grid>
-                          ))
+                          displayedCards.map((data, index) => {
+                            const delay = (index % 12) * 40;  // stagger 0,40,80... for first 12 items
+                            return (
+                              <Grid
+                                md={4}
+                                lg={3}
+                                xs={6}
+                                key={data.uuid || index}
+                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                data-aos="zoom-in"
+                                data-aos-delay={delay}
+                              >
+                                <Box
+                                  onClick={() => gotoEditor(data.uuid)}
+                                  component="img"
+                                  loading="lazy"
+                                  src={`${BASE_URL}/${data?.frontDesign}`}
+                                  alt={data?.title}
+                                  sx={{ width: '100%', aspectRatio: '1 / 1.414', cursor: 'pointer' }}
+                                />
+                              </Grid>
+                            );
+                          })
                         )}
                       </>
                     )}
