@@ -568,16 +568,30 @@ export const LandingNav = () => {
                   {/*/>*/}
                 </Box>
               </NextLink>
+              {/*<Box*/}
+              {/*  component="img"*/}
+              {/*  src={`${WEB_URL}/heading4.png`}*/}
+              {/*  alt="logo"*/}
+              {/*  sx={{*/}
+              {/*    // bgcolor: 'red',*/}
+              {/*    width: '10%',*/}
+              {/*    // pb: 2,*/}
+              {/*    // height: 'auto'*/}
+              {/*  }}*/}
+              {/*/>*/}
+
+<Box sx={{width:350}}>
               <Typography
                 gutterBottom
                 variant="h3"
                 // padding="10px"
                 sx={{
                   // fontFamily: 'Calibri !important',
-                  fontFamily: '"Inter", Calibri',
-                  fontStyle:'italic',
+                  fontFamily:  '"Monsieur La Doulaise", cursive',
+                  // fontFamily:  'j. mach wust',
+                  // fontStyle:'italic',
                   // bgcolor: 'red',
-                  // textAlign: 'center',
+                  textAlign: 'center',
                   fontSize: { md: '50px', xs: '20px' },
                   fontWeight: 'bolder',
                   pt: 1.3,
@@ -586,7 +600,7 @@ export const LandingNav = () => {
                 }}
               >
                 Incardible
-              </Typography>
+              </Typography></Box>
               <Box sx={{
                 width: 350,
                 // bgcolor: 'yellow',

@@ -113,7 +113,8 @@ function OrderItem({ item, onQty }) {
     // </Card>
     <Card variant="outlined" sx={{
       borderRadius: 1.5,
-      minWidth:{md:400},
+      minWidth:{md:400, xl:700, '4k': 1000},
+      minHeight:{'4k':400},
       mb: 2.5,
       width: '100%',
       // display: 'flex',
@@ -135,8 +136,9 @@ function OrderItem({ item, onQty }) {
             alt={item.title}
             sx={{
               // mt:1,
-              width: { md: 80, xs: 100 },
-              height: { md: 80, xs: 100 },
+              width: { md: 80, xs: 100 , xl:150, '4k':200},
+              height: { md: 80, xs: 100 , xl:150, '4k':200},
+
               borderRadius: 1,
               objectFit: 'cover',
               border: '1px solid #ddd'
@@ -145,6 +147,7 @@ function OrderItem({ item, onQty }) {
           <Typography fontWeight={700} sx={{ ml: 0.5,
             alignItems: 'baseline',
             gap: 0.5,
+            fontSize:{xl:'25px','4k':'30px'},
             whiteSpace: 'wrap'}} noWrap>{item.title}</Typography>
         </Box>
         <Box sx={{
@@ -174,13 +177,13 @@ function OrderItem({ item, onQty }) {
                 // variant='h5'
                 component="span"
                 variant="caption"
-                sx={{ display: 'inline', whiteSpace: 'nowrap' }}
+                sx={{ display: 'inline', whiteSpace: 'nowrap', fontSize:{'4k':'30px'} }}
               >
                 Per Card
               </Typography>
             </Typography>
 
-            <Typography variant="h7" sx={{mt:1}} color="text.secondary">
+            <Typography variant="h7" sx={{mt:1, fontSize:{xl:'25px','4k':'30px'},}} color="text.secondary">
               AUD {item?.price} × {item.qty} = <b>AUD {line}</b>
             </Typography>
           </Stack>
@@ -189,10 +192,11 @@ function OrderItem({ item, onQty }) {
               display: 'inline-flex',
               alignItems: 'center',
               border: '1px solid',
-              borderColor: 'divider',
+              borderColor: 'divider' ,
+              // bgcolor:"red",
               borderRadius: 2,
               height: 36,
-              px: 0.5,
+              px: {md:0.5, xl:2, '4k':4},
               gap: 0.5,
               flexShrink: 0              // don’t squish the control
             }}
@@ -215,8 +219,10 @@ function OrderItem({ item, onQty }) {
               inputMode="numeric"
               sx={{
                 textAlign: 'center',
+                fontSize:{xl:'25px'},
                 fontWeight: 600,
                 lineHeight: 1,
+
                 px: 0.5,
                 // Grow with digits so the full value is always visible
                 width: `clamp(28px, ${String(item.qty).length + 1}ch, 220px)`
@@ -568,7 +574,9 @@ export default function CheckoutPage() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}>
-        <Container  sx={{
+        <Box  sx={{
+          pl: { md: '20%', laptop: '15%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
+          pr: { md: '20%', laptop: '15%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
           mt: { xs: 5, md: 0 },
           mb: { xs: 5, md: 0 },
           display: 'flex',
@@ -581,10 +589,10 @@ export default function CheckoutPage() {
                 onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',minWidth:{md:400}}}>
+                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',minWidth:{md:400, xl:700, '4k':1000}, height:'100%',  minHeight:{'4k':700}}}>
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
-                                sx={{ mb: 2, color: ACCENT }}>Delivery Address</Typography>
+                                sx={{ mb: {md: 2 , '4k':4}, color: ACCENT ,  fontSize:{xl:'25px','4k':'50px'} }}>Delivery Address</Typography>
                     {/*<TextField fullWidth label="Street Address"*/}
                     {/*           error={!!(formik.touched.delivery_address*/}
                     {/*             && formik.errors.delivery_address)}*/}
@@ -616,7 +624,7 @@ export default function CheckoutPage() {
                                onBlur={formik.handleBlur}
                                onChange={formik.handleChange}
                                value={formik.values.suburb}
-                               sx={{ mb: 2 }}/>
+                               sx={{ mb: {md: 2, '4k':4 } }}/>
                     {/*<FormControl fullWidth*/}
                     {/*             error={Boolean(formik.touched.state && formik.errors.state)}>*/}
                     {/*  <InputLabel id="state-label">State</InputLabel>*/}
@@ -678,9 +686,9 @@ export default function CheckoutPage() {
                     {/*</Box>*/}
                     <Box sx={{
                       display: 'flex',
-                      flexDirection: { xs: 'column', md: 'row' },
-                      gap: { md: 1, xs: 2 },
-                      mb: 2
+                      flexDirection: { xs: 'column', md: 'row' , xl:'column'},
+                      gap: { md: 1, xs: 2, xl:3 },
+                      mb: {md:2, '4k':4}
                     }}>
                       <TextField fullWidth label="Postal Code"
                                  error={!!(formik.touched.postal_code
@@ -717,7 +725,7 @@ export default function CheckoutPage() {
                       <FormControlLabel
                         control={
                           <Checkbox
-                            sx={{ '& .MuiSvgIcon-root': { fontSize: 12 } }}
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: {md: 12, xl:20 , '4k':25} } }}
                             size="small"
                             name="newsAndOffers"
                             checked={formik.values.newsAndOffers}
@@ -727,7 +735,7 @@ export default function CheckoutPage() {
                         label="Email me with news and offers"
                         sx={{
                           '& .MuiFormControlLabel-label': {
-                            fontSize: '14px'
+                            fontSize: {md: '14px', xl:'20px', '4k':'25px' }
                           }
                         }}
                       />
@@ -744,7 +752,7 @@ export default function CheckoutPage() {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              sx={{ '& .MuiSvgIcon-root': { fontSize: 12 } }}
+                              sx={{ '& .MuiSvgIcon-root': { fontSize:  {md: 12, xl:20, '4k':25 } } }}
                               size="small"
                               name="termsAccepted"
                               checked={formik.values.termsAccepted}
@@ -755,14 +763,14 @@ export default function CheckoutPage() {
                           label={
                             <Typography
                               onClick={handleClickOpen}
-                              sx={{ cursor: 'pointer', fontSize: '14px' }}
+                              sx={{ cursor: 'pointer',  fontSize: {md: '14px', xl:'20px', '4k':'25px' } }}
                             >
                               Terms and conditions
                             </Typography>
                           }
                         />
                         <FormHelperText
-                          sx={{ position: 'absolute', mt: 7, display: 'flex', fontSize: '10px' }}>
+                          sx={{ position: 'absolute', mt: 7, display: 'flex', fontSize: {md: '10px', xl:'14px' }}}>
                           {(formik.touched.termsAccepted && formik.errors.termsAccepted) || ' '}
                         </FormHelperText>
                       </FormControl>
@@ -828,12 +836,12 @@ export default function CheckoutPage() {
 
 
 
-                      <Divider sx={{ mt: 1 }}/>
+                      <Divider sx={{ mt: {md:1, xl:5, '4k':0} }}/>
                       {/*<Typography fontWeight={700}>AUD {shippingRate.toFixed(2)}</Typography>*/}
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>Shipping
+                        <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT, fontSize:{'4k':25} }}>Shipping
                           Price:</Typography>
-                        <Typography fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
+                        <Typography  sx={{ fontSize:{'4k':25}}} fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -842,11 +850,13 @@ export default function CheckoutPage() {
                             <Checkbox
                               sx={{
                                 '& .MuiSvgIcon-root': {
-                                  fontSize: 14,       // size of the checkbox
+                                  // fontSize: 14,
+                                  fontSize:{md:14,'4k':25} , // size of the checkbox
                                   strokeWidth: 2.5   // makes the tick bolder
                                 },
                                 '&.Mui-checked .MuiSvgIcon-root': {
-                                  fontWeight: 900    // simulates a "bold" look on checked state
+                                  fontWeight: 900 ,   // simulates a "bold" look on checked state
+
                                 }
                               }}
                               size="small"
@@ -863,12 +873,13 @@ export default function CheckoutPage() {
                           label="Express shipping"
                           sx={{
                             '& .MuiFormControlLabel-label': {
-                              fontWeight: 900       // bold label
+                              fontWeight: 900  ,     // bold label
+                              fontSize:{'4k':25}
                             },
                             marginLeft: '-10px'
                           }}
                         />
-                        <Typography fontWeight={700}>
+                        <Typography sx={{ fontSize:{'4k':25}}} fontWeight={700}>
                           {`AUD ${expressShippingRate}`}
                         </Typography>
                       </Box>
@@ -877,8 +888,8 @@ export default function CheckoutPage() {
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} variant="body2"
-                                    sx={{ mb: .5, color: ACCENT }}>GST (10%):</Typography>
-                        <Typography variant="body2" fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
+                                    sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>GST (10%):</Typography>
+                        <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
 
                       {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
                       {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>*/}
@@ -889,7 +900,7 @@ export default function CheckoutPage() {
                       {/*</Box>*/}
 
 
-                      <Divider sx={{ mt: 1 }}/>
+                      <Divider sx={{ mt: {md: 1, '4k':0 } }}/>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography  variant="h6" fontWeight={900}
                                     sx={{ color: ACCENT }}>Total:</Typography>
@@ -903,10 +914,10 @@ export default function CheckoutPage() {
                     {/*    createOrder={async () => {*/}
                     {/*      // ✅ amount already in AUD*/}
                     {/*      const amountAud = Number(total).toFixed(2);*/}
-                    
+
                     {/*      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';*/}
                     {/*      const transactionId = (data && data._id) || undefined;*/}
-                    
+
                     {/*      const resp = await fetch(`${API_URL}/api/paypal/create-order`, {*/}
                     {/*        method: 'POST',*/}
                     {/*        headers: {*/}
@@ -920,13 +931,13 @@ export default function CheckoutPage() {
                     {/*          meta: { title: data?.cardId?.title || 'Greetings Card' }*/}
                     {/*        }),*/}
                     {/*      });*/}
-                    
+
                     {/*      if (!resp.ok) {*/}
                     {/*        const err = await resp.json().catch(() => ({}));*/}
                     {/*        console.error('create-order failed', err);*/}
                     {/*        throw new Error(err?.error || 'Failed to create order');*/}
                     {/*      }*/}
-                    
+
                     {/*      const json = await resp.json();*/}
                     {/*      if (!json?.id) throw new Error('No order id returned');*/}
                     {/*      return json.id; // ✅ MUST return the order id*/}
@@ -934,7 +945,7 @@ export default function CheckoutPage() {
                     {/*    onApprove={async ({ orderID }) => {*/}
                     {/*      const resp = await fetch(`${API_URL}/api/paypal/capture/${orderID}`, { method: 'POST' });*/}
                     {/*      const json = await resp.json();*/}
-                    
+
                     {/*      if (json?.status === 'COMPLETED') {*/}
                     {/*        toast.success('Payment completed ✅');*/}
                     {/*        window.location.href = `${WEB_URL}/success`;*/}
@@ -958,7 +969,7 @@ export default function CheckoutPage() {
                       variant="contained"
                       disabled={formik.isSubmitting}
                       sx={{
-                        mt: 2,
+                        mt: { md:2, '4k':1 },
                         // py: 1.25,
                         borderRadius: 1.5,
                         bgcolor: '#c165a0',
@@ -974,7 +985,7 @@ export default function CheckoutPage() {
 
             </Grid>
           </form>
-        </Container>
+        </Box>
       </Box>
 
 

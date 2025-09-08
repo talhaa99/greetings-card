@@ -316,7 +316,7 @@ const AboutUs = () => {
                 // display: 'flex',
                 // alignItems: 'center',
                 // justifyContent: 'center',
-                px: { md: 10, xs: 1 }
+                px: { md: 2, xs: 1 }
                 // px: 5
               }}
             >
@@ -337,7 +337,7 @@ const AboutUs = () => {
                 <Typography gutterBottom variant="body1" sx={{
                   textAlign: 'center',
                   color: 'grey',
-                  fontSize:  '20px'
+                  fontSize:  '24px'
                 }}>
                   About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis

@@ -28,6 +28,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { useRouter } from 'next/router';
 import Footer from '../components/footer';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -119,7 +121,7 @@ const Contact = () => {
             </Typography>
             <Box>
               <Box sx={{
-                mt: { md: 5, xs: 3 },
+                mt: { md: 3, xs: 3 },
                 display: 'flex',
                 gap: 2,
                 height: '100%',
@@ -139,7 +141,7 @@ const Contact = () => {
                 }}>+1 (555) 123-4567</Typography>
               </Box>
               <Box sx={{
-                mt: { md: 5, xs: 3 },
+                mt: { md: 3, xs: 3 },
                 display: 'flex',
                 gap: 2,
                 height: '100%',
@@ -159,7 +161,7 @@ const Contact = () => {
                 }}>john.doe@example.com</Typography>
               </Box>
               <Box sx={{
-                mt: { md: 5, xs: 3 },
+                mt: { md: 3, xs: 3 },
                 display: 'flex',
                 gap: 2,
                 height: '100%',
@@ -193,7 +195,7 @@ const Contact = () => {
               {/*  }}>Contact Us With On Social Media</Typography>*/}
               {/*</Box>*/}
               <Box sx={{
-                mt: { md: 5, xs: 3 },
+                mt: { md: 3, xs: 3 },
                 // mb: 5,
                 display: 'flex',
                 gap: 3,
@@ -216,6 +218,14 @@ const Contact = () => {
                   }}/></NextLink>
                 <NextLink href="/">
                   <InstagramIcon sx={{
+                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
+                  }}/></NextLink>
+                <NextLink href="/">
+                  <TelegramIcon sx={{
+                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
+                  }}/></NextLink>
+                <NextLink href="/">
+                  <WhatsAppIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
                 {/*<img src={`${WEB_URL}/pinterst.png`} style={{*/}

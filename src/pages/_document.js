@@ -64,6 +64,18 @@ class CustomDocument extends Document {
       <Html lang="en">
         <Head>
           <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+          {/*<link*/}
+          {/*  href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap"*/}
+          {/*  rel="stylesheet"*/}
+          {/*/>*/}
+          {/*<link rel="preconnect" href="https://fonts.googleapis.com"/>*/}
+          {/*  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>*/}
+          {/*    <link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap" rel="stylesheet"/>*/}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+          <link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&display=swap" rel="stylesheet" />
+
+
 
           {/* ✅ Bootstrap 5 CSS */}
           <link

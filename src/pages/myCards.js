@@ -107,8 +107,8 @@ const LoginUserCards = () => {
           // data-aos-duration="600"
           // data-aos-easing="ease-in"
           sx={{
-            pl: { md: '20%', laptop: '10%', lg: '10%', xl: '15%', xs: '5%', ipad: '25%' },
-            pr: { md: '20%', laptop: '10%', lg: '10%', xl: '15%', xs: '5%', ipad: '25%' },
+            pl: { md: '20%', laptop: '10%', lg: '10%', xl: '10%', xs: '5%', ipad: '25%' },
+            pr: { md: '20%', laptop: '10%', lg: '10%', xl: '10%', xs: '5%', ipad: '25%' },
             // pl: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
             // pr: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
             // bgcolor:"blue",

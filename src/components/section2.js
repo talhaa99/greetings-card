@@ -26,6 +26,7 @@ const Section2 = () => {
   const auth = useAuth();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const islargeUp = useMediaQuery(theme.breakpoints.up('xxl'));
   const isIpadScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
   const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
@@ -340,7 +341,7 @@ const Section2 = () => {
                           onClick={(e) => { e.stopPropagation(); handleDropdownClick(e, tab.value); handleTabClick(tab.value); }}
                           sx={{
                             display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center',
-                            minWidth:{ xs: 90, md: 120 }, px:2, py:{ md:1, xs:1 },
+                            minWidth:{ xs: 90, md: 120 , xl:150 }, px:2, py:{ md:1, xs:1 },
                             border:0, borderRadius:'12px !important', cursor:'pointer',
                             bgcolor: value===tab.value ? '#c165a0' : 'transparent',
                             color: value===tab.value ? 'white' : 'black',
@@ -406,12 +407,16 @@ const Section2 = () => {
                             className="menu"
                             style={{
                               position: 'absolute',
+                              // top: 'calc(100% + 8px)',
+
+                              // 👉 shift only the Category dropdown a bit to the right
+                              left: tab.value === '2' ? 'calc(50% + 28px)' : '50%',
                               top: '100%',
-                              left: '50%', // start from center of button
+                              // left: '50%', // start from center of button
                               transform: 'translateX(-50%)',
                               // backgroundColor:'red',
                               backgroundColor: 'rgba(232, 207, 222, 0.3)',
-                              width: isSmallScreen ? '170px' : '200px',
+                              width: isSmallScreen ? '170px'  : islargeUp ? '280px' : '200px',
                               maxHeight: tab.label === 'Category' ? '250px' : 'auto',
                               overflowY: tab.label === 'Category' ? 'auto' : 'visible',
                               padding: 0,
