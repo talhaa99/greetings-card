@@ -594,7 +594,7 @@ export const LandingNav = () => {
                   textAlign: 'center',
                   fontSize: { md: '50px', xs: '20px' },
                   fontWeight: 'bolder',
-                  pt: 1.3,
+                  mt: 2,
                   // ml: 10,
                   color: '#c09b9b'
                 }}
