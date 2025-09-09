@@ -62,6 +62,8 @@ const Section2 = () => {
   const barRef = useRef(null);
   const btnRefs = useRef({});
   const [menuShift, setMenuShift] = useState({ id: '', px: 0 });
+  const [mobilePos, setMobilePos] = useState({ id: '', top: 0 });
+  const [mobileShift, setMobileShift] = useState({ id: '', px: 0 });
 
 
   const handlePageChange = (event, value) => {
@@ -292,31 +294,84 @@ const Section2 = () => {
     const max = Math.max(1, Math.ceil(filteredAndSortedCards.length / cardsPerPage));
     if (currentPage > max) setCurrentPage(1);
   }, [filteredAndSortedCards.length]);
+
+  // const handleDropdownClick = (e, id) => {
+  //   e.stopPropagation();
+  //   setOpenDropdown(id);
+  //
+  //
+  //   // known dropdown width from your styles
+  //   const menuW = isSmallScreen ? 100 : isIpadScreen ? 170 : (islargeUp ? 270 : 220);
+  //   // const menuW = dropdownW;
+  //
+  //   const btnEl = btnRefs.current[id];
+  //   const barEl = barRef.current;
+  //   if (!btnEl || !barEl) { setMenuShift({ id, px: 0 }); return; }
+  //
+  //   const b = btnEl.getBoundingClientRect();
+  //   const r = barEl.getBoundingClientRect();
+  //
+  //   // dropdown centered on button
+  //   const centeredLeft  = b.left + b.width / 2 - menuW / 2;
+  //   const centeredRight = centeredLeft + menuW;
+  //
+  //   let px = 0;                       // +px => move right, -px => move left
+  //   if (centeredLeft < r.left)  px = r.left - centeredLeft;            // nudge right
+  //   else if (centeredRight > r.right) px = -(centeredRight - r.right); // nudge left
+  //
+  //   setMenuShift({ id, px });
+  // };
+
   const handleDropdownClick = (e, id) => {
     e.stopPropagation();
     setOpenDropdown(id);
 
-    // known dropdown width from your styles
-    const menuW = isSmallScreen ? 100 : isIpadScreen ? 170 : (islargeUp ? 270 : 220);
-    // const menuW = dropdownW;
+    // MOBILE: center on button, clamp inside the MENU BAR
+    if (isSmallScreen) {
+      const btnEl = btnRefs.current[id];
+      const barEl = barRef.current;
+      if (!btnEl || !barEl) { setMobileShift({ id, px: 0 }); return; }
 
+      const b = btnEl.getBoundingClientRect();
+      const r = barEl.getBoundingClientRect();
+
+      const menuW = 170;                 // must match <ul> width on small
+      const btnCenter = b.left + b.width / 2;
+
+      // centered under the button
+      let left = btnCenter - menuW / 2;
+
+      // compute shift so dropdown stays within the bar: [r.left, r.right]
+      let px = 0;
+      if (left < r.left) {
+        px += (r.left - left);                          // nudge right
+        left = r.left;
+      } else if (left + menuW > r.right) {
+        px -= (left + menuW - r.right);                 // nudge left
+      }
+
+      setMobileShift({ id, px });                        // used by <ul> transform
+      return;
+    }
+
+    // DESKTOP/TABLET (unchanged)
+    const menuW = isIpadScreen ? 170 : (islargeUp ? 270 : 220);
     const btnEl = btnRefs.current[id];
     const barEl = barRef.current;
     if (!btnEl || !barEl) { setMenuShift({ id, px: 0 }); return; }
 
     const b = btnEl.getBoundingClientRect();
     const r = barEl.getBoundingClientRect();
-
-    // dropdown centered on button
     const centeredLeft  = b.left + b.width / 2 - menuW / 2;
     const centeredRight = centeredLeft + menuW;
 
-    let px = 0;                       // +px => move right, -px => move left
-    if (centeredLeft < r.left)  px = r.left - centeredLeft;            // nudge right
-    else if (centeredRight > r.right) px = -(centeredRight - r.right); // nudge left
+    let px = 0;
+    if (centeredLeft < r.left)        px = r.left - centeredLeft;
+    else if (centeredRight > r.right) px = -(centeredRight - r.right);
 
     setMenuShift({ id, px });
   };
+
 
 
   return (
@@ -402,6 +457,7 @@ const Section2 = () => {
                           // className="btn"  // (optional) or remove className entirely
                           onClick={(e) => { e.stopPropagation(); handleDropdownClick(e, tab.value); handleTabClick(tab.value); }}
                           sx={{
+                            position:'relative',
                             display:'flex', alignItems:'center', justifyContent:'center', textAlign:'center',
                             minWidth:{ xs: 90, md: 120 , xl:150 }, px:2, py:{ md:1, xs:1 },
                             border:0, borderRadius:'12px !important', cursor:'pointer',
@@ -465,32 +521,68 @@ const Section2 = () => {
                           {/*</IconButton>*/}
                         </Box>
                         {openDropdown === tab.value && (
+                          // <ul
+                          //   className="menu"
+                          //   style={{
+                          //     position: 'absolute',
+                          //     top: '100%',
+                          //     left: '50%',
+                          //     transform: `translateX(calc(-50% + ${menuShift.id === tab.value ? menuShift.px : 0}px))`,
+                          //     // left: tab.value === '2' ? 'calc(50% + 18px)' : '50%',
+                          //     // top: '100%',
+                          //     // left: '50%', // start from center of button
+                          //     // transform: 'translateX(-50%)',
+                          //     // backgroundColor:'red',
+                          //     backgroundColor: 'rgba(232, 207, 222, 0.3)',
+                          //     width: isSmallScreen ? '170px'  : isIpadScreen ?  '170px'  :islargeUp ? '270px' : '220px',
+                          //     maxHeight: tab.label === 'Category' ? '250px' : 'auto',
+                          //     overflowY: tab.label === 'Category' ? 'auto' : 'visible',
+                          //     padding: 0,
+                          //     // borderRadius: '30px !important',
+                          //     listStyle: 'none',
+                          //     marginTop: 10,
+                          //     // zIndex: 1000,
+                          //     zIndex: 1500,
+                          //     pointerEvents: 'auto'
+                          //   }}
+                          // >
                           <ul
                             className="menu"
-                            style={{
-                              position: 'absolute',
-                              top: '100%',
-                              left: '50%',
-                              transform: `translateX(calc(-50% + ${menuShift.id === tab.value ? menuShift.px : 0}px))`,
-                              // left: tab.value === '2' ? 'calc(50% + 18px)' : '50%',
-                              // top: '100%',
-                              // left: '50%', // start from center of button
-                              // transform: 'translateX(-50%)',
-                              // backgroundColor:'red',
-                              backgroundColor: 'rgba(232, 207, 222, 0.3)',
-                              width: isSmallScreen ? '170px'  : isIpadScreen ?  '170px'  :islargeUp ? '270px' : '220px',
-                              maxHeight: tab.label === 'Category' ? '250px' : 'auto',
-                              overflowY: tab.label === 'Category' ? 'auto' : 'visible',
-                              padding: 0,
-                              // borderRadius: '30px !important',
-                              listStyle: 'none',
-                              marginTop: 10,
-                              // zIndex: 1000,
-                              zIndex: 1500,
-                              pointerEvents: 'auto'
-                            }}
+                            style={
+                              isSmallScreen && mobileShift.id === tab.value
+                                ? {
+                                  position: 'absolute',
+                                  top: '100%',
+                                  left: '50%',                                        // center on button
+                                  transform: `translateX(calc(-50% + ${mobileShift.px}px))`, // clamp shift
+                                  width: 170, minWidth: 170, maxWidth: 170,
+                                  boxSizing: 'border-box', whiteSpace: 'nowrap',
+                                  backgroundColor: 'rgba(232, 207, 222, 0.3)',
+                                  maxHeight: tab.label === 'Category' ? '250px' : 'auto',
+                                  overflowY: tab.label === 'Category' ? 'auto' : 'visible',
+                                  padding: 0, listStyle: 'none', zIndex: 2000,   marginTop: 10
+                                }
+                                : {
+                                  // DESKTOP/TABLET
+                                  position: 'absolute',
+                                  top: '100%',
+                                  left: '50%',
+                                  transform: `translateX(calc(-50% + ${
+                                    menuShift.id === tab.value ? menuShift.px : 0
+                                  }px))`,
+                                  width: isIpadScreen ? 170 : (islargeUp ? 270 : 220),
+                                  backgroundColor: 'rgba(232, 207, 222, 0.3)',
+                                  maxHeight: tab.label === 'Category' ? '250px' : 'auto',
+                                  overflowY: tab.label === 'Category' ? 'auto' : 'visible',
+                                  padding: 0,
+                                  listStyle: 'none',
+                                  marginTop: 10,
+                                  zIndex: 1500,
+                                }
+                            }
                           >
-                            {tab.label === 'Category' && tab.options.length === 0 ? (
+
+                        {tab.label === 'Category' && tab.options.length === 0 ? (
                               <li style={{ padding: '1rem', textAlign: 'center' }}>
                                 <CircularProgress size={20}/>
                               </li>
@@ -604,15 +696,15 @@ const Section2 = () => {
                   {/*    </>*/}
                   {/*  )}*/}
                   {/*</Grid>*/}
-                  <Grid container key={animKey} sx={{ mt: 5  , height:'100%',        minHeight: '100vh' }}>
+                  <Grid container key={animKey} sx={{ mt: 5  , height:'100%',  minHeight: '100vh' }}>
                     {loading ? (
-                      <Box sx={{ width: '100%', textAlign: 'center' }}>
+                      <Box sx={{ width:'100%', minHeight:'inherit', display:'flex', alignItems:'center', justifyContent:'center' }}>
                         <CircularProgress/>
                       </Box>
                     ) : (
                       <>
                         {displayedCards.length === 0 ? (
-                          <Box sx={{ width: '100%', textAlign: 'center', pointerEvents: 'none', height:'100%'}}>
+                          <Box sx={{  width:'100%', minHeight:'inherit', display:'flex', alignItems:'center', justifyContent:'center', pointerEvents:'none'}}>
                             <Typography>No cards found.</Typography>
                           </Box>
                         ) : (
