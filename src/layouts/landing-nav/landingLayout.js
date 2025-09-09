@@ -867,18 +867,24 @@ export const LandingNav = () => {
                 <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
                   <li>
                     <NextLink href="/myCards" passHref legacyBehavior>
-                      <button className="dropdown-item"
+                      <button className="dropdown-item" style={{
+                        fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
+                      }}
                               // onClick={handleMyCards}
                       >My Cards</button>
                     </NextLink>
                   </li>
                   <li>
                     <NextLink href="/" passHref legacyBehavior>
-                    <button className="dropdown-item">My Account</button>
+                    <button className="dropdown-item" style={{
+                      fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
+                    }}>My Account</button>
                     </NextLink>
                   </li>
                   <li>
-                    <button className="dropdown-item" onClick={handleSignOut}>Logout</button>
+                    <button className="dropdown-item" onClick={handleSignOut} style={{
+                      fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
+                    }}>Logout</button>
                   </li>
                 </ul>
               </Box>
