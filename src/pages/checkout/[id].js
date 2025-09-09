@@ -113,7 +113,8 @@ function OrderItem({ item, onQty }) {
     // </Card>
     <Card variant="outlined" sx={{
       borderRadius: 1.5,
-      minWidth:{md:400, xl:700, '4k': 1000},
+      // minWidth:{md:400, lg: 600, xl:700, '4k': 1000},
+      minWidth:{md:400, lg: 600, xl:700, '4k': 1000},
       minHeight:{'4k':400},
       mb: 2.5,
       width: '100%',
@@ -575,8 +576,8 @@ export default function CheckoutPage() {
         backgroundRepeat: 'no-repeat'
       }}>
         <Box  sx={{
-          pl: { md: '20%', laptop: '15%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
-          pr: { md: '20%', laptop: '15%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
+          pl: { md: '20%', laptop: '10%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
+          pr: { md: '20%', laptop: '10%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
           mt: { xs: 5, md: 0 },
           mb: { xs: 5, md: 0 },
           display: 'flex',
@@ -589,7 +590,9 @@ export default function CheckoutPage() {
                 onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',minWidth:{md:400, xl:700, '4k':1000}, height:'100%',  minHeight:{'4k':600}}}>
+                <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',
+                  minWidth:{md:400, lg: 500, xl:700, '4k':1000},
+                  height:'100%',  minHeight:{'4k':600}}}>
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
                                 sx={{ mb: {md: 2 , '4k':4}, color: ACCENT ,  fontSize:{xl:'25px','4k':'50px'} }}>Delivery Address</Typography>
