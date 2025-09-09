@@ -594,7 +594,7 @@ const Section2 = () => {
                                     style={{
                                       backgroundColor: 'rgba(232, 207, 222, 0.8)',
                                       color: 'black',
-                                      fontSize: '16px',
+                                      fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px',
                                       cursor: 'pointer',
                                       display: 'block',
                                       padding: '8px 12px',

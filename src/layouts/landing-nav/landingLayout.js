@@ -16,7 +16,7 @@ import {
   Popover,
   Divider,
   MenuList,
-  MenuItem
+  MenuItem, useTheme
 } from '@mui/material';
 import axios from 'axios';
 import Button from '@mui/material/Button';
@@ -75,7 +75,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export const LandingNav = () => {
-
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const islargeUp = useMediaQuery(theme.breakpoints.up('xxl'));
+  const isIpadScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const { data: session, status } = useSession();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -761,9 +764,13 @@ export const LandingNav = () => {
                       </Button>
 
                       <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
-                        <li>
+                        <li style={{
+                          fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                        }}>
                           <NextLink href="/myCards" passHref legacyBehavior>
-                            <button className="dropdown-item"
+                            <button className="dropdown-item" style={{
+                              fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                            }}
                                     // onClick={handleMyCards}
                             >
                               My Cards
@@ -772,14 +779,18 @@ export const LandingNav = () => {
                         </li>
                         <li>
                           <NextLink href="/" passHref legacyBehavior>
-                          <button className="dropdown-item">
+                          <button className="dropdown-item" style={{
+                            fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                          }}>
                             My Account
                           </button>
                           </NextLink>
                         </li>
                         {/*<li><hr className="dropdown-divider" /></li>*/}
                         <li>
-                          <button className="dropdown-item" onClick={handleSignOut}>
+                          <button className="dropdown-item" onClick={handleSignOut} style={{
+                            fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                          }}>
                             Logout
                           </button>
                         </li>
