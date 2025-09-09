@@ -796,9 +796,9 @@ const bridgesAttachedRef = useRef(false);
       if (data && userTemplateData) {
         console.log("data before calling game on load", data)
         console.log("userTemplateData before calling game on load", userTemplateData)
-        setTimeout(() => {
+        // setTimeout(() => {
           gameOnLoad();
-        }, 5000);
+        // }, 5000);
         // gameOnLoad();
       }
 

@@ -696,7 +696,7 @@ const Section2 = () => {
                   {/*    </>*/}
                   {/*  )}*/}
                   {/*</Grid>*/}
-                  <Grid container key={animKey} sx={{ mt: 5  , height:'100%',  minHeight: '100vh' }}>
+                  <Grid container key={animKey} sx={{ mt: 5  , height:'100%'}}>
                     {loading ? (
                       <Box sx={{ width:'100%', minHeight:'inherit', display:'flex', alignItems:'center', justifyContent:'center' }}>
                         <CircularProgress/>
