@@ -765,11 +765,11 @@ export const LandingNav = () => {
 
                       <ul className="dropdown-menu" aria-labelledby="userDropdownBtn">
                         <li style={{
-                          fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                          fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
                         }}>
                           <NextLink href="/myCards" passHref legacyBehavior>
                             <button className="dropdown-item" style={{
-                              fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                              fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
                             }}
                                     // onClick={handleMyCards}
                             >
@@ -780,7 +780,7 @@ export const LandingNav = () => {
                         <li>
                           <NextLink href="/" passHref legacyBehavior>
                           <button className="dropdown-item" style={{
-                            fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                            fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
                           }}>
                             My Account
                           </button>
@@ -789,7 +789,7 @@ export const LandingNav = () => {
                         {/*<li><hr className="dropdown-divider" /></li>*/}
                         <li>
                           <button className="dropdown-item" onClick={handleSignOut} style={{
-                            fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '20px'
+                            fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
                           }}>
                             Logout
                           </button>
