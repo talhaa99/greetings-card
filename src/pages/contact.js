@@ -158,7 +158,7 @@ const Contact = () => {
                   fontSize: { md: '1.3rem', xs: '13px' },
                   alignItems: 'center',
                   height: '100%'
-                }}>john.doe@example.com</Typography>
+                }}>Info@incardible.com.au</Typography>
               </Box>
               <Box sx={{
                 mt: { md: 3, xs: 3 },

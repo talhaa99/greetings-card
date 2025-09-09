@@ -553,6 +553,7 @@ export const LandingNav = () => {
                       // width: '15%',
                       width: '17%',
                       pb: 1,pt:0.7,
+                      cursor:'pointer',
                       height: 'auto'
                     }}
                   />

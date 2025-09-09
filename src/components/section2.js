@@ -31,6 +31,7 @@ const Section2 = () => {
   const islargeUp = useMediaQuery(theme.breakpoints.up('xxl'));
   const isIpadScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
+  const dropdownW = isSmallScreen ? 120 : (isIpadScreen ? 150 : (islargeUp ? 270 : 220));
 
   const [animKey, setAnimKey] = useState(0);
   const gridTopRef = useRef(null);
@@ -58,6 +59,9 @@ const Section2 = () => {
 
   // const displayedCards = cards.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage);
 
+  const barRef = useRef(null);
+  const btnRefs = useRef({});
+  const [menuShift, setMenuShift] = useState({ id: '', px: 0 });
 
 
   const handlePageChange = (event, value) => {
@@ -77,10 +81,10 @@ const Section2 = () => {
   // console.log('value', value);
   // console.log('openDropdown', openDropdown);
 
-  const handleDropdownClick = (event, val) => {
-    setValue(val); // update active tab
-    setOpenDropdown(prev => (prev === val ? null : val)); // toggle current dropdown
-  };
+  // const handleDropdownClick = (event, val) => {
+  //   setValue(val); // update active tab
+  //   setOpenDropdown(prev => (prev === val ? null : val)); // toggle current dropdown
+  // };
 
   // const handleDropdownClick = (event, val) => {
   //   setAnchorEls((prev) => ({ ...prev, [val]: event.currentTarget }));
@@ -288,6 +292,31 @@ const Section2 = () => {
     const max = Math.max(1, Math.ceil(filteredAndSortedCards.length / cardsPerPage));
     if (currentPage > max) setCurrentPage(1);
   }, [filteredAndSortedCards.length]);
+  const handleDropdownClick = (e, id) => {
+    e.stopPropagation();
+    setOpenDropdown(id);
+
+    // known dropdown width from your styles
+    const menuW = isSmallScreen ? 100 : isIpadScreen ? 170 : (islargeUp ? 270 : 220);
+    // const menuW = dropdownW;
+
+    const btnEl = btnRefs.current[id];
+    const barEl = barRef.current;
+    if (!btnEl || !barEl) { setMenuShift({ id, px: 0 }); return; }
+
+    const b = btnEl.getBoundingClientRect();
+    const r = barEl.getBoundingClientRect();
+
+    // dropdown centered on button
+    const centeredLeft  = b.left + b.width / 2 - menuW / 2;
+    const centeredRight = centeredLeft + menuW;
+
+    let px = 0;                       // +px => move right, -px => move left
+    if (centeredLeft < r.left)  px = r.left - centeredLeft;            // nudge right
+    else if (centeredRight > r.right) px = -(centeredRight - r.right); // nudge left
+
+    setMenuShift({ id, px });
+  };
 
 
   return (
@@ -298,8 +327,8 @@ const Section2 = () => {
       <Box sx={{
         width: '100%',
         // bgcolor:'red',
-        height: { md: '100%', xs: '100%', lg: '100%', xl: '100%' }
-        // minHeight: '100vh'
+        height: { md: '100%', xs: '100%', lg: '100%', xl: '100%' },
+        minHeight: '100vh'
       }}>
         <Box
           data-aos="zoom-in"
@@ -348,14 +377,15 @@ const Section2 = () => {
               }}>
                 <TabContext value={value} sx={{ width: '100%', overflow: 'visible' }}>
                   <Box
-                    ref={dropdownRef}
+                    ref={(el) => { dropdownRef.current = el; barRef.current = el; }}
+                    // ref={dropdownRef}
                     sx={{
                       bgcolor: 'rgba(232, 207,222, 0.8 )',
                       // bgcolor: '#e8cfde',
                       p: { md: 1, xs: 1 },
                       borderRadius: '20px',
                       width: '100%',
-                      maxWidth: { md: '550px', xs: '300px' , xxl:'700px'},
+                      maxWidth: { md: '550px', xs: '330px' , xxl:'700px'},
                       display: 'flex',
                       flexDirection: { md: 'row', xs: 'row' },
                       justifyContent: { md: 'space-around', xs: 'center' },
@@ -368,6 +398,7 @@ const Section2 = () => {
                         <Box
                           component="button"
                           type="button"
+                          ref={el => (btnRefs.current[tab.value] = el)}
                           // className="btn"  // (optional) or remove className entirely
                           onClick={(e) => { e.stopPropagation(); handleDropdownClick(e, tab.value); handleTabClick(tab.value); }}
                           sx={{
@@ -438,16 +469,16 @@ const Section2 = () => {
                             className="menu"
                             style={{
                               position: 'absolute',
-                              // top: 'calc(100% + 8px)',
-
-                              // 👉 shift only the Category dropdown a bit to the right
-                              left: tab.value === '2' ? 'calc(50% + 15px)' : '50%',
                               top: '100%',
+                              left: '50%',
+                              transform: `translateX(calc(-50% + ${menuShift.id === tab.value ? menuShift.px : 0}px))`,
+                              // left: tab.value === '2' ? 'calc(50% + 18px)' : '50%',
+                              // top: '100%',
                               // left: '50%', // start from center of button
-                              transform: 'translateX(-50%)',
+                              // transform: 'translateX(-50%)',
                               // backgroundColor:'red',
                               backgroundColor: 'rgba(232, 207, 222, 0.3)',
-                              width: isSmallScreen ? '170px'  : islargeUp ? '250px' : '200px',
+                              width: isSmallScreen ? '170px'  : isIpadScreen ?  '170px'  :islargeUp ? '270px' : '220px',
                               maxHeight: tab.label === 'Category' ? '250px' : 'auto',
                               overflowY: tab.label === 'Category' ? 'auto' : 'visible',
                               padding: 0,
@@ -573,7 +604,7 @@ const Section2 = () => {
                   {/*    </>*/}
                   {/*  )}*/}
                   {/*</Grid>*/}
-                  <Grid container key={animKey} sx={{ mt: 5 }}>
+                  <Grid container key={animKey} sx={{ mt: 5  , height:'100%',        minHeight: '100vh' }}>
                     {loading ? (
                       <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <CircularProgress/>
@@ -581,7 +612,7 @@ const Section2 = () => {
                     ) : (
                       <>
                         {displayedCards.length === 0 ? (
-                          <Box sx={{ width: '100%', textAlign: 'center', pointerEvents: 'none' }}>
+                          <Box sx={{ width: '100%', textAlign: 'center', pointerEvents: 'none', height:'100%'}}>
                             <Typography>No cards found.</Typography>
                           </Box>
                         ) : (
@@ -593,7 +624,7 @@ const Section2 = () => {
                                 lg={3}
                                 xs={6}
                                 key={data.uuid || index}
-                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}
                                 data-aos="zoom-in"
                                 data-aos-delay={delay}
                               >

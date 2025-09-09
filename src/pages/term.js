@@ -370,7 +370,7 @@ const Page = () => {
                       Contact Us
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      If you have any questions about these Terms, please contact us at <b>Email: team@greetingsCard.com</b>
+                      If you have any questions about these Terms, please contact us at <b>Email: Info@incardible.com.au</b>
                     </Typography>
                   </Typography>
                 </CardContent>
