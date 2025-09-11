@@ -392,10 +392,10 @@ const Contact = () => {
                 <Button
                   size={buttonSize}
                 fullwidth
-                // variant='conatined'
+                variant='conatined'
                 sx={{
                 // px: 6,
-                minWidth: { md: '270px', xs: '150px' },// horizontal padding (left and right)
+                minWidth: { md: '150px', xs: '150px' },// horizontal padding (left and right)
                 // py: 2,
                 // borderRadius: '30px !important',
                 backgroundColor: '#c165a0',

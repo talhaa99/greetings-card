@@ -390,8 +390,8 @@ const Section2 = () => {
           data-aos-duration="600"
           data-aos-easing="ease-in"
           sx={{
-            pl: { md: '20%', laptop: '15%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
-            pr: { md: '20%', laptop: '15%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
+            pl: { md: '20%', laptop: '20%', lg: '20%', xl: '20%', xs: '5%', ipad: '25%' },
+            pr: { md: '20%', laptop: '20%', lg: '20%', xl: '20%', xs: '5%', ipad: '25%' },
             // bgcolor:"blue",
             pt: { md: 2, xs: 0 },
             pb: 5,
@@ -405,7 +405,7 @@ const Section2 = () => {
             // py: { md: 2, xs: 1 },
             borderRadius: '30px !important',
             // minWidth: { md: '250px', xs: '200px' },
-            fontSize: { md: '45px', xs: '25px' },
+            fontSize: { md: '40px', xs: '25px' },
             // backgroundColor: '#ffecc8',
             color: { xs: '#c165a0', md: '#1A1D25' },
             fontWeight: 'bolder'

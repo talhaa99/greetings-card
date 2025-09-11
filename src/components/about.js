@@ -3,7 +3,7 @@ import {
   Box,
   Typography,
   useTheme,
-  useMediaQuery,
+  useMediaQuery,Container,
   Grid,
   Link as MuiLink, Card
 } from '@mui/material';
@@ -174,6 +174,129 @@ const AboutUs = () => {
         {/*}*/}
 
 
+        {/*{*/}
+        {/*  (isMobile || isLaptopScreen) && !isLargeUp && (*/}
+
+        {/*    <Card*/}
+        {/*      sx={{*/}
+        {/*        ml: 2, mr: 2,*/}
+        {/*        // width: 500,*/}
+        {/*        // width: 600,*/}
+        {/*        width: 650,*/}
+        {/*        // height:'100%',*/}
+        {/*        height: { md: 600, xs: 720 },*/}
+        {/*        borderRadius: { md: 15, xs: 7 },*/}
+        {/*        position: 'relative',*/}
+        {/*        zIndex: 2,*/}
+        {/*        overflow: 'visible',*/}
+        {/*        // display: 'flex',*/}
+        {/*        // alignItems: 'center',*/}
+        {/*        // justifyContent: 'center',*/}
+        {/*        px: { md: 5, xs: 1 }*/}
+        {/*        // px: 5*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      <Box*/}
+
+        {/*        data-aos="zoom-in"*/}
+        {/*        data-aos-duration="600"*/}
+        {/*        data-aos-easing="ease-in"*/}
+        {/*        sx={{ mt: 3 }}>*/}
+        {/*        <Typography*/}
+        {/*          variant="h4"*/}
+        {/*          fontWeight="bold"*/}
+        {/*          align="center"*/}
+        {/*          mb={1}*/}
+        {/*        >*/}
+        {/*          About Us*/}
+        {/*        </Typography>*/}
+        {/*        <Typography gutterBottom variant="body1" sx={{*/}
+        {/*          textAlign: 'center',*/}
+        {/*          color: 'grey',*/}
+        {/*          fontSize:{xs:'13px', md:'18px'}*/}
+        {/*        }}>*/}
+        {/*          About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod*/}
+        {/*          tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis*/}
+        {/*          nostrud exercitation ullamco laboris nisi ut aliquip.*/}
+        {/*        </Typography>*/}
+        {/*      </Box>*/}
+        {/*      /!* Text Half-Outside on Left *!/*/}
+        {/*      <Box*/}
+        {/*        data-aos="fade-right"*/}
+        {/*        data-aos-duration="600"*/}
+        {/*        data-aos-easing="ease-in"*/}
+        {/*        sx={{*/}
+        {/*          position: 'absolute',*/}
+        {/*          left: {*/}
+        {/*            md: -60, xs: '10%'*/}
+        {/*          },*/}
+        {/*          top: { md: '31%', xs: '58%' },*/}
+        {/*          // top: {md: '30.2%', xs:'60%' },*/}
+        {/*          width: { md: 400, xs: '80%' },*/}
+        {/*          backgroundColor: '#fff',*/}
+        {/*          p: {md: 3, xs:3 },*/}
+        {/*          boxShadow: 3,*/}
+        {/*          zIndex: 3*/}
+        {/*        }}*/}
+        {/*      >*/}
+        {/*        <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '20px' , xs:'13px'} }}>*/}
+        {/*          At{' '}*/}
+        {/*          <MuiLink component={NextLink} href="#" underline="hover" color="primary">*/}
+        {/*            Greeting Cards*/}
+        {/*          </MuiLink>*/}
+        {/*          , we believe in the power of heartfelt connections. Our mission is to bring joy,*/}
+        {/*          love,*/}
+        {/*          and warmth through beautifully crafted greeting cards for every occasion.*/}
+        {/*          Whether you&apos;re celebrating a birthday, anniversary, or simply want to*/}
+        {/*          say &quot;thank*/}
+        {/*          you&quot;, our designs speak from the heart. Each card is thoughtfully created with*/}
+        {/*          unique artwork and meaningful messages. We value creativity, quality, and personal*/}
+        {/*          touch.*/}
+        {/*        </Typography>*/}
+        {/*      </Box>*/}
+
+        {/*      /!* Baby Image Half-Outside on Right *!/*/}
+        {/*      <Box*/}
+        {/*        data-aos="fade-left"*/}
+        {/*        data-aos-duration="600"*/}
+        {/*        data-aos-easing="ease-in"*/}
+        {/*        component="img"*/}
+        {/*        src={`${WEB_URL}/babe.png`}*/}
+        {/*        alt="baby image"*/}
+        {/*        sx={{*/}
+        {/*          position: 'absolute',*/}
+        {/*          right: {*/}
+        {/*            md: -70, xs: 20*/}
+        {/*          },*/}
+        {/*          top: { md: '29%', xs: '23%' },*/}
+        {/*          width: {*/}
+        {/*            md: '65%',*/}
+        {/*            xs: '90%'*/}
+        {/*          },*/}
+        {/*          zIndex: 2*/}
+        {/*        }}*/}
+        {/*      />*/}
+        {/*      <Box*/}
+        {/*        data-aos="zoom-in-down"*/}
+        {/*        data-aos-duration="600"*/}
+        {/*        data-aos-easing="ease-in"*/}
+        {/*        component="img"*/}
+        {/*        src={`${WEB_URL}/trb.gif`}*/}
+        {/*        alt="top right balloon"*/}
+        {/*        // sx={{ position: 'absolute', top: {md: '25%', xs:'25%' }, right: {md: - 150, xs:-30 }, width: {md: '30%', xs:'50%' }, zIndex: 4 }}*/}
+        {/*        sx={{*/}
+        {/*          position: 'absolute',*/}
+        {/*          top: { md: '35%', xs: '32%', lg: '34%' },*/}
+        {/*          right: { md: 50, xs: 130 },*/}
+        {/*          width: { md: '30%', xs: '30%' },*/}
+        {/*          zIndex: 4*/}
+        {/*        }}*/}
+        {/*      />*/}
+        {/*    </Card>*/}
+
+        {/*  )*/}
+        {/*}*/}
+
         {
           (isMobile || isLaptopScreen) && !isLargeUp && (
 
@@ -182,9 +305,9 @@ const AboutUs = () => {
                 ml: 2, mr: 2,
                 // width: 500,
                 // width: 600,
-                width: 650,
+                width: 600,
                 // height:'100%',
-                height: { md: 600, xs: 720 },
+                height: { md: 530, xs: 720 },
                 borderRadius: { md: 15, xs: 7 },
                 position: 'relative',
                 zIndex: 2,
@@ -192,7 +315,7 @@ const AboutUs = () => {
                 // display: 'flex',
                 // alignItems: 'center',
                 // justifyContent: 'center',
-                px: { md: 5, xs: 1 }
+                px: { md: 3, xs: 1 }
                 // px: 5
               }}
             >
@@ -201,7 +324,8 @@ const AboutUs = () => {
                 data-aos="zoom-in"
                 data-aos-duration="600"
                 data-aos-easing="ease-in"
-                sx={{ mt: 3 }}>
+                sx={{ mt: 2 }}
+              >
                 <Typography
                   variant="h4"
                   fontWeight="bold"
@@ -230,16 +354,16 @@ const AboutUs = () => {
                   left: {
                     md: -60, xs: '10%'
                   },
-                  top: { md: '31%', xs: '58%' },
+                  top: { md: '35%', xs: '58%' },
                   // top: {md: '30.2%', xs:'60%' },
-                  width: { md: 400, xs: '80%' },
+                  width: { md: 380, xs: '80%' },
                   backgroundColor: '#fff',
                   p: {md: 3, xs:3 },
                   boxShadow: 3,
                   zIndex: 3
                 }}
               >
-                <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '20px' , xs:'13px'} }}>
+                <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '18px' , xs:'13px'} }}>
                   At{' '}
                   <MuiLink component={NextLink} href="#" underline="hover" color="primary">
                     Greeting Cards
@@ -266,11 +390,11 @@ const AboutUs = () => {
                 sx={{
                   position: 'absolute',
                   right: {
-                    md: -70, xs: 20
+                    md: -60, xs: 20
                   },
-                  top: { md: '29%', xs: '23%' },
+                  top: { md: '32%', xs: '23%' },
                   width: {
-                    md: '65%',
+                    md: '60%',
                     xs: '90%'
                   },
                   zIndex: 2
@@ -287,7 +411,7 @@ const AboutUs = () => {
                 sx={{
                   position: 'absolute',
                   top: { md: '35%', xs: '32%', lg: '34%' },
-                  right: { md: 50, xs: 130 },
+                  right: { md: 30, xs: 130 },
                   width: { md: '30%', xs: '30%' },
                   zIndex: 4
                 }}
@@ -296,7 +420,6 @@ const AboutUs = () => {
 
           )
         }
-
 
         {
           isLargeUp && (

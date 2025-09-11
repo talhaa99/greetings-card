@@ -408,8 +408,8 @@ const PopularCards = () => {
               375:{slidesPerView: 3},
               640: { slidesPerView: 3 },
               768: { slidesPerView: 3 },
-              1024: { slidesPerView: 5 },
-              1400: { slidesPerView: 5 },
+              1024: { slidesPerView: 7 },
+              1400: { slidesPerView: 7 },
               2000:{ slidesPerView: 6},
             }}
             pagination={{
@@ -433,8 +433,8 @@ const PopularCards = () => {
                   sx={{
                     width: {
                     xs: '100%',
-                    md: '70%',
-                    lg:'100%',
+                    md: '40%',
+                    lg:'30%',
                     xl:'20%'
                   },
                     // maxWidth: '100%',

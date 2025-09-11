@@ -102,7 +102,7 @@ const Clients = () => {
               textAlign: 'center',
               fontWeight: 900,
               color: { xs: '#c165a0', md: '#1A1D25' },
-              fontSize: { md: '45px',xs: '25px'}
+              fontSize: { md: '40px',xs: '25px'}
             }}
           >
             Our Happy Clients

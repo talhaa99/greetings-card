@@ -2145,8 +2145,6 @@ const Page = () => {
           {/*    </>*/}
           {/*  )*/}
           {/*}*/}
-
-
           {
             (isMobile || isLaptopScreen || isLaptopScreenUp) && !isXXlUp && !isHDLap && (
               <>
@@ -2164,7 +2162,7 @@ const Page = () => {
                     // display: 'block',
                     position: 'absolute',
                     // height:'100%',
-                    top: '50%',
+                    top: '55%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 9
@@ -2216,8 +2214,8 @@ const Page = () => {
                     borderRadius: '10px',
                     left: { md: '50.1%', large: '50.2%', xs: '50%' },
                     top: {
-                      md: '49%',
-                      large: '48.5%',
+                      md: '53.5%',
+                      large: '52.5%',
                       // xl: '49.5%',
                       xs: '50%'
                     },
@@ -2253,7 +2251,7 @@ const Page = () => {
                       md: '38%', lg: '42%',
                       // , xl: '49%'
                       // HD:'43%'
-                      xs: '44%', laptop: '48%', large: '45%'
+                      xs: '44%', laptop: '43%', large: '43%'
                       // , ipadPro:'47%'
                     },
                     right: {
@@ -2292,7 +2290,7 @@ const Page = () => {
                       // ipadPro:'34%',
                       // ipad:'33%',
                       // isIpadScreen:'100%',
-                      laptop: '13%', //1280
+                      laptop: '6%', //1280
                       large: '16%'   //1540
                       // xl: '33%'
                     },
@@ -2326,7 +2324,7 @@ const Page = () => {
                   alt="card"
                   sx={{
                     position: 'absolute',
-                    bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '50%', large: '44%' },
+                    bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '45%', large: '40%' },
                     // bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '50%', large: '44%', HD:'42%' },
                     // left: { md: '-9%', xl: '-18%', xs: '1%', ipadPro: '0.1%', large: '-17%', HD:'-9%' },
                     left: { md: '-9%', xl: '-18%', xs: '1%', ipadPro: '0.1%', large: '-17%' },
@@ -2343,7 +2341,7 @@ const Page = () => {
                   sx={{
                     position: 'absolute',
                     // bottom: { xs: '49%', md: '52%', large: '45%' , HD:'43%'},
-                    bottom: { xs: '49%', md: '52%', large: '45%' },
+                    bottom: { xs: '49%', md: '50%', large: '43%' },
                     // left: { md: '-1%', xs: '1%', large: '-17%', HD:'-9%' },
                     left: { md: '-1%', xs: '1%', large: '-17%' },
                     // width: '18%',
@@ -2360,6 +2358,243 @@ const Page = () => {
           }
 
 
+          {/*{*/}
+          {/*  (isMobile || isLaptopScreen || isLaptopScreenUp) && !isXXlUp && !isHDLap && (*/}
+          {/*    <>*/}
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/laptop2.png`}*/}
+          {/*        alt="laptop"*/}
+          {/*        sx={{*/}
+          {/*          width: {*/}
+          {/*            md: '100%', xs: '70%', ipadPro: '70%', large: '100%'*/}
+          {/*            // ,HD:'90%'*/}
+          {/*          },*/}
+
+          {/*          // width: { xl: '100%', lg: '70%', xs:'70%' , ipad:'60%', ipadPro:'65%'},*/}
+          {/*          // display: 'block',*/}
+          {/*          position: 'absolute',*/}
+          {/*          // height:'100%',*/}
+          {/*          top: '50%',*/}
+          {/*          left: '50%',*/}
+          {/*          transform: 'translate(-50%, -50%)',*/}
+          {/*          zIndex: 9*/}
+          {/*        }}*/}
+          {/*      />*/}
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/butterfly.gif`}*/}
+          {/*        alt="card"*/}
+          {/*        sx={{*/}
+          {/*          // bgcolor:'red',*/}
+          {/*          position: 'absolute',*/}
+          {/*          right: { md: '-22%', lg: '-25%', xs: '-20%', large: '-30%' },*/}
+          {/*          top: { md: '25%', lg: '20%', xs: '25%', large: '20%' },*/}
+          {/*          transform: 'translate(-50%, -50%)',*/}
+          {/*          // width: { xl: '70%', lg: '71%', xs: '55%'*/}
+          {/*          width: { md: '45%', xs: '45%' },*/}
+          {/*          // width: { md: '45%', xs: '30%' },*/}
+          {/*          zIndex: 1200,*/}
+          {/*          pointerEvents: 'none'*/}
+          {/*        }}*/}
+          {/*      />*/}
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/hearts.gif`}*/}
+          {/*        alt="card"*/}
+          {/*        sx={{*/}
+          {/*          position: 'absolute',*/}
+          {/*          // bgcolor:'red',*/}
+          {/*          left: { md: '22%', large: '15%', xs: '23%' },*/}
+          {/*          top: { md: '25%', xs: '28%', large: '20%' },*/}
+          {/*          transform: 'translate(-50%, -50%)',*/}
+          {/*          // width: { xl: '70%', lg: '71%', xs: '55%'*/}
+          {/*          // width: { md: '28%', xs: '30%' },*/}
+          {/*          width: { md: '33%', lg: '35%', xs: '40%' },*/}
+          {/*          // width: { md: '33%',lg:'35%',  xs: '40%' },*/}
+          {/*          // zIndex: 1300,*/}
+          {/*          pointerEvents: 'none',*/}
+          {/*          zIndex: gifZIndex*/}
+          {/*        }}*/}
+          {/*      />*/}
+          {/*      <Box*/}
+          {/*        component="iframe"*/}
+          {/*        src="https://www.youtube.com/embed/w0HuAGCryIw?si=DgIa1dWVbF5FpX8y"*/}
+          {/*        allow="autoplay; encrypted-media"*/}
+          {/*        allowFullScreen*/}
+          {/*        sx={{*/}
+          {/*          position: 'absolute',*/}
+          {/*          borderRadius: '10px',*/}
+          {/*          left: { md: '50.1%', large: '50.2%', xs: '50%' },*/}
+          {/*          top: {*/}
+          {/*            md: '49%',*/}
+          {/*            large: '48.5%',*/}
+          {/*            // xl: '49.5%',*/}
+          {/*            xs: '50%'*/}
+          {/*          },*/}
+          {/*          transform: 'translate(-50%, -50%)',*/}
+          {/*          // width: { xl: '70%', lg: '71%', xs: '55%'*/}
+          {/*          width: {*/}
+          {/*            // xl: '70%',*/}
+          {/*            lg: '56%', xs: '55%', large: '80%'*/}
+          {/*            // ,HD:'72%'*/}
+          {/*            // , ipad: '55%', ipadPro: '55%'*/}
+          {/*          },*/}
+          {/*          // height: { xs: '130px', sm: '400px', md: '571px', xl: '570px'*/}
+          {/*          height: {*/}
+          {/*            xs: '130px', sm: '400px', lg: '440px', large: '610px'*/}
+          {/*            // , HD:'550px'*/}
+          {/*            // lg: '440px'*/}
+          {/*            // , xl: '570px'*/}
+          {/*            // , ipad:'270px', ipadPro:'360px'*/}
+          {/*          }, // ✅ custom heights*/}
+          {/*          zIndex: 10,*/}
+
+          {/*          border: 'none'*/}
+          {/*        }}*/}
+          {/*      />*/}
+
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/mack.png`}*/}
+          {/*        alt="mac side"*/}
+          {/*        sx={{*/}
+          {/*          position: 'absolute',*/}
+          {/*          bottom: {*/}
+          {/*            md: '38%', lg: '42%',*/}
+          {/*            // , xl: '49%'*/}
+          {/*            // HD:'43%'*/}
+          {/*            xs: '44%', laptop: '48%', large: '45%'*/}
+          {/*            // , ipadPro:'47%'*/}
+          {/*          },*/}
+          {/*          right: {*/}
+          {/*            md: '-10%', lg: '-10%', large: '-21%',*/}
+          {/*            // , xl: '-16%',*/}
+          {/*            // HD:'-8%',*/}
+          {/*            xs: '4%', laptop: '-1.5%'*/}
+          {/*            // , ipadPro:'4.5%'*/}
+
+          {/*          },*/}
+          {/*          width: {*/}
+          {/*            md: '27%',*/}
+          {/*            // HD:'25%',*/}
+          {/*            // , xl: '35%',*/}
+          {/*            xs: '20%',*/}
+          {/*            large: '35%'*/}
+          {/*            // , ipadPro:'20%'*/}
+          {/*            // , ipad:'23%', ipadPro:'25%', surfacePro:'22%'*/}
+          {/*          },*/}
+          {/*          transform: 'translateY(100%)',*/}
+          {/*          zIndex: 5*/}
+          {/*        }}*/}
+          {/*      />*/}
+
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/mobile.png`}*/}
+          {/*        alt="mobile side"*/}
+          {/*        sx={{*/}
+          {/*          display: isLargeScreen ? 'none' : 'block',*/}
+          {/*          position: 'absolute',*/}
+          {/*          bottom: {*/}
+          {/*            xs: '25%',*/}
+          {/*            md: '2%',*/}
+          {/*            lg: '14%', //1200*/}
+          {/*            // ipadPro:'34%',*/}
+          {/*            // ipad:'33%',*/}
+          {/*            // isIpadScreen:'100%',*/}
+          {/*            laptop: '13%', //1280*/}
+          {/*            large: '16%'   //1540*/}
+          {/*            // xl: '33%'*/}
+          {/*          },*/}
+          {/*          right: {*/}
+          {/*            xs: '3%',*/}
+          {/*            md: '-10%',*/}
+          {/*            lg: '-10%',*/}
+          {/*            // ipad:'3%',*/}
+          {/*            // ipadPro:'3%',*/}
+          {/*            laptop: '-2%', // 👈 for normal laptops*/}
+          {/*            large: '-11%'*/}
+          {/*            // xl: '-18%'*/}
+          {/*          },*/}
+          {/*          width: {*/}
+          {/*            xs: '13%',*/}
+          {/*            md: '15%',*/}
+          {/*            lg: '15%',*/}
+
+          {/*            // ipadPro:'15%',*/}
+          {/*            laptop: '16%' // 👈 a bit bigger for laptops*/}
+          {/*            // xl: '25%'*/}
+          {/*          },*/}
+          {/*          transform: 'translateY(10%)',*/}
+          {/*          zIndex: 5*/}
+          {/*        }}*/}
+          {/*      />*/}
+
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/card.png`}*/}
+          {/*        alt="card"*/}
+          {/*        sx={{*/}
+          {/*          position: 'absolute',*/}
+          {/*          bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '50%', large: '44%' },*/}
+          {/*          // bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '50%', large: '44%', HD:'42%' },*/}
+          {/*          // left: { md: '-9%', xl: '-18%', xs: '1%', ipadPro: '0.1%', large: '-17%', HD:'-9%' },*/}
+          {/*          left: { md: '-9%', xl: '-18%', xs: '1%', ipadPro: '0.1%', large: '-17%' },*/}
+          {/*          // width: { md: '25%', xs: '24%', large: '30%', ipadPro: '25%', HD:'25%' },*/}
+          {/*          width: { md: '25%', xs: '24%', large: '30%', ipadPro: '25%' },*/}
+          {/*          transform: 'translateY(86%)',*/}
+          {/*          zIndex: 4*/}
+          {/*        }}*/}
+          {/*      />*/}
+          {/*      <Box*/}
+          {/*        component="img"*/}
+          {/*        src={`${WEB_URL}/cardBaloons.gif`}*/}
+          {/*        alt="card"*/}
+          {/*        sx={{*/}
+          {/*          position: 'absolute',*/}
+          {/*          // bottom: { xs: '49%', md: '52%', large: '45%' , HD:'43%'},*/}
+          {/*          bottom: { xs: '49%', md: '52%', large: '45%' },*/}
+          {/*          // left: { md: '-1%', xs: '1%', large: '-17%', HD:'-9%' },*/}
+          {/*          left: { md: '-1%', xs: '1%', large: '-17%' },*/}
+          {/*          // width: '18%',*/}
+          {/*          // width: { xs: '23%', md: '22%', large: '25%' , HD:'22%'},*/}
+          {/*          width: { xs: '23%', md: '22%', large: '25%' },*/}
+          {/*          transform: 'translateY(86%)',*/}
+          {/*          zIndex: 4*/}
+          {/*        }}*/}
+          {/*      />*/}
+
+
+          {/*    </>*/}
+          {/*  )*/}
+          {/*}*/}
+
+
+          {/*{*/}
+          {/*  isLaptopScreenUp && !isXXlUp && !isHDLap && (*/}
+
+          {/*    <Box*/}
+          {/*      component="img"*/}
+          {/*      src={`${WEB_URL}/mobile.png`}*/}
+          {/*      alt="mobile side"*/}
+          {/*      sx={{*/}
+          {/*        position: 'absolute',*/}
+          {/*        // bottom: islargeLaptop? '23%': '20%' ,*/}
+          {/*        bottom: '10%',*/}
+          {/*        right: '-21%',*/}
+          {/*        width: '20%',*/}
+          {/*        // bottom: isHDLap? '17%':'10%',*/}
+          {/*        // right: isHDLap ? '-10%' :'-21%',*/}
+          {/*        // width: isHDLap?'15%': '20%' ,*/}
+          {/*        transform: 'translateY(10%)',*/}
+          {/*        zIndex: 5*/}
+          {/*      }}*/}
+          {/*    />*/}
+          {/*  )*/}
+          {/*}*/}
+
+
           {
             isLaptopScreenUp && !isXXlUp && !isHDLap && (
 
@@ -2370,7 +2605,7 @@ const Page = () => {
                 sx={{
                   position: 'absolute',
                   // bottom: islargeLaptop? '23%': '20%' ,
-                  bottom: '10%',
+                  bottom: '8%',
                   right: '-21%',
                   width: '20%',
                   // bottom: isHDLap? '17%':'10%',
@@ -2382,7 +2617,6 @@ const Page = () => {
               />
             )
           }
-
 
           {/*1600*900*/}
           {isHDLap && (
