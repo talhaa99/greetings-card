@@ -33,6 +33,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import TikTokIcon from "../components/tiktokIcon";
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const Contact = () => {
   const router = useRouter();
@@ -40,37 +42,129 @@ const Contact = () => {
   const isContact = pathname === '/contact';
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const [loading, setLoading] = useState(false);
   const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
   const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 
+  // const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  //   'label + &': {
+  //     marginTop: theme.spacing(3)
+  //   },
+  //   '& .MuiInputBase-input': {
+  //     // fontFamily: 'Open Sans',
+  //     fontWeight: 700,
+  //     lineHeight: '17.6px',
+  //     letterSpacing: '0%',
+  //     fontSize: '16px',
+  //     borderRadius: 10,
+  //     position: 'relative',
+  //     // backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#F3F6F9',
+  //     border: '1px solid',
+  //     borderColor: 'white',
+  //     width: '100%',
+  //     padding: '10px 12px',
+  //     color: 'white',
+  //     transition: theme.transitions.create(['border-color', 'background-color', 'box-shadow']),
+  //     '&:focus': {
+  //       // boxShadow: '#C595FF 0 0 0 0.2rem ',
+  //       borderColor: 'white'
+  //     }
+  //   }
+  // }));
   const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    'label + &': {
-      marginTop: theme.spacing(3)
-    },
-    '& .MuiInputBase-input': {
-      // fontFamily: 'Open Sans',
+    'label + &': { marginTop: theme.spacing(3) },
+
+    // typed text = white
+    '& .MuiInputBase-input, & .MuiInputBase-inputMultiline': {
       fontWeight: 700,
       lineHeight: '17.6px',
-      letterSpacing: '0%',
-      fontSize: '16px',
+      fontSize: 16,
       borderRadius: 10,
-      position: 'relative',
-      // backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#F3F6F9',
       border: '1px solid',
       borderColor: 'white',
       width: '100%',
       padding: '10px 12px',
       color: 'white',
-      transition: theme.transitions.create(['border-color', 'background-color', 'box-shadow']),
-      '&:focus': {
-        // boxShadow: '#C595FF 0 0 0 0.2rem ',
-        borderColor: 'white'
-      }
-    }
-  }));
-  const buttonSize = isSmallScreen ? 'small' : 'large';
+      transition: theme.transitions.create(['border-color','background-color','box-shadow']),
+    },
 
+    // placeholder = grey
+    '& input::placeholder, & textarea::placeholder': {
+      color: 'grey',
+      opacity: 1,
+    },
+
+    // (optional) border highlight on focus
+    '& .MuiInputBase-input:focus, & .MuiInputBase-inputMultiline:focus': {
+      borderColor: 'white',
+    },
+  }));
+
+  const buttonSize = isSmallScreen ? 'small' : 'large';
+// put near the top of your file
+  const formBg = '#1a1d25';
+
+  const textFieldSx = {
+    // input text + placeholder
+    '& .MuiInputBase-input': { color: 'white' },
+    '& .MuiInputBase-input::placeholder': { color: 'grey', opacity: 1 },
+
+    // outline colors
+    '& .MuiOutlinedInput-root': {
+      // '& fieldset': { borderColor: 'white' },
+      // '&:hover fieldset': { borderColor: 'white' },
+      // '&.Mui-focused fieldset': { borderColor: 'white' },
+    },
+
+    // keep helper text aligned
+    '& .MuiFormHelperText-root': { ml: 0 },
+
+    // >>> KEY PART: stop border/label overlap
+    '& .MuiInputLabel-root': { color: 'white' },
+    '& .MuiInputLabel-shrink': {
+      backgroundColor: formBg,   // same as container
+      // paddingLeft: 6,
+      // paddingRight: 6,
+      zIndex: 1,
+      lineHeight: 1,             // keeps the patch tight
+    },
+  };
+
+
+
+  const formik = useFormik({
+    initialValues: { name:'', email:'', phoneNumber:'', message:'' },
+    validationSchema: Yup.object({
+      name: Yup.string().trim().required('Name is required'),
+      email: Yup.string().trim().email('Enter a valid email').required('Email is required'),
+      phoneNumber: Yup.string().matches(/^\+?[0-9\s()-]{7,20}$/, 'Enter a valid phone number').required('Phone number is required'),
+      message: Yup.string().trim().required('Message is required'),
+    }),
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      const id = toast.loading('Sending message…');
+      try {
+        await axios.post(`${API_BASE_URL}/api/contact-us/message`, {
+          name: values.name.trim(),
+          email: values.email.trim(),
+          phoneNumber: values.phoneNumber.trim(),
+          message: values.message.trim(),
+        });
+        toast.success('Message sent successfully');
+        resetForm();
+      } catch (err) {
+        toast.error(err?.response?.data?.message || err.message || 'Failed to send');
+      } finally {
+        toast.dismiss(id);
+        setSubmitting(false);
+      }
+    },
+  });
+
+  const errSx = (field) => ({
+    '& .MuiInputBase-input': {
+      borderColor: formik.touched[field] && formik.errors[field] ? '#ef4444' : 'white',
+    }
+  });
 
   return (
     <>
@@ -198,188 +292,358 @@ const Contact = () => {
                   <WhatsAppIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
-                {/*<img src={`${WEB_URL}/pinterst.png`} style={{*/}
-                {/*  width: isSmallScreen ? '10%' : ''*/}
-                {/*}}/>*/}
-                {/*<img src={`${WEB_URL}/facebook.png`} style={{*/}
-                {/*  width: isSmallScreen ? '10%' : ''*/}
-                {/*}}/>*/}
-                {/*<img src={`${WEB_URL}/tiktok.png`} style={{*/}
-                {/*  width: isSmallScreen ? '10%' : ''*/}
-                {/*}}/>*/}
-                {/*<img src={`${WEB_URL}/youtube.png`} style={{*/}
-                {/*  width: isSmallScreen ? '10%' : ''*/}
-                {/*}}/>*/}
-                {/*<img src={`${WEB_URL}/instagram.png`} style={{*/}
-                {/*  width: isSmallScreen ? '10%' : ''*/}
-                {/*}}/>*/}
               </Box>
             </Box>
           </Grid>
           <Grid item md={6} xs={12}>
-            <Box
-              // component="form"
-              sx={{
-                mt: { md: 5, xs: 2 },
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                flexDirection: 'column'
-              }}
-              // noValidate
-              // autoComplete="off"
-            >
-              <FormControl variant="standard" sx={{ width: '100%' }}>
-                <InputLabel
-                  shrink
-                  htmlFor="bootstrap-input1"
+            <Box component="form" id="contactForm" onSubmit={formik.handleSubmit} noValidate sx={{ mt: { md: 5, xs: 2 }, display: 'flex', flexDirection: 'column', gap: 2 }}>
+
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Full Name"
+                name="name"
+                placeholder="First Last"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+                InputLabelProps={{ shrink: true, sx: { color: 'white' } }}
+                // inputProps={{ maxLength: 80 }}
+                sx={textFieldSx}
+              />
+
+              {/* Email */}
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Email"
+                name="email"
+                type="email"
+                placeholder="example@gmail.com"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                InputLabelProps={{ shrink: true, sx: { color: 'white' } }}
+                sx={textFieldSx}
+              />
+
+              {/* Phone Number */}
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Phone Number"
+                name="phoneNumber"
+                type="tel"
+                placeholder="Enter your phone number"
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                InputLabelProps={{ shrink: true, sx: { color: 'white' } }}
+                inputProps={{ maxLength: 20 }}
+                sx={textFieldSx}
+              />
+
+              {/* Message */}
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Message"
+                name="message"
+                placeholder="Type your message…"
+                multiline
+                rows={5}
+                value={formik.values.message}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.message && Boolean(formik.errors.message)}
+                helperText={formik.touched.message && formik.errors.message}
+                InputLabelProps={{ shrink: true, sx: { color: 'white' } }}
+                sx={textFieldSx} />
+              <Grid md={12} xs={12}>
+                <Box
                   sx={{
-                    // fontFamily: 'Open Sans',
-                    fontWeight: 700,
-                    lineHeight: '17.6px',
-                    letterSpacing: '0%',
-                    fontSize: { xs: '15px', md: '20px' },
-                    width: '100% !important',
-                    // color: 'black !important',
-                    color: 'white !important'
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    mt: { md: 4, xs: 2 }
                   }}
                 >
-                  Full Name
-                </InputLabel>
-                <BootstrapInput
-                  placeholder="First Last"
-                  id="bootstrap-input1"
-                  sx={{
-                    color: 'black !important',
-                    '& input::placeholder': {
-                      color: 'grey !important',
-                      opacity: 1 // important for some browsers to show color
-                    }
-                  }}
-                />
-              </FormControl>
-              <FormControl variant="standard" sx={{ width: '100%' }}>
-                <InputLabel
-                  shrink
-                  htmlFor="bootstrap-input2"
-                  sx={{
-                    // fontFamily: 'Open Sans',
-                    fontWeight: 700,
-                    lineHeight: '17.6px',
-                    letterSpacing: '0%',
-                    fontSize: { xs: '15px', md: '20px' },
-                    width: '100% !important',
-                    color: 'white !important'
-                  }}
-                >
-                  Email
-                </InputLabel>
-                <BootstrapInput
-                  placeholder="example@gmail.com"
-                  id="bootstrap-input2"
-                  sx={{
-                    // color: 'black !important',
-                    '& input::placeholder': {
-                      color: 'grey !important',
-                      opacity: 1 // important for some browsers to show color
-                    }
-                  }}
-                />
-              </FormControl>
-              <FormControl variant="standard" sx={{ width: '100%' }}>
-                <InputLabel
-                  shrink
-                  htmlFor="bootstrap-input3"
-                  sx={{
-                    // fontFamily: 'Open Sans',
-                    fontWeight: 700,
-                    lineHeight: '17.6px',
-                    letterSpacing: '0%',
-                    fontSize: { xs: '15px', md: '20px' },
-                    width: '100% !important',
-                    color: 'white !important'
-                  }}
-                >
-                  Phone Number
-                </InputLabel>
-                <BootstrapInput
-                  placeholder="Enter your phone number"
-                  id="bootstrap-input3"
-                  sx={{
-                    // color: 'black !important',
-                    '& input::placeholder': {
-                      color: 'grey !important',
-                      opacity: 1 // important for some browsers to show color
-                    }
-                  }}
-                />
-              </FormControl>
-              <FormControl variant="standard" sx={{ width: '100%' }}>
-                <InputLabel
-                  shrink
-                  htmlFor="bootstrap-input4"
-                  sx={{
-                    // fontFamily: 'Open Sans',
-                    fontWeight: 700,
-                    lineHeight: '17.6px',
-                    letterSpacing: '0%',
-                    fontSize: { xs: '15px', md: '20px' },
-                    width: '100% !important',
-                    color: 'white !important'
-                  }}
-                >
-                  Message
-                </InputLabel>
-                <BootstrapInput
-                  multiline
-                  rows={5}
-                  placeholder="Type your message...."
-                  id="bootstrap-input4"
-                  sx={{
-                    // color: 'grey !important',
-                    '& textarea::placeholder': {
-                      color: 'grey !important',
-                      opacity: 1 // important for some browsers to show color
-                    }
-                  }}
-                />
-              </FormControl>
+                  <Button
+                    type="submit"
+                    form="contactForm"
+                    variant="contained"               // ← fix typo: 'contained'
+                    disableElevation
+                    disabled={formik.isSubmitting}
+                    sx={{
+                      minWidth: 120,
+                      // height: 36,
+                      px: 3,                          // compact width
+                      borderRadius: '12px',           // rounded corners like screenshot
+                      textTransform: 'none',
+                      // fontSize: 12,
+                      fontWeight: 700,
+                      backgroundColor: '#c165a0',
+                      color: 'white',
+                      boxShadow: '0 2px 0 rgba(0,0,0,0.15)',
+                      '&:hover': { backgroundColor: '#c165a0' },
+                      '&:disabled': { opacity: 0.8 }
+                    }}
+                  >
+                    {formik.isSubmitting ? 'Sending…' : 'Submit'}
+                  </Button>
+                </Box>
+              </Grid>
+
+            {/*<Grid md={12} xs={12}>*/}
+            {/*  <Box sx={{*/}
+            {/*    display: 'flex',*/}
+            {/*    justifyContent: 'center',*/}
+            {/*    alignItems: 'center',*/}
+            {/*    // bgcolor:'red',*/}
+            {/*    // width: '100%',*/}
+            {/*    mt: {md: 5 , xs:2}*/}
+            {/*  }}>*/}
+            {/*    /!*<NextLink href="/">*!/*/}
+            {/*    <Button*/}
+            {/*      type='submit'*/}
+            {/*      size={buttonSize}*/}
+            {/*      disabled={formik.isSubmitting}*/}
+            {/*      // fullwidth*/}
+            {/*      variant='conatined'*/}
+            {/*      form="contactForm"*/}
+            {/*      sx={{*/}
+            {/*        // px: 6,*/}
+            {/*        display: 'flex',*/}
+            {/*        justifyContent: 'center',*/}
+            {/*        alignItems: 'center',*/}
+            {/*        minWidth: { md: '150px', xs: '150px' },// horizontal padding (left and right)*/}
+            {/*        // py: 2,*/}
+            {/*        // borderRadius: '30px !important',*/}
+            {/*        backgroundColor: '#c165a0',*/}
+            {/*        color: 'white',*/}
+            {/*        width: '100% !important',*/}
+            {/*        // boxShadow: '0px 4px 12px #d8c0ca',*/}
+            {/*        '&:hover': {*/}
+            {/*          backgroundColor: '#c165a0',*/}
+            {/*          color: 'white'*/}
+            {/*        }*/}
+            {/*      }}*/}
+            {/*    >*/}
+            {/*      {formik.isSubmitting ? 'Sending…' : 'Submit'}*/}
+            {/*    </Button>*/}
+            {/*    /!*</NextLink>*!/*/}
+            {/*  </Box>*/}
+            {/*</Grid>*/}
             </Box>
           </Grid>
-          <Grid md={12} xs={12}>
-            <Box sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              mt: {md: 5 , xs:2}
-            }}>
-              <NextLink href="/">
-                <Button
-                  size={buttonSize}
-                fullwidth
-                variant='conatined'
-                sx={{
-                // px: 6,
-                minWidth: { md: '150px', xs: '150px' },// horizontal padding (left and right)
-                // py: 2,
-                // borderRadius: '30px !important',
-                backgroundColor: '#c165a0',
-                color: 'white',
-                width: '100% !important',
-                // boxShadow: '0px 4px 12px #d8c0ca',
-                '&:hover': {
-                  backgroundColor: '#c165a0',
-                  color: 'white'
-                }
-              }}
-                >
-                Submit
-              </Button>
-            </NextLink>
-    </Box>
-    </Grid>
+          {/*<Grid md={12} xs={12}>*/}
+          {/*  <Box sx={{*/}
+          {/*    display: 'flex',*/}
+          {/*    justifyContent: 'center',*/}
+          {/*    alignItems: 'center',*/}
+          {/*    // width: '100%',*/}
+          {/*    mt: {md: 5 , xs:2}*/}
+          {/*  }}>*/}
+          {/*    /!*<NextLink href="/">*!/*/}
+          {/*      <Button*/}
+          {/*        type='submit'*/}
+          {/*        size={buttonSize}*/}
+          {/*        disabled={formik.isSubmitting}*/}
+          {/*        // fullwidth*/}
+          {/*        variant='conatined'*/}
+          {/*        form="contactForm"*/}
+          {/*        sx={{*/}
+          {/*          // px: 6,*/}
+          {/*          minWidth: { md: '150px', xs: '150px' },// horizontal padding (left and right)*/}
+          {/*          // py: 2,*/}
+          {/*          // borderRadius: '30px !important',*/}
+          {/*          backgroundColor: '#c165a0',*/}
+          {/*          color: 'white',*/}
+          {/*          width: '100% !important',*/}
+          {/*          // boxShadow: '0px 4px 12px #d8c0ca',*/}
+          {/*          '&:hover': {*/}
+          {/*            backgroundColor: '#c165a0',*/}
+          {/*            color: 'white'*/}
+          {/*          }*/}
+          {/*        }}*/}
+          {/*      >*/}
+          {/*        {formik.isSubmitting ? 'Sending…' : 'Submit'}*/}
+          {/*      </Button>*/}
+          {/*    /!*</NextLink>*!/*/}
+          {/*  </Box>*/}
+          {/*</Grid>*/}
+
+    {/*      <Grid item md={6} xs={12}>*/}
+    {/*        <Box*/}
+    {/*          // component="form"*/}
+    {/*          sx={{*/}
+    {/*            mt: { md: 5, xs: 2 },*/}
+    {/*            display: 'flex',*/}
+    {/*            justifyContent: 'center',*/}
+    {/*            alignItems: 'center',*/}
+    {/*            gap: 2,*/}
+    {/*            flexDirection: 'column'*/}
+    {/*          }}*/}
+    {/*          // noValidate*/}
+    {/*          // autoComplete="off"*/}
+    {/*        >*/}
+    {/*          <FormControl variant="standard" sx={{ width: '100%' }}>*/}
+    {/*            <InputLabel*/}
+    {/*              shrink*/}
+    {/*              htmlFor="bootstrap-input1"*/}
+    {/*              sx={{*/}
+    {/*                // fontFamily: 'Open Sans',*/}
+    {/*                fontWeight: 700,*/}
+    {/*                lineHeight: '17.6px',*/}
+    {/*                letterSpacing: '0%',*/}
+    {/*                fontSize: { xs: '15px', md: '20px' },*/}
+    {/*                width: '100% !important',*/}
+    {/*                // color: 'black !important',*/}
+    {/*                color: 'white !important'*/}
+    {/*              }}*/}
+    {/*            >*/}
+    {/*              Full Name*/}
+    {/*            </InputLabel>*/}
+    {/*            <BootstrapInput*/}
+    {/*              placeholder="First Last"*/}
+    {/*              id="bootstrap-input1"*/}
+    {/*              sx={{*/}
+    {/*                color: 'black !important',*/}
+    {/*                '& input::placeholder': {*/}
+    {/*                  color: 'grey !important',*/}
+    {/*                  opacity: 1 // important for some browsers to show color*/}
+    {/*                }*/}
+    {/*              }}*/}
+    {/*            />*/}
+    {/*          </FormControl>*/}
+    {/*          <FormControl variant="standard" sx={{ width: '100%' }}>*/}
+    {/*            <InputLabel*/}
+    {/*              shrink*/}
+    {/*              htmlFor="bootstrap-input2"*/}
+    {/*              sx={{*/}
+    {/*                // fontFamily: 'Open Sans',*/}
+    {/*                fontWeight: 700,*/}
+    {/*                lineHeight: '17.6px',*/}
+    {/*                letterSpacing: '0%',*/}
+    {/*                fontSize: { xs: '15px', md: '20px' },*/}
+    {/*                width: '100% !important',*/}
+    {/*                color: 'white !important'*/}
+    {/*              }}*/}
+    {/*            >*/}
+    {/*              Email*/}
+    {/*            </InputLabel>*/}
+    {/*            <BootstrapInput*/}
+    {/*              placeholder="example@gmail.com"*/}
+    {/*              id="bootstrap-input2"*/}
+    {/*              sx={{*/}
+    {/*                // color: 'black !important',*/}
+    {/*                '& input::placeholder': {*/}
+    {/*                  color: 'grey !important',*/}
+    {/*                  opacity: 1 // important for some browsers to show color*/}
+    {/*                }*/}
+    {/*              }}*/}
+    {/*            />*/}
+    {/*          </FormControl>*/}
+    {/*          <FormControl variant="standard" sx={{ width: '100%' }}>*/}
+    {/*            <InputLabel*/}
+    {/*              shrink*/}
+    {/*              htmlFor="bootstrap-input3"*/}
+    {/*              sx={{*/}
+    {/*                // fontFamily: 'Open Sans',*/}
+    {/*                fontWeight: 700,*/}
+    {/*                lineHeight: '17.6px',*/}
+    {/*                letterSpacing: '0%',*/}
+    {/*                fontSize: { xs: '15px', md: '20px' },*/}
+    {/*                width: '100% !important',*/}
+    {/*                color: 'white !important'*/}
+    {/*              }}*/}
+    {/*            >*/}
+    {/*              Phone Number*/}
+    {/*            </InputLabel>*/}
+    {/*            <BootstrapInput*/}
+    {/*              placeholder="Enter your phone number"*/}
+    {/*              id="bootstrap-input3"*/}
+    {/*              sx={{*/}
+    {/*                // color: 'black !important',*/}
+    {/*                '& input::placeholder': {*/}
+    {/*                  color: 'grey !important',*/}
+    {/*                  opacity: 1 // important for some browsers to show color*/}
+    {/*                }*/}
+    {/*              }}*/}
+    {/*            />*/}
+    {/*          </FormControl>*/}
+    {/*          <FormControl variant="standard" sx={{ width: '100%' }}>*/}
+    {/*            <InputLabel*/}
+    {/*              shrink*/}
+    {/*              htmlFor="bootstrap-input4"*/}
+    {/*              sx={{*/}
+    {/*                // fontFamily: 'Open Sans',*/}
+    {/*                fontWeight: 700,*/}
+    {/*                lineHeight: '17.6px',*/}
+    {/*                letterSpacing: '0%',*/}
+    {/*                fontSize: { xs: '15px', md: '20px' },*/}
+    {/*                width: '100% !important',*/}
+    {/*                color: 'white !important'*/}
+    {/*              }}*/}
+    {/*            >*/}
+    {/*              Message*/}
+    {/*            </InputLabel>*/}
+    {/*            <BootstrapInput*/}
+    {/*              multiline*/}
+    {/*              rows={5}*/}
+    {/*              placeholder="Type your message...."*/}
+    {/*              id="bootstrap-input4"*/}
+    {/*              sx={{*/}
+    {/*                // color: 'grey !important',*/}
+    {/*                '& textarea::placeholder': {*/}
+    {/*                  color: 'grey !important',*/}
+    {/*                  opacity: 1 // important for some browsers to show color*/}
+    {/*                }*/}
+    {/*              }}*/}
+    {/*            />*/}
+    {/*          </FormControl>*/}
+    {/*        </Box>*/}
+    {/*      </Grid>*/}
+    {/*      <Grid md={12} xs={12}>*/}
+    {/*        <Box sx={{*/}
+    {/*          display: 'flex',*/}
+    {/*          justifyContent: 'center',*/}
+    {/*          alignItems: 'center',*/}
+    {/*          width: '100%',*/}
+    {/*          mt: {md: 5 , xs:2}*/}
+    {/*        }}>*/}
+    {/*          <NextLink href="/">*/}
+    {/*            <Button*/}
+    {/*              type='submit'*/}
+    {/*              size={buttonSize}*/}
+    {/*            fullwidth*/}
+    {/*            variant='conatined'*/}
+    {/*            sx={{*/}
+    {/*            // px: 6,*/}
+    {/*            minWidth: { md: '150px', xs: '150px' },// horizontal padding (left and right)*/}
+    {/*            // py: 2,*/}
+    {/*            // borderRadius: '30px !important',*/}
+    {/*            backgroundColor: '#c165a0',*/}
+    {/*            color: 'white',*/}
+    {/*            width: '100% !important',*/}
+    {/*            // boxShadow: '0px 4px 12px #d8c0ca',*/}
+    {/*            '&:hover': {*/}
+    {/*              backgroundColor: '#c165a0',*/}
+    {/*              color: 'white'*/}
+    {/*            }*/}
+    {/*          }}*/}
+    {/*            >*/}
+    {/*              {formik.isSubmitting ? 'Sending…' : 'Submit'}*/}
+    {/*          </Button>*/}
+    {/*        </NextLink>*/}
+    {/*</Box>*/}
+    {/*</Grid>*/}
 </Grid>
 </Container>
 </Box>
