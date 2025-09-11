@@ -28,10 +28,11 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { useRouter } from 'next/router';
 import Footer from '../components/footer';
-import TelegramIcon from '@mui/icons-material/Telegram';
+// import TelegramIcon from '@mui/icons-material/Telegram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import TikTokIcon from "../components/tiktokIcon";
 
 const Contact = () => {
   const router = useRouter();
@@ -69,6 +70,8 @@ const Contact = () => {
     }
   }));
   const buttonSize = isSmallScreen ? 'small' : 'large';
+
+
   return (
     <>
     <Head>
@@ -160,26 +163,26 @@ const Contact = () => {
                   height: '100%'
                 }}>Info@incardible.com.au</Typography>
               </Box>
-              <Box sx={{
-                mt: { md: 3, xs: 3 },
-                display: 'flex',
-                gap: 2,
-                height: '100%',
-                alignItems: 'center'
-              }}>
-                <LocationOnIcon sx={{
-                  color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
-                }}/>
-                {/*<img src={`${WEB_URL}/location.png`}/>*/}
-                <Typography variant="body1" sx={{
-                  fontWeight: '900',
-                  justifyContent: 'center',
-                  fontSize: { md: '1.3rem', xs: '13px' },
-                  color: 'white',
-                  alignItems: 'center',
-                  height: '100%'
-                }}>123 Main Street, Springfield, IL 62704, USA</Typography>
-              </Box>
+              {/*<Box sx={{*/}
+              {/*  mt: { md: 3, xs: 3 },*/}
+              {/*  display: 'flex',*/}
+              {/*  gap: 2,*/}
+              {/*  height: '100%',*/}
+              {/*  alignItems: 'center'*/}
+              {/*}}>*/}
+              {/*  <LocationOnIcon sx={{*/}
+              {/*    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }*/}
+              {/*  }}/>*/}
+              {/*  /!*<img src={`${WEB_URL}/location.png`}/>*!/*/}
+              {/*  <Typography variant="body1" sx={{*/}
+              {/*    fontWeight: '900',*/}
+              {/*    justifyContent: 'center',*/}
+              {/*    fontSize: { md: '1.3rem', xs: '13px' },*/}
+              {/*    color: 'white',*/}
+              {/*    alignItems: 'center',*/}
+              {/*    height: '100%'*/}
+              {/*  }}>123 Main Street, Springfield, IL 62704, USA</Typography>*/}
+              {/*</Box>*/}
               {/*<Box sx={{  mt: {md: 5, xs:3 }, display: 'flex', gap: 2, height: '100%', alignItems: 'center' }}>*/}
               {/*  <EmailIcon sx={{*/}
               {/*    color: '#c165a0'*/}
@@ -221,8 +224,8 @@ const Contact = () => {
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
                   }}/></NextLink>
                 <NextLink href="/">
-                  <TelegramIcon sx={{
-                    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
+                  <TikTokIcon  sx={{
+                    color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
                   }}/></NextLink>
                 <NextLink href="/">
                   <WhatsAppIcon sx={{

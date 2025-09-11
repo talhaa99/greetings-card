@@ -42,6 +42,7 @@
     "react-hot-toast": "^2.4.1",
     "react-paginate": "^8.3.0",
     "react-qr-code": "^2.0.15",
+    "simple-icons": "^15.14.0",
     "simplebar-react": "^3.2.4",
     "swiper": "^11.2.6",
     "uuid": "^11.1.0",
