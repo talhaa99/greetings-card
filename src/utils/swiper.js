@@ -81,7 +81,11 @@ export default function CardsCarousel({ allCards = [] }) {
                   src={img}
                   alt={title}
                   loading="lazy"
-                  sx={{ width: '100%', aspectRatio: '1 / 1.414', objectFit: 'cover' }}
+                  // sx={{ width: '100%', aspectRatio: '1 / 1.414', objectFit: 'cover' }}
+                  sx={{     width: '100%',
+                    height: { xs: '100% !important', md: '350px !important',  xl:'100% !important' }, // smaller height for mobile, bigger for desktop
+                    objectFit: 'cover',
+                    borderRadius: 2}}
                   // sx={{ width: '100%',height:300, objectFit: 'cover' }}
                 />
                 <CardContent sx={{ pb: 1.5, pt: 1 }}>

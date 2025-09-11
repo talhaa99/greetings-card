@@ -103,7 +103,7 @@ const Contact = () => {
 
         sx={{ width: '100%', mt: 5, mb: 5 }}>
         <Grid container spacing={2}>
-          <Grid item md={6} xs={12}>
+          <Grid item md={6} xs={12} sx={{mt: {md: 10 , xs:0}}}>
             <Typography gutterBottom variant="h4" padding="10px" sx={{
               // textAlign: 'center',
               fontWeight: 900,
@@ -163,39 +163,6 @@ const Contact = () => {
                   height: '100%'
                 }}>Info@incardible.com.au</Typography>
               </Box>
-              {/*<Box sx={{*/}
-              {/*  mt: { md: 3, xs: 3 },*/}
-              {/*  display: 'flex',*/}
-              {/*  gap: 2,*/}
-              {/*  height: '100%',*/}
-              {/*  alignItems: 'center'*/}
-              {/*}}>*/}
-              {/*  <LocationOnIcon sx={{*/}
-              {/*    color: '#c165a0', fontSize: { xs: '20px', md:'35px' }*/}
-              {/*  }}/>*/}
-              {/*  /!*<img src={`${WEB_URL}/location.png`}/>*!/*/}
-              {/*  <Typography variant="body1" sx={{*/}
-              {/*    fontWeight: '900',*/}
-              {/*    justifyContent: 'center',*/}
-              {/*    fontSize: { md: '1.3rem', xs: '13px' },*/}
-              {/*    color: 'white',*/}
-              {/*    alignItems: 'center',*/}
-              {/*    height: '100%'*/}
-              {/*  }}>123 Main Street, Springfield, IL 62704, USA</Typography>*/}
-              {/*</Box>*/}
-              {/*<Box sx={{  mt: {md: 5, xs:3 }, display: 'flex', gap: 2, height: '100%', alignItems: 'center' }}>*/}
-              {/*  <EmailIcon sx={{*/}
-              {/*    color: '#c165a0'*/}
-              {/*  }}/>*/}
-              {/*  /!*<img src={`${WEB_URL}/location.png`}/>*!/*/}
-              {/*  <Typography variant="body1" sx={{*/}
-              {/*    fontWeight: '900',*/}
-              {/*    justifyContent: 'center',*/}
-              {/*    fontSize: {md: '1.3rem' },*/}
-              {/*    color: 'white',*/}
-              {/*    alignItems: 'center',*/}
-              {/*    height: '100%'*/}
-              {/*  }}>Contact Us With On Social Media</Typography>*/}
               {/*</Box>*/}
               <Box sx={{
                 mt: { md: 3, xs: 3 },

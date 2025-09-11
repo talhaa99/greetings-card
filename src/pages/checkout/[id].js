@@ -591,7 +591,7 @@ export default function CheckoutPage() {
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',
-                  minWidth:{md:400, lg: 500, xl:700, '4k':1000},
+                  minWidth:{md:400, lg: 400, xl:700, '4k':1000},
                   height:'100%',  minHeight:{'4k':600}}}>
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
