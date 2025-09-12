@@ -749,23 +749,53 @@ const Section2 = () => {
                                       px: 2,
                                       py: 1.2,
                                       color: 'black',
-                                      // Solid blur layer (comment next line if you prefer gradient)
                                       bgcolor: 'rgba(232, 207, 222, 0.8)',
                                       backdropFilter: 'blur(6px)',
-                                      // OR use gradient: uncomment below two lines and remove bgcolor/backdropFilter above
-                                      // background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.8) 100%)',
-                                      // py: 2,
-                                      textAlign: 'center'
                                     }}
                                   >
-                                    {/* Title over layer */}
-                                    {/* <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>{data.title}</Typography> */}
-
-                                    {/* Price over layer (current need) */}
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-                                      {`${data.price} AUD`}
-                                    </Typography>
+                                    <Box
+                                      sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between', // ✅ title left, price right
+                                        alignItems: 'center',
+                                        width: '100%',
+                                      }}
+                                    >
+                                      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                                        {data.title}
+                                      </Typography>
+                                      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                                        {`${data.price} AUD`}
+                                      </Typography>
+                                    </Box>
                                   </Box>
+
+                                  {/*<Box*/}
+                                  {/*  sx={{*/}
+                                  {/*    position: 'absolute',*/}
+                                  {/*    left: 0,*/}
+                                  {/*    right: 0,*/}
+                                  {/*    bottom: 0,*/}
+                                  {/*    px: 2,*/}
+                                  {/*    py: 1.2,*/}
+                                  {/*    color: 'black',*/}
+                                  {/*    // Solid blur layer (comment next line if you prefer gradient)*/}
+                                  {/*    bgcolor: 'rgba(232, 207, 222, 0.8)',*/}
+                                  {/*    backdropFilter: 'blur(6px)',*/}
+                                  {/*    // OR use gradient: uncomment below two lines and remove bgcolor/backdropFilter above*/}
+                                  {/*    // background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.8) 100%)',*/}
+                                  {/*    // py: 2,*/}
+                                  {/*    textAlign: 'center'*/}
+                                  {/*  }}*/}
+                                  {/*>*/}
+                                  {/*  /!* Title over layer *!/*/}
+                                  {/*   <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>{data.title}</Typography>*/}
+
+                                  {/*  /!* Price over layer (current need) *!/*/}
+                                  {/*  <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*    {`${data.price} AUD`}*/}
+                                  {/*  </Typography>*/}
+                                  {/*</Box>*/}
                                 </Box>
                               </Grid>
 
