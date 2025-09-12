@@ -1140,7 +1140,6 @@ const bridgesAttachedRef = useRef(false);
             }}
           ></iframe>
         </Box>
-
       </Box>
 
     </>
