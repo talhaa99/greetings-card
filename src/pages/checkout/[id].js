@@ -595,7 +595,7 @@ export default function CheckoutPage() {
                   height:'100%',  minHeight:{'4k':600}}}>
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
-                                sx={{ mb: {md: 2 , '4k':4}, color: ACCENT ,  fontSize:{xl:'25px','4k':'50px'} }}>Delivery Address</Typography>
+                                sx={{ mb: {md: 2 , xs:2, '4k':4}, color: ACCENT ,  fontSize:{xl:'25px','4k':'50px'} }}>Delivery Address</Typography>
                     {/*<TextField fullWidth label="Street Address"*/}
                     {/*           error={!!(formik.touched.delivery_address*/}
                     {/*             && formik.errors.delivery_address)}*/}
@@ -640,7 +640,7 @@ export default function CheckoutPage() {
                                onBlur={formik.handleBlur}
                                onChange={formik.handleChange}
                                value={formik.values.suburb}
-                               sx={{ mb: {md: 2, '4k':4 } }}/>
+                               sx={{ mb: {md: 2, '4k':4 , xs:2.5} }}/>
                     {/*<FormControl fullWidth*/}
                     {/*             error={Boolean(formik.touched.state && formik.errors.state)}>*/}
                     {/*  <InputLabel id="state-label">State</InputLabel>*/}
@@ -704,7 +704,7 @@ export default function CheckoutPage() {
                     <Box sx={{
                       display: 'flex',
                       flexDirection: { xs: 'column', md: 'row' , xl:'column'},
-                      gap: { md: 1, xs: 2, xl:3 },
+                      gap: { md: 1, xs: 2.5, xl:3 },
                       mb: {md:2, '4k':4}
                     }}>
                       <TextField fullWidth label="Postal Code"
@@ -734,6 +734,7 @@ export default function CheckoutPage() {
                         display: 'flex',
                         width: '100%',
                         mb: 4,
+                        mt:{xs:2, md:0},
                         flexDirection: { xs: 'column', md: 'row' },
                         // gap: 2,
                         alignItems: { md: 'center', xs: 'left' }
@@ -986,7 +987,7 @@ export default function CheckoutPage() {
                       variant="contained"
                       disabled={formik.isSubmitting}
                       sx={{
-                        mt: { md:5, '4k':1 },
+                        mt: { md:5, '4k':1 , xs:2 },
                         // py: 1.25,
                         borderRadius: 1.5,
                         bgcolor: '#c165a0',
