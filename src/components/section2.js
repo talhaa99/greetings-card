@@ -18,6 +18,7 @@ import GroupedPagination from './pagination';
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/router';
 import { useAuth } from '../hooks/use-auth';
+import { Tooltip } from '@mui/material';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -64,6 +65,18 @@ const Section2 = () => {
   const [menuShift, setMenuShift] = useState({ id: '', px: 0 });
   const [mobilePos, setMobilePos] = useState({ id: '', top: 0 });
   const [mobileShift, setMobileShift] = useState({ id: '', px: 0 });
+
+  const truncate = (s, n = 15) => {
+    const t = String(s ?? '');
+    return t.length > n ? t.slice(0, n) + '...' : t;
+  };
+
+  const tooltipTitle = (title, price) => `${title} — ${price} AUD`;
+
+  const truncateCombined = (title, price, n = 15) => {
+    const full = `${title} ${price} AUD`;
+    return full.length > n ? full.slice(0, n) + '...' : full;
+  };
 
 
   const handlePageChange = (event, value) => {
@@ -740,6 +753,86 @@ const Section2 = () => {
                                   />
 
                                   {/* Bottom overlay layer */}
+                                  {/*<Box*/}
+                                  {/*  sx={{*/}
+                                  {/*    position: 'absolute',*/}
+                                  {/*    left: 0,*/}
+                                  {/*    right: 0,*/}
+                                  {/*    bottom: 0,*/}
+                                  {/*    px: 2,*/}
+                                  {/*    py: 1.2,*/}
+                                  {/*    color: 'black',*/}
+                                  {/*    bgcolor: 'rgba(232, 207, 222, 0.8)',*/}
+                                  {/*    backdropFilter: 'blur(6px)',*/}
+                                  {/*  }}*/}
+                                  {/*>*/}
+                                  {/*  <Box*/}
+                                  {/*    sx={{*/}
+                                  {/*      display: 'flex',*/}
+                                  {/*      justifyContent: 'space-between', // ✅ title left, price right*/}
+                                  {/*      alignItems: 'center',*/}
+                                  {/*      width: '100%',*/}
+                                  {/*    }}*/}
+                                  {/*  >*/}
+                                  {/*    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*      {data.title}*/}
+                                  {/*    </Typography>*/}
+                                  {/*    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*      {`${data.price} AUD`}*/}
+                                  {/*    </Typography>*/}
+                                  {/*  </Box>*/}
+                                  {/*</Box>*/}
+
+                                  {/*<Box*/}
+                                  {/*  sx={{*/}
+                                  {/*    position: 'absolute',*/}
+                                  {/*    left: 0,*/}
+                                  {/*    right: 0,*/}
+                                  {/*    bottom: 0,*/}
+                                  {/*    px: 2,*/}
+                                  {/*    py: 1,*/}
+                                  {/*    color: 'black',*/}
+                                  {/*    bgcolor: 'rgba(232, 207, 222, 0.8)', // semi transparent bg*/}
+                                  {/*    backdropFilter: 'blur(6px)',*/}
+                                  {/*    zIndex: 2,        // ✅ overlay always above image*/}
+                                  {/*  }}*/}
+                                  {/*>*/}
+                                  {/*  <Box*/}
+                                  {/*    sx={{*/}
+                                  {/*      display: 'flex',*/}
+                                  {/*      justifyContent: 'space-between',*/}
+                                  {/*      alignItems: 'center',*/}
+                                  {/*      width: '100%',*/}
+                                  {/*    }}*/}
+                                  {/*  >*/}
+                                  {/*    /!* Title (with truncate + tooltip logic) *!/*/}
+                                  {/*    {isSmallScreen ? (*/}
+                                  {/*      <Tooltip title={`${data.title} — ${data.price} AUD`} arrow>*/}
+                                  {/*        <Typography*/}
+                                  {/*          variant="subtitle2"*/}
+                                  {/*          sx={{*/}
+                                  {/*            fontWeight: 800,*/}
+                                  {/*            whiteSpace: 'nowrap',*/}
+                                  {/*            overflow: 'hidden',*/}
+                                  {/*            textOverflow: 'ellipsis',*/}
+                                  {/*            maxWidth: '75%',*/}
+                                  {/*          }}*/}
+                                  {/*        >*/}
+                                  {/*          {truncate(data.title, 15)}*/}
+                                  {/*        </Typography>*/}
+                                  {/*      </Tooltip>*/}
+                                  {/*    ) : (*/}
+                                  {/*      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*        {data.title}*/}
+                                  {/*      </Typography>*/}
+                                  {/*    )}*/}
+
+                                  {/*    /!* Price *!/*/}
+                                  {/*    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*      {`${data.price} AUD`}*/}
+                                  {/*    </Typography>*/}
+                                  {/*  </Box>*/}
+                                  {/*</Box>*/}
                                   <Box
                                     sx={{
                                       position: 'absolute',
@@ -747,27 +840,37 @@ const Section2 = () => {
                                       right: 0,
                                       bottom: 0,
                                       px: 2,
-                                      py: 1.2,
+                                      py: 1,
                                       color: 'black',
                                       bgcolor: 'rgba(232, 207, 222, 0.8)',
                                       backdropFilter: 'blur(6px)',
+                                      zIndex: 2,
                                     }}
                                   >
-                                    <Box
-                                      sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between', // ✅ title left, price right
-                                        alignItems: 'center',
-                                        width: '100%',
-                                      }}
-                                    >
-                                      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-                                        {data.title}
-                                      </Typography>
-                                      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-                                        {`${data.price} AUD`}
-                                      </Typography>
-                                    </Box>
+                                    {isSmallScreen ? (
+                                      <Tooltip title={`${data.title} ${data.price} AUD`} arrow enterTouchDelay={0} leaveTouchDelay={2500}>
+                                        <Typography
+                                          variant="subtitle2"
+                                          sx={{
+                                            fontWeight: 800,
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                          }}
+                                        >
+                                          {truncateCombined(data.title, data.price, 15)}
+                                        </Typography>
+                                      </Tooltip>
+                                    ) : (
+                                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                                          {data.title}
+                                        </Typography>
+                                        <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                                          {`${data.price} AUD`}
+                                        </Typography>
+                                      </Box>
+                                    )}
                                   </Box>
 
                                   {/*<Box*/}
