@@ -834,7 +834,7 @@ const bridgesAttachedRef = useRef(false);
         'JsonDataHandlerAndParser',
         'purchaseCardLink',
         JSON.stringify(
-          `https://ar-experience-greetings-card.tecshield.net/${userTemplateData?._id}`
+          `https://ar.incardible.com.au?templateId=${userTemplateData?._id}`
         )
       );
 
