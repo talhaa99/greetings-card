@@ -26,8 +26,8 @@ import NextLink from 'next/link';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
-
-// === OrderItem (defensive) ===
+// import AddressAutocompleteGoogleAU from '../../components/AddressAutocompleteGoogleAU'
+// === OrderItem (defensive) ===s
 
 function OrderItem({ item, onQty }) {
   const line = (item.price * item.qty);
@@ -616,6 +616,18 @@ export default function CheckoutPage() {
                          mb: 0
                       }}
                     />
+
+
+
+                    {/*<AddressAutocompleteGoogleAU*/}
+                    {/*  formik={formik}*/}
+                    {/*  stateValue={formik.values.state}       // biases to chosen state*/}
+                    {/*  name="delivery_address"*/}
+                    {/*  label="Street Address"*/}
+                    {/*  sx={{ mb: { md: 2, xl: 3 } }}*/}
+                    {/*/>*/}
+
+
                     {/*<Box*/}
                     {/*  sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', md: 'row' } }}>*/}
                     <TextField fullWidth label="Suburb"
