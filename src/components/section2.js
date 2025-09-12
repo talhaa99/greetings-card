@@ -78,6 +78,11 @@ const Section2 = () => {
     return full.length > n ? full.slice(0, n) + '...' : full;
   };
 
+  const truncateCombinedLarge = (title, price, n = 20) => {
+    const full = `${title} ${price} AUD`;
+    return full.length > n ? full.slice(0, n) + '...' : full;
+  };
+
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -848,7 +853,13 @@ const Section2 = () => {
                                     }}
                                   >
                                     {isSmallScreen ? (
-                                      <Tooltip title={`${data.title} ${data.price} AUD`} arrow enterTouchDelay={0} leaveTouchDelay={2500}>
+                                      // ✅ Mobile: Title + Price combined (truncate 15 chars)
+                                      <Tooltip
+                                        title={`${data.title} ${data.price} AUD`}
+                                        arrow
+                                        enterTouchDelay={0}
+                                        leaveTouchDelay={2500}
+                                      >
                                         <Typography
                                           variant="subtitle2"
                                           sx={{
@@ -862,16 +873,133 @@ const Section2 = () => {
                                         </Typography>
                                       </Tooltip>
                                     ) : (
-                                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-                                          {data.title}
-                                        </Typography>
-                                        <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                                      // ✅ Large Screen: Title left, Price right
+                                      <Box
+                                        sx={{
+                                          display: 'flex',
+                                          justifyContent: 'space-between',
+                                          alignItems: 'center',
+                                          width: '100%',
+                                        }}
+                                      >
+                                        {/* Title with truncate+tooltip */}
+                                        <Tooltip title={data.title} arrow>
+                                          <Typography
+                                            variant="subtitle1"
+                                            sx={{
+                                              fontWeight: 800,
+                                              whiteSpace: 'nowrap',
+                                              overflow: 'hidden',
+                                              textOverflow: 'ellipsis',
+                                              maxWidth: '70%', // so price doesn't push it
+                                            }}
+                                          >
+                                            {truncateCombinedLarge(data.title, "", 20)}
+                                          </Typography>
+                                        </Tooltip>
+
+                                        {/* Price stays right side */}
+                                        <Typography variant="subtitle1" sx={{ fontWeight: 800, flexShrink: 0 }}>
                                           {`${data.price} AUD`}
                                         </Typography>
                                       </Box>
                                     )}
                                   </Box>
+
+                                  {/*<Box*/}
+                                  {/*  sx={{*/}
+                                  {/*    position: 'absolute',*/}
+                                  {/*    left: 0,*/}
+                                  {/*    right: 0,*/}
+                                  {/*    bottom: 0,*/}
+                                  {/*    px: 2,*/}
+                                  {/*    py: 1,*/}
+                                  {/*    color: 'black',*/}
+                                  {/*    bgcolor: 'rgba(232, 207, 222, 0.8)',*/}
+                                  {/*    backdropFilter: 'blur(6px)',*/}
+                                  {/*    zIndex: 2,*/}
+                                  {/*  }}*/}
+                                  {/*>*/}
+                                  {/*  {isSmallScreen ? (*/}
+                                  {/*    // ✅ Mobile: truncate at 15 chars*/}
+                                  {/*    <Tooltip*/}
+                                  {/*      title={`${data.title} ${data.price} AUD`}*/}
+                                  {/*      arrow*/}
+                                  {/*      enterTouchDelay={0}*/}
+                                  {/*      leaveTouchDelay={2500}*/}
+                                  {/*    >*/}
+                                  {/*      <Typography*/}
+                                  {/*        variant="subtitle2"*/}
+                                  {/*        sx={{*/}
+                                  {/*          fontWeight: 800,*/}
+                                  {/*          whiteSpace: 'nowrap',*/}
+                                  {/*          overflow: 'hidden',*/}
+                                  {/*          textOverflow: 'ellipsis',*/}
+                                  {/*        }}*/}
+                                  {/*      >*/}
+                                  {/*        {truncateCombined(data.title, data.price, 15)}*/}
+                                  {/*      </Typography>*/}
+                                  {/*    </Tooltip>*/}
+                                  {/*  ) : (*/}
+                                  {/*    // ✅ Large Screen: truncate at 20 chars*/}
+                                  {/*    <Tooltip*/}
+                                  {/*      title={`${data.title} ${data.price} AUD`}*/}
+                                  {/*      arrow*/}
+                                  {/*    >*/}
+                                  {/*      <Typography*/}
+                                  {/*        variant="subtitle1"*/}
+                                  {/*        sx={{*/}
+                                  {/*          fontWeight: 800,*/}
+                                  {/*          whiteSpace: 'nowrap',*/}
+                                  {/*          overflow: 'hidden',*/}
+                                  {/*          textOverflow: 'ellipsis',*/}
+                                  {/*        }}*/}
+                                  {/*      >*/}
+                                  {/*        {truncateCombinedLarge(data.title, data.price, 20)}*/}
+                                  {/*      </Typography>*/}
+                                  {/*    </Tooltip>*/}
+                                  {/*  )}*/}
+                                  {/*</Box>*/}
+
+                                  {/*<Box*/}
+                                  {/*  sx={{*/}
+                                  {/*    position: 'absolute',*/}
+                                  {/*    left: 0,*/}
+                                  {/*    right: 0,*/}
+                                  {/*    bottom: 0,*/}
+                                  {/*    px: 2,*/}
+                                  {/*    py: 1,*/}
+                                  {/*    color: 'black',*/}
+                                  {/*    bgcolor: 'rgba(232, 207, 222, 0.8)',*/}
+                                  {/*    backdropFilter: 'blur(6px)',*/}
+                                  {/*    zIndex: 2,*/}
+                                  {/*  }}*/}
+                                  {/*>*/}
+                                  {/*  {isSmallScreen ? (*/}
+                                  {/*    <Tooltip title={`${data.title} ${data.price} AUD`} arrow enterTouchDelay={0} leaveTouchDelay={2500}>*/}
+                                  {/*      <Typography*/}
+                                  {/*        variant="subtitle2"*/}
+                                  {/*        sx={{*/}
+                                  {/*          fontWeight: 800,*/}
+                                  {/*          whiteSpace: 'nowrap',*/}
+                                  {/*          overflow: 'hidden',*/}
+                                  {/*          textOverflow: 'ellipsis',*/}
+                                  {/*        }}*/}
+                                  {/*      >*/}
+                                  {/*        {truncateCombined(data.title, data.price, 15)}*/}
+                                  {/*      </Typography>*/}
+                                  {/*    </Tooltip>*/}
+                                  {/*  ) : (*/}
+                                  {/*    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>*/}
+                                  {/*      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*        {data.title}*/}
+                                  {/*      </Typography>*/}
+                                  {/*      <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>*/}
+                                  {/*        {`${data.price} AUD`}*/}
+                                  {/*      </Typography>*/}
+                                  {/*    </Box>*/}
+                                  {/*  )}*/}
+                                  {/*</Box>*/}
 
                                   {/*<Box*/}
                                   {/*  sx={{*/}
