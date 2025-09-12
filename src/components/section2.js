@@ -716,21 +716,79 @@ const Section2 = () => {
                                 lg={3}
                                 xs={6}
                                 key={data.uuid || index}
-                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-start', flexDirection:'column' }}
+                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}
                                 data-aos="zoom-in"
                                 data-aos-delay={delay}
                               >
                                 <Box
                                   onClick={() => gotoEditor(data.uuid)}
-                                  component="img"
-                                  loading="lazy"
-                                  src={`${BASE_URL}/${data?.frontDesign}`}
-                                  alt={data?.title}
-                                  sx={{ width: '100%', aspectRatio: '1 / 1.414', cursor: 'pointer' }}
-                                />
-                                <Typography variant='h5' sx={{ width:'100%',   textAlign: 'center', pt:2 , color:'#c165a0'}}>{`${data.price} AUD`}</Typography>
+                                  sx={{
+                                    position: 'relative',
+                                    width: '100%',
+                                    aspectRatio: '1 / 1.414',
+                                    borderRadius: 2,
+                                    overflow: 'hidden',
+                                    cursor: 'pointer'
+                                  }}
+                                >
+                                  <Box
+                                    component="img"
+                                    loading="lazy"
+                                    src={`${BASE_URL}/${data?.frontDesign}`}
+                                    alt={data?.title}
+                                    sx={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
+                                  />
 
+                                  {/* Bottom overlay layer */}
+                                  <Box
+                                    sx={{
+                                      position: 'absolute',
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      px: 2,
+                                      py: 1.2,
+                                      color: 'black',
+                                      // Solid blur layer (comment next line if you prefer gradient)
+                                      bgcolor: 'rgba(232, 207, 222, 0.8)',
+                                      backdropFilter: 'blur(6px)',
+                                      // OR use gradient: uncomment below two lines and remove bgcolor/backdropFilter above
+                                      // background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.55) 60%, rgba(0,0,0,.8) 100%)',
+                                      // py: 2,
+                                      textAlign: 'center'
+                                    }}
+                                  >
+                                    {/* Title over layer */}
+                                    {/* <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>{data.title}</Typography> */}
+
+                                    {/* Price over layer (current need) */}
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
+                                      {`${data.price} AUD`}
+                                    </Typography>
+                                  </Box>
+                                </Box>
                               </Grid>
+
+                              // <Grid
+                              //   md={4}
+                              //   lg={3}
+                              //   xs={6}
+                              //   key={data.uuid || index}
+                              //   sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-start', flexDirection:'column' }}
+                              //   data-aos="zoom-in"
+                              //   data-aos-delay={delay}
+                              // >
+                              //   <Box
+                              //     onClick={() => gotoEditor(data.uuid)}
+                              //     component="img"
+                              //     loading="lazy"
+                              //     src={`${BASE_URL}/${data?.frontDesign}`}
+                              //     alt={data?.title}
+                              //     sx={{ width: '100%', aspectRatio: '1 / 1.414', cursor: 'pointer' }}
+                              //   />
+                              //   <Typography variant='h5' sx={{ width:'100%',   textAlign: 'center', pt:2 , color:'#c165a0'}}>{`${data.price} AUD`}</Typography>
+                              //
+                              // </Grid>
                             );
                           })
                         )}
