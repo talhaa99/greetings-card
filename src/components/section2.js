@@ -716,7 +716,7 @@ const Section2 = () => {
                                 lg={3}
                                 xs={6}
                                 key={data.uuid || index}
-                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}
+                                sx={{ p: 1, display: 'flex', justifyContent: 'center', alignItems: 'flex-start', flexDirection:'column' }}
                                 data-aos="zoom-in"
                                 data-aos-delay={delay}
                               >
@@ -728,6 +728,7 @@ const Section2 = () => {
                                   alt={data?.title}
                                   sx={{ width: '100%', aspectRatio: '1 / 1.414', cursor: 'pointer' }}
                                 />
+                                <Typography variant='h5' sx={{ width:'100%',   textAlign: 'center', pt:2}}>{`${data.price} AUD`}</Typography>
                               </Grid>
                             );
                           })
