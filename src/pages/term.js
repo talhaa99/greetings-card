@@ -46,24 +46,39 @@ const Page = () => {
                 <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
                   Welcome to Incardible
                 </Typography>
-                <Typography gutterBottom variant="bod1" padding="10px" sx={{ textAlign: 'center' }}>
-                  These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
-                  relationship with Tecshield website’ applications mobile application (the
-                  “Service”) operated by Tecshield. (“us”, “we”, or “our”).
+                {/*<Typography gutterBottom variant="bod1" padding="20px" sx={{ textAlign: 'center' }}>*/}
+                {/*  These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your*/}
+                {/*  relationship with Tecshield website’ applications mobile application (the*/}
+                {/*  “Service”) operated by Tecshield. (“us”, “we”, or “our”).*/}
 
-                  Please read these Terms and Conditions carefully before using our website and
-                  Tecshield’ mobile applications (the “Service”).
+                {/*  Please read these Terms and Conditions carefully before using our website and*/}
+                {/*  Tecshield’ mobile applications (the “Service”).*/}
 
-                  Your access to and use of the Service is conditioned on your acceptance of and
-                  compliance with these Terms. These Terms apply to all visitors, users and others
-                  who access or use the Service.
+                {/*  Your access to and use of the Service is conditioned on your acceptance of and*/}
+                {/*  compliance with these Terms. These Terms apply to all visitors, users and others*/}
+                {/*  who access or use the Service.*/}
 
-                  By accessing or using the Service you agree to be bound by these Terms. If you
-                  disagree with any part of the terms then you may not access the Service.
-                </Typography>
+                {/*  By accessing or using the Service you agree to be bound by these Terms. If you*/}
+                {/*  disagree with any part of the terms then you may not access the Service.*/}
+                {/*</Typography>*/}
                 <CardMedia/>
                 <CardContent>
-                  <Typography gutterBottom variant="h6" component="div" sx={{ mt: 0, mb: 3 }}>
+                  <Typography gutterBottom variant="bod1"  sx={{ textAlign: 'center' }}>
+                    These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
+                    relationship with Tecshield website’ applications mobile application (the
+                    “Service”) operated by Tecshield. (“us”, “we”, or “our”).
+
+                    Please read these Terms and Conditions carefully before using our website and
+                    Tecshield’ mobile applications (the “Service”).
+
+                    Your access to and use of the Service is conditioned on your acceptance of and
+                    compliance with these Terms. These Terms apply to all visitors, users and others
+                    who access or use the Service.
+
+                    By accessing or using the Service you agree to be bound by these Terms. If you
+                    disagree with any part of the terms then you may not access the Service.
+                  </Typography>
+                  <Typography gutterBottom variant="h6" component="div" sx={{  mb: 3, mt:3 }}>
                     Purchases
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
