@@ -729,6 +729,7 @@ const Section2 = () => {
                                   sx={{ width: '100%', aspectRatio: '1 / 1.414', cursor: 'pointer' }}
                                 />
                                 <Typography variant='h5' sx={{ width:'100%',   textAlign: 'center', pt:2}}>{`${data.price} AUD`}</Typography>
+                                
                               </Grid>
                             );
                           })
