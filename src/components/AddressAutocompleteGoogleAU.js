@@ -70,7 +70,7 @@ export default function AddressAutocompleteGoogleAU({
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
       libraries={libs}
-      loadingElement={<CircularProgress size={18} />}
+      // loadingElement={<CircularProgress size={18} />}
       onLoad={() => setLoading(false)}
       onError={() => setLoading(false)}
     >
@@ -90,7 +90,7 @@ export default function AddressAutocompleteGoogleAU({
           helperText={(formik.touched?.[name] && formik.errors?.[name]) || ' '}
           sx={{
             '& .MuiInputBase-input::placeholder': {
-              color: 'grey',      
+              color: 'grey',
               opacity: 1
             },
             ...sx
