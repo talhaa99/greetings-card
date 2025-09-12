@@ -26,9 +26,9 @@ import NextLink from 'next/link';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
-// import AddressAutocompleteGoogleAU from '../../components/AddressAutocompleteGoogleAU'
+import AddressAutocompleteGoogleAU from '../../components/AddressAutocompleteGoogleAU'
 // === OrderItem (defensive) ===s
-
+// import AddressAutocomplete from '../../components/AddressAutocompleteGoogleAU';
 function OrderItem({ item, onQty }) {
   const line = (item.price * item.qty);
   // const stackOnMd = Number(item.qty) >= 1000000;
@@ -607,25 +607,26 @@ export default function CheckoutPage() {
                     {/*           value={formik.values.delivery_address}*/}
                     {/*           sx={{ mb: 3 }}*/}
                     {/*/>*/}
-                    <AddressAutocompleteLocationIQ
-                      formik={formik}
-                      stateValue={formik.values.state}     // pass selected state
-                      name="delivery_address"
-                      label="Street Address"
-                      sx={{
-                         mb: 0
-                      }}
-                    />
 
-
-
-                    {/*<AddressAutocompleteGoogleAU*/}
+                    {/*<AddressAutocompleteLocationIQ*/}
                     {/*  formik={formik}*/}
-                    {/*  stateValue={formik.values.state}       // biases to chosen state*/}
+                    {/*  stateValue={formik.values.state}     // pass selected state*/}
                     {/*  name="delivery_address"*/}
                     {/*  label="Street Address"*/}
-                    {/*  sx={{ mb: { md: 2, xl: 3 } }}*/}
+                    {/*  sx={{*/}
+                    {/*     mb: 0*/}
+                    {/*  }}*/}
                     {/*/>*/}
+
+
+                    <AddressAutocompleteGoogleAU
+                      formik={formik}
+                      stateValue={formik.values.state}   // biases results if state chosen
+                      name="delivery_address"
+                      label="Street Address"
+                      sx={{ mb: { md: 0, xl: 3 } }}
+                    />
+
 
 
                     {/*<Box*/}
@@ -666,10 +667,10 @@ export default function CheckoutPage() {
                     {/*    {(formik.touched.state && formik.errors.state) || ' '}*/}
                     {/*  </FormHelperText>*/}
                     {/*</FormControl>*/}
-                    <FormControl fullWidth error={Boolean(formik.touched.state && formik.errors.state)}>
-                      <InputLabel  id="state-label">
-                        State
-                      </InputLabel>
+                    {/*<FormControl fullWidth error={Boolean(formik.touched.state && formik.errors.state)}>*/}
+                      {/*<InputLabel  id="state-label">*/}
+                      {/*  State*/}
+                      {/*</InputLabel>*/}
 
                       <Autocomplete
                         id="state"
@@ -688,17 +689,17 @@ export default function CheckoutPage() {
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            variant="outlined"
+                            // variant="outlined"
                             label="State"
                             name="state"
                             onBlur={formik.handleBlur}
                             error={Boolean(formik.touched.state && formik.errors.state)}
                             helperText={(formik.touched.state && formik.errors.state) || " "}
-                            InputLabelProps={{ shrink: false }}
+                            InputLabelProps={{ shrink: true }}
                           />
                         )}
                       />
-                    </FormControl>
+                    {/*</FormControl>*/}
                     {/*</Box>*/}
                     <Box sx={{
                       display: 'flex',
