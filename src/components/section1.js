@@ -2217,7 +2217,7 @@ const Page = () => {
                       md: '53.5%',
                       large: '52.5%',
                       // xl: '49.5%',
-                      xs: '50%'
+                      xs: '53%'
                     },
                     transform: 'translate(-50%, -50%)',
                     // width: { xl: '70%', lg: '71%', xs: '55%'
@@ -2251,7 +2251,7 @@ const Page = () => {
                       md: '38%', lg: '42%',
                       // , xl: '49%'
                       // HD:'43%'
-                      xs: '44%', laptop: '43%', large: '43%'
+                      xs: '42%', laptop: '43%', large: '43%'
                       // , ipadPro:'47%'
                     },
                     right: {
@@ -2284,7 +2284,7 @@ const Page = () => {
                     display: isLargeScreen ? 'none' : 'block',
                     position: 'absolute',
                     bottom: {
-                      xs: '25%',
+                      xs: '23%',
                       md: '2%',
                       lg: '14%', //1200
                       // ipadPro:'34%',
@@ -2324,7 +2324,7 @@ const Page = () => {
                   alt="card"
                   sx={{
                     position: 'absolute',
-                    bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '45%', large: '40%' },
+                    bottom: { md: '40%', xl: '50%', xs: '43%', ipadPro: '45%', large: '40%' },
                     // bottom: { md: '40%', xl: '50%', xs: '47%', ipadPro: '50%', large: '44%', HD:'42%' },
                     // left: { md: '-9%', xl: '-18%', xs: '1%', ipadPro: '0.1%', large: '-17%', HD:'-9%' },
                     left: { md: '-9%', xl: '-18%', xs: '1%', ipadPro: '0.1%', large: '-17%' },
@@ -2341,7 +2341,7 @@ const Page = () => {
                   sx={{
                     position: 'absolute',
                     // bottom: { xs: '49%', md: '52%', large: '45%' , HD:'43%'},
-                    bottom: { xs: '49%', md: '50%', large: '43%' },
+                    bottom: { xs: '45%', md: '50%', large: '43%' },
                     // left: { md: '-1%', xs: '1%', large: '-17%', HD:'-9%' },
                     left: { md: '-1%', xs: '1%', large: '-17%' },
                     // width: '18%',
