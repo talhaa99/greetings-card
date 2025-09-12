@@ -728,7 +728,7 @@ const Section2 = () => {
                                   alt={data?.title}
                                   sx={{ width: '100%', aspectRatio: '1 / 1.414', cursor: 'pointer' }}
                                 />
-                                <Typography variant='h5' sx={{ width:'100%',   textAlign: 'center', pt:2}}>{`${data.price} AUD`}</Typography>
+                                <Typography variant='h5' sx={{ width:'100%',   textAlign: 'center', pt:2 , color:'#c165a0'}}>{`${data.price} AUD`}</Typography>
 
                               </Grid>
                             );
