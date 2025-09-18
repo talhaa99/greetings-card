@@ -19,7 +19,6 @@ const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const ACCENT = '#000'; // headings in mock are black; change if needed
 import axios from 'axios';
-import { FormControl, InputLabel, FormHelperText } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
@@ -27,6 +26,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import AddressAutocompleteGoogleAU from '../../components/AddressAutocompleteGoogleAU'
+import 'react-phone-input-2/lib/material.css';
+import PhoneInput from 'react-phone-input-2';
+import { FormControl, FormHelperText, InputLabel } from '@mui/material';
+import { Visibility, VisibilityOff  } from '@mui/icons-material';
+
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
+
 // === OrderItem (defensive) ===s
 // import AddressAutocomplete from '../../components/AddressAutocompleteGoogleAU';
 function OrderItem({ item, onQty }) {
@@ -347,6 +353,7 @@ export default function CheckoutPage() {
   const [news, setNews] = useState(false);
   const [termAndConditions, setTermAndConditions] = useState(false);
   const [message, setMessage] = useState('');
+  const [showShippingDays, setShowShippingDays] = useState(false);
 
   //get stats of australia
   // React.useEffect(() => {
@@ -453,7 +460,8 @@ export default function CheckoutPage() {
 
   // console.log('items[0].qty', items[0].qty);
   console.log("currency", currency);
-
+// put near the top of the component file
+  const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
   const formik = useFormik({
     initialValues: {
       cardCustomizationId: '',
@@ -486,8 +494,12 @@ export default function CheckoutPage() {
                       .matches(/^\d{3,10}$/, 'Postal code must be 3–10 digits')
                       .required('Postal code is required'),
       phone_number: Yup.string()
-                       .matches(/^\+?[0-9\s()-]{7,20}$/, 'Enter a valid phone number')
+                       .matches(/^\+?[1-9]\d{6,14}$/, 'Enter a valid phone number')
                        .required('Phone number is required'),
+
+      // phone_number: Yup.string()
+      //                  .matches(/^\+?[0-9\s()-]{7,20}$/, 'Enter a valid phone number')
+      //                  .required('Phone number is required'),
       newsAndOffers: Yup.boolean(),
       expressShipping: Yup.boolean(),
       termsAccepted: Yup.boolean().oneOf([true], 'Please accept the terms and conditions')
@@ -497,12 +509,13 @@ export default function CheckoutPage() {
       const loading = toast.loading(
         'order is  in process......',
         { duration: 15000 });
-
-      setLoading(true);
+;
 
       const audCalculatedTotalPrice = Number((total * currency['AUD']).toFixed(2));
 
       try {
+
+        // setLoading(true)
         const token = localStorage.getItem('token');
         const response = await axios.post(`${API_URL}/api/transactions/create`,
           {
@@ -533,9 +546,41 @@ export default function CheckoutPage() {
           });
 
         console.log('response------------', response);
-        toast.success('Order place successfully');
-        formik.resetForm();
+        // toast.success('Order place successfully');
+        // formik.resetForm();
         setShippingMethod('normal');
+        const txId = response?.data?.data?._id || response?.data?._id; // jo bhi aap return kar rahe
+
+        // 2) create PayPal order & redirect
+        const amountAud = Number(total).toFixed(2);
+        const pp = await fetch(`${API_URL}/api/paypal/create-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(token ? { 'x-access-token': token } : {}) },
+          body: JSON.stringify({
+            amount: amountAud,
+            currency: 'AUD',
+            transactionId: txId,
+            quantity: items[0].qty,
+            meta: { title: data?.cardId?.title }
+          })
+        });
+
+        const ppJson = await pp.json();
+        // formik.resetForm();
+        const approveUrl =
+          ppJson.approveUrl || (ppJson.id
+            ? `${NEXT_PUBLIC_PAYPAL_BASE_URL}/checkoutnow?token=${ppJson.id}`
+            : null);
+
+        if (!pp.ok || !approveUrl) {
+          console.log('PayPal create-order response:', ppJson); // debug
+          throw new Error(ppJson?.error || 'Could not start PayPal');
+        }
+
+        window.location.href = approveUrl;
+
+
+
         // setItems([{
         //   id: 1,
         //   title: '',
@@ -545,6 +590,7 @@ export default function CheckoutPage() {
         //
         // }]);
         setExpressShipping(false);
+        // setLoading(false);
         // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
@@ -557,8 +603,26 @@ export default function CheckoutPage() {
     }
 
   });
-// put near the top of the component file
-  const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '';
+// helpers (top of file, inside component)
+// inside component (before return)
+  const phoneError =
+    Boolean(formik.touched.phone_number && formik.errors.phone_number);
+
+
+
+  const STATE_SHIPPING_DAYS = {
+    "New South Wales": "2–4 business days",
+    "Victoria": "3–5 business days",
+    "Queensland": "4–6 business days",
+    "South Australia": "3–5 business days",
+    "Western Australia": "5–8 business days",
+    "Tasmania": "4–7 business days",
+    "Northern Territory": "6–10 business days",
+    "Australian Capital Territory": "2–4 business days",
+  };
+
+
+
 
   return (
     <>
@@ -705,7 +769,7 @@ export default function CheckoutPage() {
                       display: 'flex',
                       flexDirection: { xs: 'column', md: 'row' , xl:'column'},
                       gap: { md: 1, xs: 2.5, xl:3 },
-                      mb: {md:2, '4k':4}
+                      mb: {md:0, '4k':4}
                     }}>
                       <TextField fullWidth label="Postal Code"
                                  error={!!(formik.touched.postal_code
@@ -717,16 +781,89 @@ export default function CheckoutPage() {
                                  onChange={formik.handleChange}
                                  value={formik.values.postal_code}
                       />
-                      <TextField fullWidth label="Phone Number"
-                                 error={!!(formik.touched.phone_number
-                                   && formik.errors.phone_number)}
-                                 helperText={formik.touched.phone_number
-                                   && formik.errors.phone_number}
-                                 name="phone_number"
-                                 onBlur={formik.handleBlur}
-                                 onChange={formik.handleChange}
-                                 value={formik.values.phone_number}
-                      />
+
+
+
+                      <FormControl
+                        fullWidth
+                        error={phoneError}
+                        sx={{ mb: { md: 2, xs: 2.5 } }}
+                      >
+                        <PhoneInput
+                          country="au"
+                          value={formik.values.phone_number}
+                          onChange={(v) =>
+                            formik.setFieldValue('phone_number', `+${v.replace(/^\+/, '')}`)
+                          }
+                          enableSearch={false}
+                          countryCodeEditable={false}
+                          inputProps={{
+                            name: 'phone_number',
+                            onBlur: formik.handleBlur,
+                            autoComplete: 'tel',
+                          }}
+
+                          // size & look = MUI TextField
+                          containerClass="rp2-ctr"
+                          buttonClass="rp2-btn"
+                          inputClass={`rp2-input ${phoneError ? 'rp2-error' : ''}`}
+
+                          containerStyle={{ width: '100%' }}
+                          inputStyle={{
+                            width: '100%',
+                            height: 56,
+                            fontSize: 16,
+                            // border: '1px solid #c4c4c4 !important',
+                            borderRadius: 8,
+                            paddingLeft: 52,
+                          }}
+                          buttonStyle={{
+                            border: 'none',
+                            borderRight: '1px solid rgba(0, 0, 0, 0.10)',
+                            borderRadius: '4px 0 0 4px',
+                            width: 52,
+                            background: 'transparent',
+                          }}
+
+                          // dropdown overlays on top (like MUI menus)
+                          dropdownStyle={{
+                            position: 'fixed',
+                            zIndex: 2000,
+                            maxHeight: 260,
+                            overflowY: 'auto',
+                            borderRadius: 8,
+                            boxShadow: '0 8px 20px rgba(0,0,0,0.12)',
+                          }}
+                        />
+
+                        {/* Reserve space ALWAYS so layout stable stays */}
+                        <FormHelperText
+                          sx={{
+                            minHeight: 20,            // fixed one-line space
+                            lineHeight: '20px',
+                            mt: 0.5,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {(formik.touched.phone_number && formik.errors.phone_number) || ' '}
+                        </FormHelperText>
+                      </FormControl>
+
+
+
+
+                      {/*<TextField fullWidth label="Phone Number"*/}
+                      {/*           error={!!(formik.touched.phone_number*/}
+                      {/*             && formik.errors.phone_number)}*/}
+                      {/*           helperText={formik.touched.phone_number*/}
+                      {/*             && formik.errors.phone_number}*/}
+                      {/*           name="phone_number"*/}
+                      {/*           onBlur={formik.handleBlur}*/}
+                      {/*           onChange={formik.handleChange}*/}
+                      {/*           value={formik.values.phone_number}*/}
+                      {/*/>*/}
                     </Box>
 
                     <Box
@@ -737,13 +874,13 @@ export default function CheckoutPage() {
                         mt:{xs:2, md:0},
                         flexDirection: { xs: 'column', md: 'row' },
                         // gap: 2,
-                        alignItems: { md: 'center', xs: 'left' }
+                        alignItems: { md: 'left', xs: 'left' }
                       }}
                     >
                       <FormControlLabel
                         control={
                           <Checkbox
-                            sx={{ '& .MuiSvgIcon-root': { fontSize: {md: 12, xl:20 , '4k':25} } }}
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: {md: 15, xl:20 , '4k':25} } }}
                             size="small"
                             name="newsAndOffers"
                             checked={formik.values.newsAndOffers}
@@ -753,7 +890,7 @@ export default function CheckoutPage() {
                         label="Email me with news and offers"
                         sx={{
                           '& .MuiFormControlLabel-label': {
-                            fontSize: {md: '14px', xl:'20px', '4k':'25px' }
+                            fontSize: {md: '16px', xl:'20px', '4k':'25px' }
                           }
                         }}
                       />
@@ -770,7 +907,7 @@ export default function CheckoutPage() {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              sx={{ '& .MuiSvgIcon-root': { fontSize:  {md: 12, xl:20, '4k':25 } } }}
+                              sx={{ '& .MuiSvgIcon-root': { fontSize:  {md: 15, xl:20, '4k':25 } } }}
                               size="small"
                               name="termsAccepted"
                               checked={formik.values.termsAccepted}
@@ -781,14 +918,14 @@ export default function CheckoutPage() {
                           label={
                             <Typography
                               onClick={handleClickOpen}
-                              sx={{ cursor: 'pointer',  fontSize: {md: '14px', xl:'20px', '4k':'25px' } }}
+                              sx={{ cursor: 'pointer',  fontSize: {md: '16px', xl:'20px', '4k':'25px' } }}
                             >
                               Terms and conditions
                             </Typography>
                           }
                         />
                         <FormHelperText
-                          sx={{ position: 'absolute', mt: 7, display: 'flex', whiteSpace: 'nowrap', fontSize: {md: '10px', xl:'14px' }}}>
+                          sx={{ position: 'absolute', mt: 4, display: 'flex', whiteSpace: 'nowrap', fontSize: {md: '10px', xl:'14px' }}}>
                           {(formik.touched.termsAccepted && formik.errors.termsAccepted) || ' '}
                         </FormHelperText>
                       </FormControl>
@@ -902,7 +1039,73 @@ export default function CheckoutPage() {
                         </Typography>
                       </Box>
 
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb:1 }}>
+                        <Typography
+                          fontWeight={700}
+                          sx={{ color: ACCENT, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}
+                        >
+                          Approximate Shipping Days
+                          {showShippingDays && (
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              sx={{ color: 'text.secondary', fontWeight: 600 }}
+                            >
+                              — {STATE_SHIPPING_DAYS[formik.values.state] || 'Select a state to see estimated shipping days'}
+                            </Typography>
+                          )}
+                        </Typography>
 
+                        <IconButton
+                          onClick={() => setShowShippingDays(v => !v)}
+                          size="small"
+
+                          aria-label="Show shipping info"
+                        >
+                          <InfoOutlined fontSize="small"    sx={{ color: '#555' , fontWeight:900}} />
+                        </IconButton>
+                      </Box>
+
+                      {/*<Box*/}
+                      {/*  sx={{*/}
+                      {/*    // mt: 2,*/}
+                      {/*    p: 1,*/}
+                      {/*    border: '1px solid',*/}
+                      {/*    borderColor: 'divider',*/}
+                      {/*    borderRadius: 2,*/}
+                      {/*    bgcolor: '#fafafa',*/}
+                      {/*  }}*/}
+                      {/*>*/}
+                      {/*  <Box*/}
+                      {/*    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}*/}
+                      {/*  >*/}
+                      {/*    <Typography fontWeight={700} sx={{ color: ACCENT }}>*/}
+                      {/*      Approx Shipping*/}
+                      {/*    </Typography>*/}
+
+                      {/*    <IconButton*/}
+                      {/*      onClick={() => setShowShippingDays(!showShippingDays)}*/}
+                      {/*      size="small"*/}
+                      {/*      sx={{ color: '#555' }}*/}
+                      {/*    >*/}
+                      {/*      {showShippingDays ? (*/}
+                      {/*        <VisibilityOff fontSize="small" />*/}
+                      {/*      ) : (*/}
+                      {/*        <Visibility fontSize="small" />*/}
+                      {/*      )}*/}
+                      {/*    </IconButton>*/}
+                      {/*  </Box>*/}
+
+                      {/*  {showShippingDays && (*/}
+                      {/*    <Typography*/}
+                      {/*      variant="body2"*/}
+                      {/*      sx={{ mt: 1, color: 'text.secondary', transition: '0.3s ease' }}*/}
+                      {/*    >*/}
+                      {/*      {STATE_SHIPPING_DAYS[formik.values.state] ||*/}
+                      {/*        "Select a state to see estimated shipping days"}*/}
+                      {/*    </Typography>*/}
+                      {/*  )}*/}
+                      {/*</Box>*/}
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} variant="body2"
@@ -925,7 +1128,40 @@ export default function CheckoutPage() {
                         <Typography variant="h6" fontWeight={900}>AUD {total}</Typography>
                       </Box>
                     </Box>
-                     {/*PayPal Buttons */}
+                    {/*<Divider sx={{ mt: 2, mb: 1 }} />*/}
+
+                    {/*  <Box*/}
+                    {/*    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}*/}
+                    {/*  >*/}
+                    {/*    <Typography fontWeight={700} sx={{ color: ACCENT }}>*/}
+                    {/*      Approx Shipping Days*/}
+                    {/*    </Typography>*/}
+
+                    {/*    <IconButton*/}
+                    {/*      onClick={() => setShowShippingDays(!showShippingDays)}*/}
+                    {/*      size="small"*/}
+                    {/*      sx={{ color: '#555' }}*/}
+                    {/*    >*/}
+                    {/*      {showShippingDays ? (*/}
+                    {/*        <Remove fontSize="small" />*/}
+                    {/*      ) : (*/}
+                    {/*        <Add fontSize="small" />*/}
+                    {/*      )}*/}
+                    {/*    </IconButton>*/}
+                    {/*  </Box>*/}
+
+                    {/*  {showShippingDays && (*/}
+                    {/*    <Typography*/}
+                    {/*      variant="body2"*/}
+                    {/*      sx={{ mt: 1, color: 'text.secondary', transition: '0.3s ease' }}*/}
+                    {/*    >*/}
+                    {/*      {STATE_SHIPPING_DAYS[formik.values.state] ||*/}
+                    {/*        "Select a state to see estimated shipping days"}*/}
+                    {/*    </Typography>*/}
+                    {/*  )}*/}
+                    {/*</Box>*/}
+
+                    {/*PayPal Buttons */}
                     {/*<PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: 'AUD', intent: 'capture' }}>*/}
                     {/*  <PayPalButtons*/}
                     {/*    style={{ layout: 'vertical' }}*/}
@@ -943,10 +1179,10 @@ export default function CheckoutPage() {
                     {/*          ...(token ? { 'x-access-token': token } : {})*/}
                     {/*        },*/}
                     {/*        body: JSON.stringify({*/}
-                    {/*          amount: amountAud,         // string like "12.34" is fine too*/}
+                    {/*          amount: amountAud,*/}
                     {/*          currency: 'AUD',*/}
                     {/*          transactionId,*/}
-                    {/*          meta: { title: data?.cardId?.title || 'Greetings Card' }*/}
+                    {/*          meta: { title: data?.cardId?.title }*/}
                     {/*        }),*/}
                     {/*      });*/}
 
@@ -978,6 +1214,58 @@ export default function CheckoutPage() {
                     {/*    onCancel={() => toast('Payment cancelled')}*/}
                     {/*  />*/}
                     {/*</PayPalScriptProvider>*/}
+                    {/*<PayPalButtons*/}
+                    {/*  style={{ layout: 'vertical' }}*/}
+                    {/*  createOrder={async () => {*/}
+                    {/*    const amountAud = Number(total).toFixed(2);*/}
+                    {/*    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';*/}
+                    {/*    const transactionId = (data && data._id) || undefined;*/}
+                    
+                    {/*    const resp = await fetch(`${API_URL}/api/paypal/create-order`, {*/}
+                    {/*      method: 'POST',*/}
+                    {/*      headers: { 'Content-Type': 'application/json', ...(token ? { 'x-access-token': token } : {}) },*/}
+                    {/*      body: JSON.stringify({*/}
+                    {/*        amount: amountAud,*/}
+                    {/*        currency: 'AUD',*/}
+                    {/*        quantity: items[0].qty,*/}
+                    {/*        transactionId,*/}
+                    {/*        meta: { title: data?.cardId?.title }*/}
+                    {/*      }),*/}
+                    {/*    });*/}
+                    {/*    const json = await resp.json();*/}
+                    {/*    if (!resp.ok || !json?.id) throw new Error(json?.error || 'Failed to create order');*/}
+                    {/*    return json.id; // must return order id*/}
+                    {/*  }}*/}
+                    
+                    {/*  onApprove={async ({ orderID }, actions) => {*/}
+                    {/*    const resp = await fetch(`${API_URL}/api/paypal/capture/${orderID}`, { method: 'POST' });*/}
+                    
+                    {/*    // If server bubbled PayPal error back, handle instrument_declined by restarting:*/}
+                    {/*    if (!resp.ok) {*/}
+                    {/*      const err = await resp.json().catch(() => ({}));*/}
+                    {/*      const issue = err?.paypal?.details?.[0]?.issue || err?.issue;*/}
+                    {/*      if (issue === 'INSTRUMENT_DECLINED') {*/}
+                    {/*        return actions.restart(); // let buyer choose another way to pay*/}
+                    {/*      }*/}
+                    {/*      toast.error(err?.message || 'Payment failed');*/}
+                    {/*      return;*/}
+                    {/*    }*/}
+                    
+                    {/*    const json = await resp.json();*/}
+                    {/*    if (json?.status === 'COMPLETED') {*/}
+                    {/*      toast.success('Payment completed ✅');*/}
+                    {/*      window.location.href = `${WEB_URL}/success`;*/}
+                    {/*    } else {*/}
+                    {/*      toast.error(`Payment status: ${json?.status || 'Unknown'}`);*/}
+                    {/*    }*/}
+                    {/*  }}*/}
+                    
+                    {/*  onError={(err) => {*/}
+                    {/*    console.error('PayPal error', err);*/}
+                    {/*    toast.error('Payment failed');*/}
+                    {/*  }}*/}
+                    {/*  onCancel={() => toast('Payment cancelled')}*/}
+                    {/*/>*/}
 
 
                     <Button
@@ -985,9 +1273,10 @@ export default function CheckoutPage() {
                       type="submit"
                       // form="checkout-form"
                       variant="contained"
+                      // loading={loading}
                       disabled={formik.isSubmitting}
                       sx={{
-                        mt: { md:5, '4k':1 , xs:2 },
+                        mt: { md:2, '4k':1 , xs:2 },
                         // py: 1.25,
                         borderRadius: 1.5,
                         bgcolor: '#c165a0',
@@ -1045,24 +1334,25 @@ export default function CheckoutPage() {
                     <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
                       Welcome to Greetings Card
                     </Typography>
-                    <Typography gutterBottom variant="bod1" padding="10px" sx={{ textAlign: 'center' }}>
-                      These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
-                      relationship with Tecshield website’ applications mobile application (the
-                      “Service”) operated by Tecshield. (“us”, “we”, or “our”).
 
-                      Please read these Terms and Conditions carefully before using our website and
-                      Tecshield’ mobile applications (the “Service”).
-
-                      Your access to and use of the Service is conditioned on your acceptance of and
-                      compliance with these Terms. These Terms apply to all visitors, users and others
-                      who access or use the Service.
-
-                      By accessing or using the Service you agree to be bound by these Terms. If you
-                      disagree with any part of the terms then you may not access the Service.
-                    </Typography>
                     <CardMedia/>
                     <CardContent>
-                      <Typography gutterBottom variant="h6" component="div" sx={{ mt: 0, mb: 3 }}>
+                      <Typography gutterBottom variant="bod1" padding="10px" sx={{ textAlign: 'center' }}>
+                        These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
+                        relationship with Tecshield website’ applications mobile application (the
+                        “Service”) operated by Tecshield. (“us”, “we”, or “our”).
+
+                        Please read these Terms and Conditions carefully before using our website and
+                        Tecshield’ mobile applications (the “Service”).
+
+                        Your access to and use of the Service is conditioned on your acceptance of and
+                        compliance with these Terms. These Terms apply to all visitors, users and others
+                        who access or use the Service.
+
+                        By accessing or using the Service you agree to be bound by these Terms. If you
+                        disagree with any part of the terms then you may not access the Service.
+                      </Typography>
+                      <Typography gutterBottom variant="h6" component="div" sx={{ mt: 0, mb: 3, mt:5 }}>
                         Purchases
                       </Typography>
                       <Typography variant="body2" color="text.secondary">

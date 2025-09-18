@@ -1022,7 +1022,8 @@ const bridgesAttachedRef = useRef(false);
               localStorage.setItem('redirectToCheckout', 'true');
               await openLogin();
             } else {
-              handleCheckout();
+              router.push(`/checkout/${userTemplateData._id}`);
+              // handleCheckout();
             }
           }
         } catch (error) {

@@ -168,3 +168,19 @@ body {
 /*  !*margin-bottom: 100px;*!*/
 /*  background: #c165a0 !important;*/
 /*}*/
+/* match MUI TextField border */
+.react-tel-input .form-control {
+  border: 1px solid rgba(0, 0, 0, 0.10) !important;
+  box-shadow: none !important;
+  border-radius: 20px;
+}
+.react-tel-input .form-control:focus {
+  border-color: #c165a0 !important;   /* MUI pink[600] */
+  box-shadow: 0 0 0 1px #c165a0 !important;
+}
+
+
+/*.react-tel-input .form-control {*/
+/*  border: none !important;*/
+/*  box-shadow: none !important; !* also kills hover/focus outline *!*/
+/*}*/

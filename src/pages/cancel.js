@@ -15,7 +15,7 @@ export default function CancelPage() {
       minHeight: '100vh !important',
       overflowY: 'hidden ',
       backgroundImage: {
-        xs: `url(${WEB_URL}/portrate.png)`, md: `url(${WEB_URL}/bg1.png)`
+        xs: `url(${WEB_URL}/thankPortrate.png)`, md: `url(${WEB_URL}/thankYou.png)`
       },
       backgroundSize: 'cover',
       backgroundPosition: 'center',

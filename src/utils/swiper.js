@@ -33,6 +33,8 @@ export default function CardsCarousel({ allCards = [] }) {
     return diffInDays <= 30;
   });
 
+  console.log("validCards", validCards)
+
   return (
     <Swiper
       modules={[Navigation, Autoplay]}
