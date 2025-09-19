@@ -89,10 +89,15 @@ const Upload = () => {
     }
 
     const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-    if (file.size > 1024 * 1024) {
-      toast.error(`File too large (${sizeInMB} MB). Max allowed: 1 MB.`);
+
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error(`File too large (${sizeInMB} MB). Max allowed: 4 MB.`);
       return;
     }
+    // if (file.size > 1024 * 1024) {
+    //   toast.error(`File too large (${sizeInMB} MB). Max allowed: 1 MB.`);
+    //   return;
+    // }
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -154,8 +159,8 @@ const Upload = () => {
     //   toast.error(`Video too large (${sizeInMB} MB). Max allowed size is 1 MB.`);
     //   return;
     // }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error(`Video too large (${sizeInMB} MB). Max allowed size is 5 MB.`);
+    if (file.size > 20 * 1024 * 1024) {
+      toast.error(`Video too large (${sizeInMB} MB). Max allowed size is 20 MB.`);
       return;
     }
 
