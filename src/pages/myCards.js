@@ -77,7 +77,11 @@ const LoginUserCards = () => {
     getAllLoginUserCards();
   }, []);
 
+  // Filter out deleted cards
+  const filteredCards = allCards.filter(card => !card?.deleteMyCard);
+
   console.log('allCards', allCards);
+  console.log('filteredCards', filteredCards);
 
   const gotoEditor = (uuid, cardUUID) => {
     router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
@@ -147,17 +151,39 @@ const LoginUserCards = () => {
                     </Box>
                   ) : (
                     <>
-                      {allCards.length === 0 ? (
+                      {filteredCards.length === 0 ? (
                         <Box sx={{ width: '100%', textAlign: 'center' }}>
                           <Typography>No cards found.</Typography>
                         </Box>
                       ) : (
                           <CardsCarousel
-                            allCards={allCards}
+                            allCards={filteredCards}
                           />
                         )}
                     </>
                   )}
+
+                  <Box sx={{
+                    display:'flex', justifyContent:'flex-end', alignItems:'center', width:'100%'
+                  }}>
+                  <Button
+                    variant="contained"
+                    onClick={() => router.back()}
+                    sx={{
+                      mt:5,
+                      // width: 100,
+                      // px: 3,
+                      // borderRadius: '20px !important',
+                      backgroundColor: '#c165a0',
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: '#c165a0',
+                        color: 'white'
+                      }
+                    }}
+                  >
+                    Go Back
+                  </Button></Box>
                 </Grid>
 
               </Box>

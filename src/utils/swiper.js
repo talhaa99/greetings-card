@@ -1,144 +1,481 @@
+// import { useRouter } from 'next/router';
+// import * as React from 'react';
+// import { Fragment } from 'react';
+// import {
+//   Box,
+//   Card,
+//   CardActionArea,
+//   CardMedia,
+//   CardContent,
+//   Typography,
+//   Button,
+//   Dialog,
+//   DialogTitle,
+//   DialogContent,
+//   DialogActions,
+//   DialogContentText
+// } from '@mui/material';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Navigation, Autoplay } from 'swiper/modules';
+// import EditIcon from '@mui/icons-material/Edit';
+// import IconButton from '@mui/material/IconButton';
+// import Tooltip from '@mui/material/Tooltip';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import Link from 'next/link';
+
+// const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+// let WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import toast from 'react-hot-toast';
+// import axios from 'axios';
+// export default function CardsCarousel({ allCards = [] }) {
+//   const router = useRouter();
+//   // keep local copy so we can remove deleted cards from UI
+//   const [cards, setCards] = React.useState(Array.isArray(allCards) ? allCards : []);
+//   const [loadingId, setLoadingId] = React.useState(null);
+//   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+//   const [cardToDelete, setCardToDelete] = React.useState(null);
+//   const gotoEditor = (uuid, cardUUID) => router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
+
+//   // check here the user created card if is pass 30 days than hide that cards
+//   // also hide cards that are marked for deletion
+
+//   const validCards = (Array.isArray(allCards) ? allCards : []).filter((data) => {
+//     const createdDate = new Date(data?.createdAt);
+//     const now = new Date();
+//     const diffInDays = (now - createdDate) / (1000 * 60 * 60 * 24);
+    
+//     // Hide cards older than 30 days or marked for deletion
+//     const isValid = diffInDays <= 30 && !data?.deleteMyCard;
+    
+//     // Debug logging
+//     if (data?.deleteMyCard) {
+//       console.log('Hiding deleted card:', data?.cardId?.title, data);
+//     }
+    
+//     return isValid;
+//   });
+
+//   console.log('Total cards:', allCards.length, 'Valid cards:', validCards.length);
+
+//   const handleDeleteClick = (card) => {
+//     setCardToDelete(card);
+//     setDeleteDialogOpen(true);
+//   };
+
+//   const handleDeleteConfirm = async () => {
+//     if (!cardToDelete) return;
+    
+//     try {
+//       setLoadingId(cardToDelete._id);
+//       await axios.delete(`${BASE_URL}/api/user/ar-experience/remove-card/${cardToDelete._id}`);
+      
+//       // Update the card to mark it as deleted instead of removing it completely
+//       setCards(prev => {
+//         const updatedCards = prev.map(c => 
+//           c._id === cardToDelete._id 
+//             ? { ...c, deleteMyCard: true }
+//             : c
+//         );
+
+        
+//         console.log('Card marked as deleted:', cardToDelete._id);
+//         console.log('Updated cards:', updatedCards);
+//         return updatedCards;
+//       });
+      
+//       toast.success('Card deleted successfully');
+//     } catch (err) {
+//       const msg = err?.response?.data?.msg || err?.response?.data?.message || 'Failed to delete card';
+//       toast.error(msg);
+//       console.error('delete card error', err);
+//     } finally {
+//       setLoadingId(null);
+//       setDeleteDialogOpen(false);
+//       setCardToDelete(null);
+//     }
+//   };
+
+//   const handleDeleteCancel = () => {
+//     setDeleteDialogOpen(false);
+//     setCardToDelete(null);
+//   };
+
+//   return (
+//     <Fragment>
+//       <Swiper
+//         modules={[Navigation, Autoplay]}
+//         navigation
+//         autoplay={{ delay: 3000, disableOnInteraction: false }}
+//         spaceBetween={16}
+//         slidesPerView={1}
+//         breakpoints={{
+//           0: { slidesPerView: 1 },   // phones — exactly one card
+//           768: { slidesPerView: 1 },   // tablets
+//           1024: { slidesPerView: 4 },   // small desktop
+//           1280: { slidesPerView: 4 }   // large desktop
+//         }}
+//         style={{ paddingInline: 8, marginTop: '20px' }}
+//       >
+//         {(
+//           validCards.map((data, idx) => {
+//             const key = data?.uuid || idx;
+//             const img = `${BASE_URL}/${data?.cardId?.frontDesign}`;
+//             const title = data?.cardId?.title;
+//             const price = data?.cardId?.price;
+
+//           // Array.isArray(allCards) ? allCards : []).map((data, idx) => {
+//           // const key = data?.uuid || idx;
+//           // const img = `${BASE_URL}/${data?.cardId?.frontDesign}`;
+//           // const title = data?.cardId?.title || 'Untitled';
+//           // const price = data?.cardId?.price;
+//           // const cardCreatedDate = data?.createdAt;
+//           // console.log("cardCreatedDate", cardCreatedDate);
+
+//           return (
+//             <SwiperSlide key={key}>
+//               <Card
+//                 elevation={3}
+//                 sx={{
+//                   // height: '100%',
+//                   display: 'flex',
+//                   flexDirection: 'column',
+//                   transition: 'transform 120ms ease, box-shadow 120ms ease',
+//                   '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
+//                 }}
+//               >
+//                 <CardActionArea onClick={() => gotoEditor(data?.uuid, data?.cardId?.uuid)}>
+//                   <CardMedia
+//                     component="img"
+//                     src={img}
+//                     alt={title}
+//                     loading="lazy"
+//                     // sx={{ width: '100%', aspectRatio: '1 / 1.414', objectFit: 'cover' }}
+//                     sx={{     width: '100%',
+//                       height: { xs: '100% !important', md: '350px !important',  xl:'100% !important' }, // smaller height for mobile, bigger for desktop
+//                       objectFit: 'cover',
+//                       borderRadius: 2}}
+//                     // sx={{ width: '100%',height:300, objectFit: 'cover' }}
+//                   />
+//                   <CardContent sx={{ pb: 1.5, pt: 1 }}>
+//                     <Typography variant="h6"
+//                                 sx={{ color: '#c165a0', fontWeight: 600, mb: 1, textAlign: 'left' }}>
+//                       {title}
+//                     </Typography>
+//                     <Box
+//                       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+//                     >
+//                       {/* Price on left */}
+//                       <Typography
+//                         variant="h6"
+//                         color="text.secondary"
+//                         sx={{ fontWeight: 'bolder' }}
+//                       >
+//                         {`${price} AUD`}
+//                       </Typography>
+
+//                       {/* Buttons on right */}
+//                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+//                         <Tooltip title="Edit Card">
+//                           <IconButton onClick={() => gotoEditor(data?.uuid, data?.cardId?.uuid)}>
+//                             <EditIcon sx={{ color: '#c165a0' }}/>
+//                           </IconButton>
+//                         </Tooltip>
+
+
+
+//                         <Button
+//                           onClick={(e) => {
+//                             e.stopPropagation();
+//                             router.push(`/checkout/${data._id}`);
+//                           }}
+//                           variant="outlined"
+//                           sx={{
+//                             borderRadius: '20px !important',
+//                             color: '#c165a0',
+//                             px: 2,
+//                             '&:hover': { backgroundColor: '#c165a0', color: 'white' }
+//                           }}
+//                         >
+//                           Buy Now
+//                         </Button>
+//                         <Tooltip title="Delete Card Permanently">
+//                           <IconButton
+//                             disabled={loadingId === data._id}
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               handleDeleteClick(data);
+//                             }}
+//                           >
+//                             <DeleteIcon sx={{ color: loadingId === data._id ? 'gray' : '#c165a0' }}/>
+//                           </IconButton>
+//                         </Tooltip>
+//                       </Box>
+
+//                     </Box>
+//                   </CardContent>
+//                 </CardActionArea>
+//               </Card>
+//             </SwiperSlide>
+//           );
+//         }))}
+//       </Swiper>
+
+//       {/* Delete Confirmation Dialog */}
+//       <Dialog
+//         open={deleteDialogOpen}
+//         onClose={handleDeleteCancel}
+//         aria-labelledby="delete-dialog-title"
+//         aria-describedby="delete-dialog-description"
+//       >
+//         <DialogTitle id="delete-dialog-title">
+//           Delete Card
+//         </DialogTitle>
+//         <DialogContent>
+//           <DialogContentText id="delete-dialog-description">
+//             Are you sure you want to delete this card? This action cannot be reversible.
+//           </DialogContentText>
+//         </DialogContent>
+//         <DialogActions>
+//           <Button onClick={handleDeleteCancel} color="primary">
+//             Cancel
+//           </Button>
+//           <Button 
+//             onClick={handleDeleteConfirm} 
+//             variant="contained"
+//             disabled={loadingId === cardToDelete?._id}
+//             sx={{
+//               backgroundColor: '#c165a0',
+//               color: 'white',
+//               '&:hover': {
+//                 backgroundColor: '#c165a0',
+//                 color: 'white'
+//               },
+//               '&:disabled': {
+//                 backgroundColor: '#c165a0',
+//                 color: 'white',
+//                 opacity: 0.6
+//               }
+//             }}
+//           >
+//             {loadingId === cardToDelete?._id ? 'Deleting...' : 'Delete'}
+//           </Button>
+//         </DialogActions>
+//       </Dialog>
+//     </Fragment>
+//   );
+// }
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { Fragment, useMemo, useRef, useEffect, useState } from 'react';
 import {
-  Box,
-  Card,
-  CardActionArea,
-  CardMedia,
-  CardContent,
-  Typography,
-  Button
+  Box, Card, CardActionArea, CardMedia, CardContent, Typography, Button,
+  Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Tooltip, IconButton
 } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
+import DeleteIcon from '@mui/icons-material/Delete';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import Link from 'next/link';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-let WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
+
 export default function CardsCarousel({ allCards = [] }) {
   const router = useRouter();
-  const gotoEditor = (uuid, cardUUID) => router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
 
-  // check here the user created card if is pass 30 days than hide that cards
+  // local state + keep in sync if parent updates
+  const [cards, setCards] = React.useState(Array.isArray(allCards) ? allCards : []);
+  useEffect(() => setCards(Array.isArray(allCards) ? allCards : []), [allCards]);
 
-  const validCards = (Array.isArray(allCards) ? allCards : []).filter((data) => {
-    const createdDate = new Date(data?.createdAt);
-    const now = new Date();
-    const diffInDays = (now - createdDate) / (1000 * 60 * 60 * 24);
-    return diffInDays <= 30;
-  });
+  const [loadingId, setLoadingId] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState(null);
 
-  console.log("validCards", validCards)
+  // ✅ define swiper ref
+  const swiperRef = useRef(null);
+
+  const gotoEditor = (uuid, cardUUID) =>
+    router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
+
+  // ✅ derive from STATE
+  const validCards = useMemo(() => {
+    return (Array.isArray(cards) ? cards : []).filter((data) => {
+      const createdDate = new Date(data?.createdAt);
+      const now = new Date();
+      const diffInDays = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+      return diffInDays <= 30 && !data?.deleteMyCard;
+    });
+  }, [cards]);
+
+  const handleDeleteClick = (card) => {
+    setCardToDelete(card);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!cardToDelete) return;
+    try {
+      setLoadingId(cardToDelete._id);
+      await axios.delete(`${BASE_URL}/api/user/ar-experience/remove-card/${cardToDelete._id}`);
+
+      // ✅ optimistic UI: mark then remove
+      setCards((prev) => {
+        const next = prev
+          .map((c) => (c._id === cardToDelete._id ? { ...c, deleteMyCard: true } : c))
+          .filter((c) => !c.deleteMyCard);
+
+        // after DOM updates, refresh Swiper layout safely
+        requestAnimationFrame(() => swiperRef.current?.update?.());
+        return next;
+      });
+
+      toast.success('Card deleted successfully');
+    } catch (err) {
+      const msg = err?.response?.data?.msg || err?.response?.data?.message || 'Failed to delete card';
+      toast.error(msg);
+      console.error('delete card error', err);
+    } finally {
+      setLoadingId(null);
+      setDeleteDialogOpen(false);
+      setCardToDelete(null);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setCardToDelete(null);
+  };
 
   return (
-    <Swiper
-      modules={[Navigation, Autoplay]}
-      navigation
-      autoplay={{ delay: 3000, disableOnInteraction: false }}
-      spaceBetween={16}
-      slidesPerView={1}
-      breakpoints={{
-        0: { slidesPerView: 1 },   // phones — exactly one card
-        768: { slidesPerView: 1 },   // tablets
-        1024: { slidesPerView: 4 },   // small desktop
-        1280: { slidesPerView: 4 }   // large desktop
-      }}
-      style={{ paddingInline: 8, marginTop: '20px' }}
-    >
-      {(
-        validCards.map((data, idx) => {
-          const key = data?.uuid || idx;
+    <Fragment>
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        navigation
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        spaceBetween={16}
+        slidesPerView={1}
+        breakpoints={{ 0: { slidesPerView: 1 }, 768: { slidesPerView: 1 }, 1024: { slidesPerView: 4 }, 1280: { slidesPerView: 4 } }}
+        style={{ paddingInline: 8, marginTop: '20px' }}
+        onSwiper={(s) => (swiperRef.current = s)} // ✅ capture instance
+      >
+        {validCards.map((data) => {
+          const key = data?._id || data?.uuid;
           const img = `${BASE_URL}/${data?.cardId?.frontDesign}`;
           const title = data?.cardId?.title;
           const price = data?.cardId?.price;
 
-        // Array.isArray(allCards) ? allCards : []).map((data, idx) => {
-        // const key = data?.uuid || idx;
-        // const img = `${BASE_URL}/${data?.cardId?.frontDesign}`;
-        // const title = data?.cardId?.title || 'Untitled';
-        // const price = data?.cardId?.price;
-        // const cardCreatedDate = data?.createdAt;
-        // console.log("cardCreatedDate", cardCreatedDate);
-
-        return (
-          <SwiperSlide key={key}>
-            <Card
-              elevation={3}
-              sx={{
-                // height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 120ms ease, box-shadow 120ms ease',
-                '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
-              }}
-            >
-              <CardActionArea onClick={() => gotoEditor(data?.uuid, data?.cardId?.uuid)}>
-                <CardMedia
-                  component="img"
-                  src={img}
-                  alt={title}
-                  loading="lazy"
-                  // sx={{ width: '100%', aspectRatio: '1 / 1.414', objectFit: 'cover' }}
-                  sx={{     width: '100%',
-                    height: { xs: '100% !important', md: '350px !important',  xl:'100% !important' }, // smaller height for mobile, bigger for desktop
-                    objectFit: 'cover',
-                    borderRadius: 2}}
-                  // sx={{ width: '100%',height:300, objectFit: 'cover' }}
-                />
-                <CardContent sx={{ pb: 1.5, pt: 1 }}>
-                  <Typography variant="h6"
-                              sx={{ color: '#c165a0', fontWeight: 600, mb: 1, textAlign: 'left' }}>
-                    {title}
-                  </Typography>
-                  <Box
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                  >
-                    {/* Price on left */}
-                    <Typography
-                      variant="h6"
-                      color="text.secondary"
-                      sx={{ fontWeight: 'bolder' }}
-                    >
-                      {`${price} AUD`}
+          return (
+            <SwiperSlide key={key}>
+              <Card
+                elevation={3}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  transition: 'opacity 160ms ease, transform 160ms ease, box-shadow 120ms ease',
+                  '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
+                }}
+              >
+                <CardActionArea onClick={() => gotoEditor(data?.uuid, data?.cardId?.uuid)}>
+                  <CardMedia
+                    component="img"
+                    src={img}
+                    alt={title}
+                    loading="lazy"
+                    sx={{
+                      width: '100%',
+                      height: { xs: '100% !important', md: '350px !important', xl: '100% !important' },
+                      objectFit: 'cover',
+                      borderRadius: 2
+                    }}
+                  />
+                  <CardContent sx={{ pb: 1.5, pt: 1 }}>
+                    <Typography variant="h6" sx={{ color: '#c165a0', fontWeight: 600, mb: 1, textAlign: 'left' }}>
+                      {title}
                     </Typography>
 
-                    {/* Buttons on right */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Tooltip title="Edit Card">
-                        <IconButton onClick={() => gotoEditor(data?.uuid, data?.cardId?.uuid)}>
-                          <EditIcon sx={{ color: '#c165a0' }}/>
-                        </IconButton>
-                      </Tooltip>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 'bolder' }}>
+                        {`${price} AUD`}
+                      </Typography>
 
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(`/checkout/${data._id}`);
-                        }}
-                        variant="outlined"
-                        sx={{
-                          borderRadius: '20px !important',
-                          color: '#c165a0',
-                          px: 2,
-                          '&:hover': { backgroundColor: '#c165a0', color: 'white' }
-                        }}
-                      >
-                        Buy Now
-                      </Button>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Tooltip title="Edit Card">
+                          <IconButton onClick={(e) => { e.stopPropagation(); gotoEditor(data?.uuid, data?.cardId?.uuid); }}>
+                            <EditIcon sx={{ color: '#c165a0' }} />
+                          </IconButton>
+                        </Tooltip>
+
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/checkout/${data._id}`);
+                          }}
+                          variant="outlined"
+                          sx={{
+                            borderRadius: '20px !important',
+                            color: '#c165a0',
+                            px: 2,
+                            '&:hover': { backgroundColor: '#c165a0', color: 'white' }
+                          }}
+                        >
+                          Buy Now
+                        </Button>
+
+                        <Tooltip title="Delete Card Permanently">
+                          <IconButton
+                            disabled={loadingId === data._id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteClick(data);
+                            }}
+                          >
+                            <DeleteIcon sx={{ color: loadingId === data._id ? 'gray' : '#c165a0' }} />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
                     </Box>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
 
-                  </Box>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </SwiperSlide>
-        );
-      }))}
-    </Swiper>
+      {validCards.length === 0 && (
+        <Box sx={{ textAlign: 'center', py: 6, color: 'text.secondary' }}>
+          <Typography>No cards to show.</Typography>
+        </Box>
+      )}
+
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel} aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-description">
+        <DialogTitle id="delete-dialog-title">Delete Card</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="delete-dialog-description">
+            Are you sure you want to delete this card? This action cannot be reversible.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary" sx={{ '&:hover': { backgroundColor: 'white', color: '#c165a0' },}} >Cancel</Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            variant="contained"
+            disabled={loadingId === cardToDelete?._id}
+            sx={{
+              backgroundColor: '#c165a0',
+              color: 'white',
+              '&:hover': { backgroundColor: '#c165a0', color: 'white' },
+              '&:disabled': { backgroundColor: '#c165a0', color: 'white', opacity: 0.6 }
+            }}
+          >
+            {loadingId === cardToDelete?._id ? 'Deleting...' : 'Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
   );
 }

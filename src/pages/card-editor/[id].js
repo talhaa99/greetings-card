@@ -595,7 +595,6 @@ import QRCodeGenerator from '../../components/qrCode';
 import { useAuth } from '../../hooks/use-auth';
 import Checkout from '../../components/checkout';
 
-
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const Editor = () => {
   const auth = useAuth();
@@ -610,7 +609,7 @@ const Editor = () => {
   const { id: userCardId, selected: cardId } = router.query;
   const gameIframe = useRef(null);
   const [iframeLoaded, setIframeLoaded] = useState(false);
-const bridgesAttachedRef = useRef(false);
+  const bridgesAttachedRef = useRef(false);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const hasCalledRef = useRef(false);
   const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
@@ -626,8 +625,6 @@ const bridgesAttachedRef = useRef(false);
   const [userTemplateData, setUserTemplateData] = useState(null);
   const [url, setUrl] = useState(null);
   const [token, setToken] = useState(null);
-
-
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
@@ -787,23 +784,43 @@ const bridgesAttachedRef = useRef(false);
   // console.log('cardData', cardData);
   // console.log('userTemplateData', userTemplateData);
 
+  const VIEW_KEY_PREFIX = 'viewed-card:';
 
-  
+  const addCardView = async (uuid) => {
+    try {
+      const checkViews = await axios.post(`${BASE_URL}/api/cards/${uuid}/view`);
+      console.log('checkViews', checkViews);
+    } catch (e) {
+      console.debug('view track failed', e?.message);
+    }
+  };
+
+  useEffect(() => {
+    addCardView(cardId);
+    // if (!cardId || !data) return;
+    // const day = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    // const key = `viewed-card:${cardId}:${day}`;
+    // if (localStorage.getItem(key)) return;
+    //
+    // axios.post(`${BASE_URL}/api/cards/${cardId}/view`).catch(()=>{});
+    // localStorage.setItem(key, '1');
+  }, [cardId]);
+
   useEffect(() => {
     window.UnityLoaded = async () => {
       console.log('Unity is loaded and ready from web');
       setIsUnityReady(true);
       if (data && userTemplateData) {
-        console.log("data before calling game on load", data)
-        console.log("userTemplateData before calling game on load", userTemplateData)
+        console.log('data before calling game on load', data);
+        console.log('userTemplateData before calling game on load', userTemplateData);
         // setTimeout(() => {
-          gameOnLoad();
+        gameOnLoad();
         // }, 5000);
         // gameOnLoad();
       }
 
     };
-  }, [data , userTemplateData]);
+  }, [data, userTemplateData]);
   // }, [data && userTemplateData && token]);
   // console.log('data=============', data);
   const gameOnLoad = async () => {
@@ -1063,11 +1080,10 @@ const bridgesAttachedRef = useRef(false);
         }
       };
 
+    } else {
+      console.log('instance is null', instance);
     }
-    else{
-      console.log("instance is null", instance)
-    }
-    
+
   };
 
   return (
@@ -1129,8 +1145,8 @@ const bridgesAttachedRef = useRef(false);
                 window.UnityLoaded();
               }
             }}
-           
-            
+
+
             src={`${WEB_URL}/editor/index.html`}
             // src={`${WEB_URL}/editor/index.html?uuid=${cardId}`}
             // title={data.title}

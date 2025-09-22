@@ -1038,33 +1038,64 @@ export default function CheckoutPage() {
                           {`AUD ${expressShippingRate}`}
                         </Typography>
                       </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          mb: 1,
+                        }}
+                      >
+                        {/* Left side: Label + Icon */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Typography fontWeight={700} sx={{ color: ACCENT }}>
+                            Approximate Shipping Days
+                          </Typography>
+                          <InfoOutlined
+                            fontSize="small"
+                            sx={{ color: '#555', cursor: 'pointer' }}
+                            onClick={() => setShowShippingDays(v => !v)}
+                          />
+                        </Box>
 
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb:1 }}>
-                        <Typography
-                          fontWeight={700}
-                          sx={{ color: ACCENT, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}
-                        >
-                          Approximate Shipping Days
-                          {showShippingDays && (
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              sx={{ color: 'text.secondary', fontWeight: 600 }}
-                            >
-                              — {STATE_SHIPPING_DAYS[formik.values.state] || 'Select a state to see estimated shipping days'}
-                            </Typography>
-                          )}
-                        </Typography>
-
-                        <IconButton
-                          onClick={() => setShowShippingDays(v => !v)}
-                          size="small"
-
-                          aria-label="Show shipping info"
-                        >
-                          <InfoOutlined fontSize="small"    sx={{ color: '#555' , fontWeight:900}} />
-                        </IconButton>
+                        {/* Right side: Value */}
+                        {showShippingDays && (
+                          <Typography
+                            variant="body2"
+                            sx={{ color: 'text.secondary', fontWeight: 600 }}
+                          >
+                            {STATE_SHIPPING_DAYS[formik.values.state] || 'Select a state'}
+                          </Typography>
+                        )}
                       </Box>
+
+                      {/*<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb:1 }}>*/}
+                      {/*  <Typography*/}
+                      {/*    fontWeight={700}*/}
+                      {/*    sx={{ color: ACCENT, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}*/}
+                      {/*  >*/}
+                      {/*    <IconButton*/}
+                      {/*      onClick={() => setShowShippingDays(v => !v)}*/}
+                      {/*      size="small"*/}
+
+                      {/*      aria-label="Show shipping info"*/}
+                      {/*    >*/}
+                      {/*      <InfoOutlined fontSize="small"    sx={{ color: '#555' , fontWeight:900}} />*/}
+                      {/*    </IconButton>*/}
+
+                      {/*    Approximate Shipping Days*/}
+                      {/*    {showShippingDays && (*/}
+                      {/*      <Typography*/}
+                      {/*        component="span"*/}
+                      {/*        variant="body2"*/}
+                      {/*        sx={{ color: 'text.secondary', fontWeight: 600 }}*/}
+                      {/*      >*/}
+                      {/*        — {STATE_SHIPPING_DAYS[formik.values.state] || 'Select a state to see estimated shipping days'}*/}
+                      {/*      </Typography>*/}
+                      {/*    )}*/}
+                      {/*  </Typography>*/}
+
+                      {/*</Box>*/}
 
                       {/*<Box*/}
                       {/*  sx={{*/}
