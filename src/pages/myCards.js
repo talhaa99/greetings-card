@@ -164,14 +164,14 @@ const LoginUserCards = () => {
                   )}
 
                   <Box sx={{
-                    display:'flex', justifyContent:'flex-end', alignItems:'center', width:'100%'
+                    display:'flex', justifyContent: {md: 'flex-end', xs:'center' }, alignItems:'center', width:'100%'
                   }}>
                   <Button
                     variant="contained"
                     onClick={() => router.back()}
                     sx={{
                       mt:5,
-                      // width: 100,
+                      width: 150,
                       // px: 3,
                       // borderRadius: '20px !important',
                       backgroundColor: '#c165a0',
@@ -182,7 +182,7 @@ const LoginUserCards = () => {
                       }
                     }}
                   >
-                    Go Back
+                    Back
                   </Button></Box>
                 </Grid>
 

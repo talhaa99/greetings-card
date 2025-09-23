@@ -625,6 +625,8 @@ const Editor = () => {
   const [userTemplateData, setUserTemplateData] = useState(null);
   const [url, setUrl] = useState(null);
   const [token, setToken] = useState(null);
+  const redirectedRef   = useRef(false);
+  console.log('userTemplateData', userTemplateData);
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
@@ -632,12 +634,36 @@ const Editor = () => {
         hasCreatedTemplateRef.current = true;
         console.log('going to call create template 1');
         await getFrontCardDetail();
+
+        // setTimeout(() => {
+        //   if (userTemplateData?.arTemplateData?.isCustomizationComplete
+        //     && !userTemplateData.isPaid
+        //     && auth?.isAuthenticated) {
+        //     router.push(`/checkout/${userTemplateData._id}`);
+        //   }
+        // }, 5000);
+
         // await createTemplateData();
       }
     };
 
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]);
+
+  // useEffect(() => {
+  //   if (redirectedRef.current) return;
+  //   if (!auth?.isAuthenticated) return;
+  //   if (!userTemplateData) return;
+  //
+  //   const done = userTemplateData?.arTemplateData?.isCustomizationComplete === true;
+  //   const paid = userTemplateData?.isPaid === true;
+  //
+  //   if (done && !paid) {
+  //     redirectedRef.current = true;
+  //     router.replace(`/checkout/${userTemplateData._id}`); // replace avoids back-loop
+  //   }
+  //   // done && paid -> stay on page
+  // }, [auth?.isAuthenticated, userTemplateData, router]);
 
   const getFrontCardDetail = async () => {
     try {
@@ -1043,6 +1069,23 @@ const Editor = () => {
               // handleCheckout();
             }
           }
+          //
+          // const isDone = !!(parsed?.isCustomizationComplete
+          //   ?? userTemplateData?.arTemplateData?.isCustomizationComplete);
+          // const isPaid = !!userTemplateData?.isPaid;
+          //
+          //
+          // if (isDone) {
+          //   if (!auth?.isAuthenticated) {
+          //     localStorage.setItem('redirectToCheckout', 'true');
+          //     await openLogin();
+          //     return;
+          //   }
+          // } else if (!isPaid) {
+          //     router.push(`/checkout/${userTemplateData._id}`);
+          //     return;
+          //   }
+
         } catch (error) {
           console.log('error in save data', error);
         }
@@ -1078,6 +1121,11 @@ const Editor = () => {
         } catch (error) {
           console.log('error in change template data', error);
         }
+      };
+
+      gameIframe.current.contentWindow.goBack = async () => {
+        router.push('/');
+
       };
 
     } else {
