@@ -105,8 +105,8 @@ const Upload = () => {
       img.src = e.target.result;
       img.onload = async () => {
         const { width, height } = img;
-        if (width < 660 || height < 660) {
-          toast.error(`Image too small (${width}x${height}). Min: 660x660px.`);
+        if (width < 200 || height < 200) {
+          toast.error(`Image too small (${width}x${height}). Min: 200x200px.`);
           return;
         }
         if (width > 4028 || height > 4028) {

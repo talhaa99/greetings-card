@@ -517,41 +517,33 @@ export default function CheckoutPage() {
 
         // setLoading(true)
         const token = localStorage.getItem('token');
-        const response = await axios.post(`${API_URL}/api/transactions/create`,
-          {
-            cardCustomizationId: data?._id,
-            title: data?.cardId?.title,
-            price: data?.cardId?.price,
-            quantity: items[0].qty,
-            aud: audCalculatedTotalPrice,
-            delivery_address: values.delivery_address,
-            suburb: values.suburb,
-            state: values.state,
-            postal_code: values.postal_code,
-            phone_number: values.phone_number,
-            newsAndOffers: values.newsAndOffers,
-            // shippingMethod,
-            // shippingRate,
-            expressShipping: values.expressShipping,
-            expressShippingRate: expressShipping ? expressShippingRate : 0,
-            shipping,
-            total,
-            gst: formatPrice(gst)
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'x-access-token': token
-            }
-          });
+        
+        // Prepare transaction data (not created in DB yet)
+        const transactionData = {
+          cardCustomizationId: data?._id,
+          title: data?.cardId?.title,
+          price: data?.cardId?.price,
+          quantity: items[0].qty,
+          aud: audCalculatedTotalPrice,
+          delivery_address: values.delivery_address,
+          suburb: values.suburb,
+          state: values.state,
+          postal_code: values.postal_code,
+          phone_number: values.phone_number,
+          newsAndOffers: values.newsAndOffers,
+          // shippingMethod,
+          // shippingRate,
+          expressShipping: values.expressShipping,
+          expressShippingRate: expressShipping ? expressShippingRate : 0,
+          shipping,
+          shippingDays: expressShipping ? "3-5" : "7-10", // Express shipping: 3-5 days, Normal: 7-10 days
+          total,
+          gst: formatPrice(gst)
+        };
 
-        console.log('response------------', response);
-        // toast.success('Order place successfully');
-        // formik.resetForm();
-        setShippingMethod('normal');
-        const txId = response?.data?.data?._id || response?.data?._id; // jo bhi aap return kar rahe
+        console.log('Transaction data prepared:', transactionData);
 
-        // 2) create PayPal order & redirect
+        // 2) create PayPal order & redirect (transaction will be created when PayPal order is successful)
         const amountAud = Number(total).toFixed(2);
         const pp = await fetch(`${API_URL}/api/paypal/create-order`, {
           method: 'POST',
@@ -559,7 +551,7 @@ export default function CheckoutPage() {
           body: JSON.stringify({
             amount: amountAud,
             currency: 'AUD',
-            transactionId: txId,
+            transactionData: transactionData, // Pass transaction data instead of transactionId
             quantity: items[0].qty,
             meta: { title: data?.cardId?.title }
           })

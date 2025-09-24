@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Script from 'next/script';
 import { CacheProvider } from '@emotion/react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -55,6 +56,16 @@ const App = (props) => {
           content="initial-scale=1, width=device-width"
         />
       </Head>
+      <Script
+        id="env-config"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.NEXT_PUBLIC_API_BASE_URL = '${process.env.NEXT_PUBLIC_API_BASE_URL}';
+          `,
+        }}
+      />
+      <Script src="/pageview-tracker.js" strategy="beforeInteractive" />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <SessionProvider session={pageProps.session}>
           <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test', currency: 'AUD' }}>
