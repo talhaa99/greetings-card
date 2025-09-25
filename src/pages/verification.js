@@ -87,8 +87,8 @@ export default function Page() {
                 justifyContent: 'center'
               }}
             >
-              <img src="/logo3.png" alt="Logo"
-                   style={{ height: 50 }}/>
+              <img src="/logo.png" alt="Logo"
+                   style={{ height: 100 }}/>
             </Box>
             <Typography variant="h5" component="div"
                         sx={{ display: 'flex', justifyContent: 'center', mt:3, mb:2 }}>

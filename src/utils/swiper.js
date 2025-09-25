@@ -375,6 +375,7 @@ export default function CardsCarousel({ allCards = [] }) {
                 sx={{
                   display: 'flex',
                   flexDirection: 'column',
+                  height: '100%',
                   transition: 'opacity 160ms ease, transform 160ms ease, box-shadow 120ms ease',
                   '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
                 }}
@@ -387,12 +388,12 @@ export default function CardsCarousel({ allCards = [] }) {
                     loading="lazy"
                     sx={{
                       width: '100%',
-                      height: { xs: '100% !important', md: '350px !important', xl: '100% !important' },
+                      height: { xs: '350px !important', md: '350px !important', xl: '100% !important' },
                       objectFit: 'cover',
                       borderRadius: 2
                     }}
                   />
-                  <CardContent sx={{ pb: 1.5, pt: 1 }}>
+                  <CardContent sx={{ pb: 1.5, pt: 1, display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
                     <Typography variant="h6" sx={{ color: '#c165a0', fontWeight: 600, mb: 1, textAlign: 'left' }}>
                       {title}
                     </Typography>
@@ -409,21 +410,59 @@ export default function CardsCarousel({ allCards = [] }) {
                           </IconButton>
                         </Tooltip>
 
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            router.push(`/checkout/${data._id}`);
-                          }}
-                          variant="outlined"
-                          sx={{
-                            borderRadius: '20px !important',
-                            color: '#c165a0',
-                            px: 2,
-                            '&:hover': { backgroundColor: '#c165a0', color: 'white' }
-                          }}
-                        >
-                          Buy Now
-                        </Button>
+                        {(data.isPaid === true || data.isPaid === 'true') ? (
+                          // Show as Badge when paid
+                          <Box
+                            sx={{
+                              backgroundColor: '#28a745',
+                              color: 'white',
+                              px: 2,
+                              py: 0.5,
+                              borderRadius: '20px',
+                              fontSize: '0.875rem',
+                              fontWeight: 500,
+                              textAlign: 'center',
+                              minWidth: '80px',
+                              height: '32px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            ✓ Paid
+                          </Box>
+                        ) : (
+                          // Show as Badge when not paid
+                          <Box
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(`/checkout/${data._id}`);
+                            }}
+                            sx={{
+                              backgroundColor: '#c165a0',
+                              color: 'white',
+                              px: 2,
+                              py: 0.5,
+                              borderRadius: '20px',
+                              fontSize: '0.875rem',
+                              fontWeight: 500,
+                              textAlign: 'center',
+                              minWidth: '80px',
+                              height: '32px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s ease',
+                              '&:hover': {
+                                backgroundColor: '#a0528a',
+                                transform: 'translateY(-1px)'
+                              }
+                            }}
+                          >
+                            Buy Now
+                          </Box>
+                        )}
 
                         <Tooltip title="Delete Card Permanently">
                           <IconButton

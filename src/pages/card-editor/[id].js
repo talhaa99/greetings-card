@@ -633,22 +633,87 @@ const Editor = () => {
       if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
         hasCreatedTemplateRef.current = true;
         console.log('going to call create template 1');
-        await getFrontCardDetail();
-
-        // setTimeout(() => {
-        //   if (userTemplateData?.arTemplateData?.isCustomizationComplete
-        //     && !userTemplateData.isPaid
-        //     && auth?.isAuthenticated) {
-        //     router.push(`/checkout/${userTemplateData._id}`);
-        //   }
-        // }, 5000);
-
-        // await createTemplateData();
+        
+        try {
+          // Get fresh data from the permanent table after login
+          setLoading(true);
+          const res = await axios.get(`${BASE_URL}/api/cards/get/data/game/${cardId}`);
+          setData(res.data.data);
+          
+          // Create/update template data and get the fresh data
+          const freshTemplateData = await createTemplateData();
+          setLoading(false);
+          
+          // Check redirect immediately with fresh data (don't wait for state)
+          if (freshTemplateData) {
+            console.log('🔄 Checking redirect with fresh data immediately after login');
+            const shouldRedirect = localStorage.getItem('redirectToCheckout');
+            
+            if (shouldRedirect === 'true') {
+              console.log('📊 Fresh userTemplateData:', freshTemplateData);
+              localStorage.removeItem('redirectToCheckout');
+              
+              // Use the fresh data directly from the API response
+              const isCustomizationComplete = freshTemplateData?.arTemplateData?.isCustomizationComplete === true;
+              const isPaid = freshTemplateData?.isPaid === true;
+              
+              console.log('🔍 Fresh data conditions:', { isCustomizationComplete, isPaid });
+              
+              if (isCustomizationComplete && !isPaid) {
+                console.log('✅ Redirecting to checkout with fresh data');
+                router.push(`/checkout/${freshTemplateData._id}`);
+              } else if (isCustomizationComplete && isPaid) {
+                console.log('✅ Card is already paid, no redirect needed');
+              } else {
+                console.log('✅ Customization not complete yet, no redirect needed');
+              }
+            }
+          }
+        } catch (error) {
+          console.log('Error in runOnceAfterLogin:', error);
+          setLoading(false);
+        }
       }
     };
 
     runOnceAfterLogin();
   }, [auth?.isAuthenticated]);
+
+  // Function to check redirect after login
+  const checkRedirectAfterLogin = async () => {
+    // Only check if user is authenticated and we have userTemplateData
+    if (!auth?.isAuthenticated || !userTemplateData) return;
+    
+    // Check if user came from a redirect (has redirectToCheckout flag)
+    const shouldRedirect = localStorage.getItem('redirectToCheckout');
+    
+    if (shouldRedirect === 'true') {
+      console.log('🔄 User logged in after customization, checking redirect...');
+      console.log('📊 Current userTemplateData:', userTemplateData);
+      localStorage.removeItem('redirectToCheckout');
+      
+      // Check if customization is complete and not paid
+      const isCustomizationComplete = userTemplateData?.arTemplateData?.isCustomizationComplete === true;
+      const isPaid = userTemplateData?.isPaid === true;
+      
+      console.log('🔍 Check conditions:', { isCustomizationComplete, isPaid });
+      
+      if (isCustomizationComplete && !isPaid) {
+        console.log('✅ Redirecting to checkout after login');
+        router.push(`/checkout/${userTemplateData._id}`);
+      } else if (isCustomizationComplete && isPaid) {
+        console.log('✅ Card is already paid, no redirect needed');
+      } else {
+        console.log('✅ Customization not complete yet, no redirect needed');
+      }
+    }
+  };
+
+  // Check for redirect after login when userTemplateData is updated
+  // Disabled this useEffect since we handle redirect in runOnceAfterLogin
+  // useEffect(() => {
+  //   checkRedirectAfterLogin();
+  // }, [auth?.isAuthenticated, userTemplateData, router]);
 
   // useEffect(() => {
   //   if (redirectedRef.current) return;
@@ -794,17 +859,32 @@ const Editor = () => {
     const isAuth = auth?.isAuthenticated;
     console.log('going to call create template ');
     try {
+      console.log('🔍 Calling API with params:', {
+        uuid: cardId, 
+        userCardId, 
+        email, 
+        isAuthenticated: isAuth, 
+        userId: auth?.user?._id
+      });
+      
       const res = await axios.post(`${BASE_URL}/api/cards/upload-card-id`, {
         uuid: cardId, userCardId, email, isAuthenticated: isAuth, userId: auth?.user?._id
       });
 
+      console.log('📊 Fresh template data received:', res?.data?.data);
+      console.log('📊 isPaid status:', res?.data?.data?.isPaid);
+      console.log('📊 isCustomizationComplete status:', res?.data?.data?.arTemplateData?.isCustomizationComplete);
+      
       setCardData(res.data.data);
       setUserTemplateData(res?.data?.data);
+      
+      // Return the data so we can use it immediately if needed
+      return res?.data?.data;
 
     } catch (error) {
-      console.log(error);
+      console.log('❌ Error in createTemplateData:', error);
+      return null;
     }
-
   };
 
   // console.log('cardData', cardData);
@@ -1061,6 +1141,15 @@ const Editor = () => {
           // }
 
           if (parsed?.isCustomizationComplete) {
+            // Check if user is already paid - if so, don't redirect to checkout
+            const isAlreadyPaid = userTemplateData?.isPaid === true;
+            
+            if (isAlreadyPaid) {
+              console.log('✅ Card is already paid, no need to redirect to checkout');
+              return; // Don't redirect if already paid
+            }
+            
+            // Only redirect to checkout if not paid yet
             if (!auth?.isAuthenticated) {
               localStorage.setItem('redirectToCheckout', 'true');
               await openLogin();
