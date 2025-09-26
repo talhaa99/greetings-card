@@ -59,16 +59,16 @@ const PopularCards = () => {
     router.push(`/card-editor/${uuid}?selected=${cardUUID}`);
   };
 
-  // Simple logic: show popular cards if available, otherwise show raw cards
+  // Simple logic: show popular cards if available, otherwise show empty array
   const getDisplayCards = () => {
     if (popularCards.length > 0) {
       // If we have popular cards, show them
       console.log('Showing popular cards:', popularCards.length);
       return popularCards;
     } else {
-      // If no popular cards, show raw cards
-      console.log('Showing raw cards:', rawCardArray.length);
-      return rawCardArray;
+      // If no popular cards, return empty array to show "no cards found" message
+      console.log('No popular cards found');
+      return [];
     }
   };
 
@@ -155,6 +155,12 @@ const PopularCards = () => {
               <Box sx={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight: 200 }}>
                 <Typography variant="h6" sx={{ color: '#c9cbd3', textAlign: 'center' }}>
                   Loading popular cards...
+                </Typography>
+              </Box>
+            ) : getDisplayCards().length === 0 ? (
+              <Box sx={{ display:'flex', justifyContent:'center', alignItems:'center', minHeight: 200 }}>
+                <Typography variant="h6" sx={{ color: '#c9cbd3', textAlign: 'center' }}>
+                  No popular cards found
                 </Typography>
               </Box>
             ) : (
