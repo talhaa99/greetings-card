@@ -388,7 +388,7 @@ export default function CardsCarousel({ allCards = [] }) {
                     loading="lazy"
                     sx={{
                       width: '100%',
-                      height: { xs: '350px !important', md: '350px !important', xl: '100% !important' },
+                      height: { xs: '350px !important', md: '350px !important', lg:'350px' , xl: '100% !important' },
                       objectFit: 'cover',
                       borderRadius: 2
                     }}

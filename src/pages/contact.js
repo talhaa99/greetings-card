@@ -197,7 +197,7 @@ const Contact = () => {
 
         sx={{ width: '100%', mt: 5, mb: 5 }}>
         <Grid container spacing={2}>
-          <Grid item md={6} xs={12} sx={{mt: {md: 10 , xs:0}}}>
+          <Grid item md={6} xs={12} >
             <Typography gutterBottom variant="h4" padding="10px" sx={{
               // textAlign: 'center',
               fontWeight: 900,
@@ -296,7 +296,7 @@ const Contact = () => {
             </Box>
           </Grid>
           <Grid item md={6} xs={12}>
-            <Box component="form" id="contactForm" onSubmit={formik.handleSubmit} noValidate sx={{ mt: { md: 5, xs: 2 }, display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box component="form" id="contactForm" onSubmit={formik.handleSubmit} noValidate sx={{ mt: { md: 2, xs: 2 }, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
               <TextField
                 fullWidth

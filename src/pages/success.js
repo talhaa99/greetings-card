@@ -55,7 +55,7 @@ export default function SuccessPage() {
         Thank You For Your Order
       </h1>
       <Typography sx={{ fontSize: "2rem", marginBottom: "1rem", color: "grey" }}>
-        Your order has been placed and its being processed.You will receive an email with order details
+      Your card is on the way you recieve an email of order details
       </Typography>
       <Button
         variant="contained"
