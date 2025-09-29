@@ -16,7 +16,8 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+// PAYPAL INTEGRATION COMMENTED OUT - SWITCHING TO STRIPE
+// import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 const clientSideEmotionCache = createEmotionCache();
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 import { LoginModalProvider } from '../contexts/loginContext';
@@ -68,7 +69,8 @@ const App = (props) => {
       <Script src="/pageview-tracker.js" strategy="beforeInteractive" />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <SessionProvider session={pageProps.session}>
-          <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test', currency: 'AUD' }}>
+          {/* PAYPAL INTEGRATION COMMENTED OUT - SWITCHING TO STRIPE */}
+          {/* <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test', currency: 'AUD' }}> */}
           <SavedProvider>
           <ZindexProvider>
           <RegisterModalProvider>
@@ -122,7 +124,7 @@ const App = (props) => {
           </RegisterModalProvider>
           </ZindexProvider>
           </SavedProvider>
-          </PayPalScriptProvider>
+          {/* </PayPalScriptProvider> */}
         </SessionProvider>
       </LocalizationProvider>
     </CacheProvider>

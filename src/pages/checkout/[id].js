@@ -13,7 +13,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
+// PAYPAL INTEGRATION COMMENTED OUT - SWITCHING TO STRIPE
+// import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import AddressAutocompleteLocationIQ from '../../components/locationIqAutocomplete';
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -312,8 +313,32 @@ export default function CheckoutPage() {
     }
   };
 
+  const getUserNewsAndOffersPreference = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `${API_URL}/api/transactions/get-user-news-offers-preference`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          }
+        }
+      );
+
+      const preference = response?.data?.data?.newsAndOffers;
+      if (preference !== undefined) {
+        // Update the formik values with the user's previous preference
+        formik.setFieldValue('newsAndOffers', preference);
+      }
+    } catch (error) {
+      console.log('Error in get user news and offers preference', error);
+    }
+  };
+
   useEffect(() => {
     getData();
+    getUserNewsAndOffersPreference();
   }, [id]);
 
 // calculate gst on shipping and express shipping price too
@@ -410,10 +435,11 @@ export default function CheckoutPage() {
 
   const handleCheckout = async (audCalculatedTotalPrice) => {
     try {
-
-      // const CardPriceInAud = Number((data?.price * currency['AUD']).toFixed(2));
-
-      // console.log('CardPriceInAud', CardPriceInAud);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        toast.error('Please login to continue with checkout');
+        return;
+      }
 
       const frontCardImage = data?.frontDesign?.startsWith('http')
         ? encodeURI(data.frontDesign) // encode special characters
@@ -422,27 +448,39 @@ export default function CheckoutPage() {
       console.log('frontCardImage', frontCardImage);
 
       const productPayload = {
+        title: data?.cardId?.title || 'AR Greeting Card',
         price: audCalculatedTotalPrice,
-        // frontCardImage
-        frontCardImage: 'https://greetings-card-apis.tecshield.net/uploads/images/User-ar-experience/1755244773209-44806.jpg'
+        frontCardImage: frontCardImage,
+        userId: data?.user_id,
+        cardCustomizationId: data?._id
       };
-      console.log('productPayload', productPayload);
+      
+      console.log('Stripe checkout payload:', productPayload);
+      
       const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-access-token': token
         },
-        body: JSON.stringify({ product: productPayload })
+        body: JSON.stringify({ 
+          product: productPayload,
+          userId: data?.user_id,
+          cardCustomizationId: data?._id
+        })
       });
 
       const response = await res.json();
-      console.log('response in checkout', response);
+      console.log('Stripe checkout response:', response);
+      
       if (response.url) {
         window.location.href = response.url;
+      } else {
+        toast.error('Failed to create checkout session');
       }
     } catch (error) {
-      console.error('Checkout error', error);
-      alert('Error initiating checkout');
+      console.error('Stripe checkout error:', error);
+      toast.error('Error initiating checkout');
     }
   };
   //
@@ -543,33 +581,60 @@ export default function CheckoutPage() {
 
         console.log('Transaction data prepared:', transactionData);
 
-        // 2) create PayPal order & redirect (transaction will be created when PayPal order is successful)
-        const amountAud = Number(total).toFixed(2);
-        const pp = await fetch(`${API_URL}/api/paypal/create-order`, {
+        // 2) Create Stripe checkout session
+        const frontCardImage = data?.frontDesign && data.frontDesign !== 'undefined'
+          ? (data.frontDesign.startsWith('http') 
+              ? encodeURI(data.frontDesign) 
+              : encodeURI(`${API_URL}${data.frontDesign}`))
+          : 'https://via.placeholder.com/300x200?text=AR+Greeting+Card';
+
+        // Get userId from token or data
+        let userId = data?.user_id;
+        if (!userId) {
+          // Try to get userId from the token (decode JWT)
+          try {
+            const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+            userId = tokenPayload.user_id;
+          } catch (e) {
+            console.log('Could not decode token for userId');
+          }
+        }
+
+        const productPayload = {
+          title: data?.cardId?.title || 'AR Greeting Card',
+          price: audCalculatedTotalPrice,
+          frontCardImage: frontCardImage,
+          userId: userId,
+          cardCustomizationId: data?._id
+        };
+        
+        console.log('Stripe checkout payload:', productPayload);
+        console.log('User ID from data:', data?.user_id);
+        console.log('User ID from token:', userId);
+        
+        const res = await fetch(`${API_URL}/api/payment/create-checkout-session`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', ...(token ? { 'x-access-token': token } : {}) },
-          body: JSON.stringify({
-            amount: amountAud,
-            currency: 'AUD',
-            transactionData: transactionData, // Pass transaction data instead of transactionId
-            quantity: items[0].qty,
-            meta: { title: data?.cardId?.title }
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          },
+          body: JSON.stringify({ 
+            product: productPayload,
+            userId: userId,
+            cardCustomizationId: data?._id,
+            transactionData: transactionData // Include the transaction data from the form
           })
         });
 
-        const ppJson = await pp.json();
-        // formik.resetForm();
-        const approveUrl =
-          ppJson.approveUrl || (ppJson.id
-            ? `${NEXT_PUBLIC_PAYPAL_BASE_URL}/checkoutnow?token=${ppJson.id}`
-            : null);
-
-        if (!pp.ok || !approveUrl) {
-          console.log('PayPal create-order response:', ppJson); // debug
-          throw new Error(ppJson?.error || 'Could not start PayPal');
+        const response = await res.json();
+        console.log('Stripe checkout response:', response);
+        
+        if (response.url) {
+          toast.dismiss(loading);
+          window.location.href = response.url;
+        } else {
+          throw new Error('Failed to create checkout session');
         }
-
-        window.location.href = approveUrl;
 
 
 
@@ -586,8 +651,9 @@ export default function CheckoutPage() {
         // await handleCheckout(audCalculatedTotalPrice);
         setMessage('');
       } catch (err) {
-        console.log('err', err);
-        toast.error(err.message, { duration: 5000 });
+        console.log('Stripe checkout error:', err);
+        toast.dismiss(loading);
+        toast.error(err.message || 'Error initiating checkout', { duration: 5000 });
         formik.resetForm();
       }
       toast.dismiss(loading);
