@@ -521,7 +521,10 @@ export default function CheckoutPage() {
       shipping: '',
       total: '',
       gst: '',
-      submit: null
+      submit: null,
+      // Coupon fields
+      coupon_code: null,
+      discount_price: 0
     },
     validationSchema: Yup.object({
       // title: Yup.string().trim().required('Title is required'),
@@ -540,7 +543,10 @@ export default function CheckoutPage() {
       //                  .required('Phone number is required'),
       newsAndOffers: Yup.boolean(),
       expressShipping: Yup.boolean(),
-      termsAccepted: Yup.boolean().oneOf([true], 'Please accept the terms and conditions')
+      termsAccepted: Yup.boolean().oneOf([true], 'Please accept the terms and conditions'),
+      // Coupon fields
+      coupon_code: Yup.string().nullable(),
+      discount_price: Yup.number().min(0).default(0)
 
     }),
     onSubmit: async (values, helpers) => {
@@ -576,7 +582,10 @@ export default function CheckoutPage() {
           shipping,
           shippingDays: expressShipping ? "3-5" : "7-10", // Express shipping: 3-5 days, Normal: 7-10 days
           total,
-          gst: formatPrice(gst)
+          gst: formatPrice(gst),
+          // Coupon fields
+          coupon_code: values.coupon_code || null,
+          discount_price: values.discount_price || 0
         };
 
         console.log('Transaction data prepared:', transactionData);
@@ -587,6 +596,12 @@ export default function CheckoutPage() {
               ? encodeURI(data.frontDesign) 
               : encodeURI(`${API_URL}${data.frontDesign}`))
           : 'https://via.placeholder.com/300x200?text=AR+Greeting+Card';
+
+        console.log('🖼️ Frontend image details:', {
+          frontDesign: data?.frontDesign,
+          frontCardImage: frontCardImage,
+          API_URL: API_URL
+        });
 
         // Get userId from token or data
         let userId = data?.user_id;
