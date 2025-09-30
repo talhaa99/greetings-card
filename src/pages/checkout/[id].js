@@ -614,12 +614,12 @@ export default function CheckoutPage() {
         };
 
   
-        const imgURL = (p) =>
-          p ? `${(API_URL || '').replace(/\/+$/,'').replace(/^http:\/\//,'https://')}/${String(p).replace(/^[\/\\]+/,'').replace(/\\/g,'/')}` : null;
+        // const imgURL = (p) =>
+          // p ? `${(API_URL || '').replace(/\/+$/,'').replace(/^http:\/\//,'https://')}/${String(p).replace(/^[\/\\]+/,'').replace(/\\/g,'/')}` : null;
         
         // 2) When preparing the payload in onSubmit:
-        const frontCardImage = imgURL(data?.cardId?.frontDesign);
-
+        // const frontCardImage = imgURL(data?.cardId?.frontDesign);
+        const frontCardImage =`${API_URL}/${data?.cardId?.frontDesign}`;
 
 
         // Get userId from token or data
