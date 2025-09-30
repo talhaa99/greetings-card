@@ -441,7 +441,7 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Simple image URL construction
+      // Use backend URL for images (images are stored in backend)
       const frontCardImage = data?.cardId?.frontDesign 
         ? `${API_URL}/${data.cardId.frontDesign}`
         : null;
@@ -449,6 +449,7 @@ export default function CheckoutPage() {
       console.log('frontCardImage', frontCardImage);
       console.log('data.cardId.frontDesign', data?.cardId?.frontDesign);
       console.log('API_URL', API_URL);
+      console.log('Constructed URL:', `${API_URL}/${data?.cardId?.frontDesign}`);
       console.log('Full data object:', data);
       
       // Test if image URL is accessible
