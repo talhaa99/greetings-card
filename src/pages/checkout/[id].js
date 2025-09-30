@@ -448,9 +448,28 @@ export default function CheckoutPage() {
 
       console.log('frontCardImage', frontCardImage);
       console.log('data.cardId.frontDesign', data?.cardId?.frontDesign);
+      console.log('API_URL', API_URL);
+      console.log('Full data object:', data);
+      
+      // Test if image URL is accessible
+      if (frontCardImage) {
+        console.log('Testing image accessibility...');
+        fetch(frontCardImage)
+          .then(response => {
+            console.log('Image response status:', response.status);
+            if (response.ok) {
+              console.log('✅ Image is accessible');
+            } else {
+              console.log('❌ Image is not accessible');
+            }
+          })
+          .catch(error => {
+            console.log('❌ Image fetch error:', error);
+          });
+      }
 
       const productPayload = {
-        title: data?.cardId?.title || 'AR Greeting Card',
+        title: data?.cardId?.title,
         price: audCalculatedTotalPrice,
         frontCardImage: frontCardImage,
         userId: data?.user_id,
