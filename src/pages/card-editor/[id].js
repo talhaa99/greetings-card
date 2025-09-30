@@ -1136,28 +1136,37 @@ const Editor = () => {
           );
           console.log('response of save data===> ', response);
           setUserTemplateData(response?.data?.data);
-          // if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
-          //   openLogin();
+          if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
+            openLogin();
+          }
+
+          if (!auth?.isAuthenticated) {
+            localStorage.setItem('redirectToCheckout', 'true');
+            await openLogin();
+          }
+          
+          // if (parsed?.isCustomizationComplete) {
+          //   // Check if user is already paid - if so, don't redirect to checkout
+          //   const isAlreadyPaid = userTemplateData?.isPaid === true;
+            
+          //   if (isAlreadyPaid) {
+          //     console.log('✅ Card is already paid, no need to redirect to checkout');
+          //     return; // Don't redirect if already paid
+          //   }
+            
+          //   // Only redirect to checkout if not paid yet
+          //   if (!auth?.isAuthenticated) {
+          //     localStorage.setItem('redirectToCheckout', 'true');
+          //     await openLogin();
+          //   } else {
+          //     router.push(`/checkout/${userTemplateData._id}`);
+          //     // handleCheckout();
+          //   }
           // }
 
-          if (parsed?.isCustomizationComplete) {
-            // Check if user is already paid - if so, don't redirect to checkout
-            const isAlreadyPaid = userTemplateData?.isPaid === true;
-            
-            if (isAlreadyPaid) {
-              console.log('✅ Card is already paid, no need to redirect to checkout');
-              return; // Don't redirect if already paid
-            }
-            
-            // Only redirect to checkout if not paid yet
-            if (!auth?.isAuthenticated) {
-              localStorage.setItem('redirectToCheckout', 'true');
-              await openLogin();
-            } else {
-              router.push(`/checkout/${userTemplateData._id}`);
-              // handleCheckout();
-            }
-          }
+
+
+
           //
           // const isDone = !!(parsed?.isCustomizationComplete
           //   ?? userTemplateData?.arTemplateData?.isCustomizationComplete);
@@ -1214,6 +1223,26 @@ const Editor = () => {
 
       gameIframe.current.contentWindow.goBack = async () => {
         router.push('/');
+
+      };
+
+      gameIframe.current.contentWindow.checkout = async () => {
+        // if (parsed?.isCustomizationComplete) {
+            const isAlreadyPaid = userTemplateData?.isPaid === true;
+            
+            if (isAlreadyPaid) {
+              console.log('✅ Card is already paid, no need to redirect to checkout');
+              return; // Don't redirect if already paid
+            }
+            
+            if (!auth?.isAuthenticated) {
+              localStorage.setItem('redirectToCheckout', 'true');
+              await openLogin();
+            } else {
+              router.push(`/checkout/${userTemplateData._id}`);
+              // handleCheckout();
+            }
+          // }
 
       };
 

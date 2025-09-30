@@ -268,30 +268,81 @@ const Contact = () => {
                 alignItems: 'center',
                 ml: { md: 5 }
               }}>
-                <NextLink href="/">
+                {/* <NextLink 
+                  href="https://www.facebook.com/share/1B7XouSJau/" 
+                  passHref
+                  legacyBehavior
+               >
+                  <a target="_blank" rel="noopener noreferrer">
                   <PinterestIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
-                  }}/></NextLink>
-                <NextLink href="/">
+                  }}/>
+                  </a>
+                  </NextLink> */}
+
+                <NextLink 
+                  href="https://www.facebook.com/share/1B7XouSJau/" 
+                  passHref
+                  legacyBehavior
+                
+                >
+                  <a target="_blank" rel="noopener noreferrer">
                   <FacebookOutlinedIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
-                  }}/></NextLink>
-                <NextLink href="/">
+                  }}/>
+                  </a>
+                  </NextLink>
+                <NextLink 
+                   href="https://youtube.com/@incardible?si=lS-YcZbi5Ub6Z9uT" 
+                   passHref
+                   legacyBehavior
+            
+                >
+                  <a target="_blank" rel="noopener noreferrer">
                   <YouTubeIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
-                  }}/></NextLink>
-                <NextLink href="/">
+                  }}/>
+                  </a>
+                  </NextLink>
+                  <NextLink 
+  href="https://www.instagram.com/in_card_ible?igsh=bWw1aTgycmhoNDA5" 
+  passHref
+  legacyBehavior
+>
+  <a target="_blank" rel="noopener noreferrer">
+    <InstagramIcon 
+      sx={{ color: '#c165a0', fontSize: { xs: '20px', md: '35px' } }} 
+    />
+  </a>
+</NextLink>
+
+                {/* <NextLink href="/">
                   <InstagramIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
-                  }}/></NextLink>
-                <NextLink href="/">
+                  }}/></NextLink> */}
+
+                <NextLink 
+                  href="https://www.tiktok.com/@incardible?_t=ZS-909pcNzlviE&_r=1" 
+                  passHref
+                  legacyBehavior
+                >
+                    <a target="_blank" rel="noopener noreferrer">
                   <TikTokIcon  sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'30px' }
-                  }}/></NextLink>
-                <NextLink href="/">
+                  }}/>
+                  </a>
+                  </NextLink>
+                {/* <NextLink 
+                    href="https://www.tiktok.com/@incardible?_t=ZS-909pcNzlviE&_r=1" 
+                    passHref
+                    legacyBehavior
+                >
+                    <a target="_blank" rel="noopener noreferrer">
                   <WhatsAppIcon sx={{
                     color: '#c165a0', fontSize: { xs: '20px', md:'35px' }
-                  }}/></NextLink>
+                  }}/>
+                  </a>
+                  </NextLink> */}
               </Box>
             </Box>
           </Grid>

@@ -258,7 +258,7 @@ export default function CheckoutPage() {
   const [open, setOpen] = useState(false);
   const [expressShipping, setExpressShipping] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('normal');
-  const SHIPPING_PRICES= { normal: 10, express: 20 };
+  const SHIPPING_PRICES= { normal: 5, express: 4 };
   const shippingRate = SHIPPING_PRICES[shippingMethod];
 
   const [state, setState] = useState('South Australia');
@@ -350,8 +350,8 @@ export default function CheckoutPage() {
 
 
   //latest calculation:
-  const shipping = 10;
-  const expressShippingRate = 20;
+  const shipping = 5;
+  const expressShippingRate = 4;
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const gst = expressShipping ? (subtotal + shipping + expressShippingRate) * 0.1 : (subtotal + shipping) * 0.1;
   // const gst = (subtotal) * 0.1;
@@ -379,6 +379,7 @@ export default function CheckoutPage() {
   const [termAndConditions, setTermAndConditions] = useState(false);
   const [message, setMessage] = useState('');
   const [showShippingDays, setShowShippingDays] = useState(false);
+  const [showShippingDetails, setShowShippingDetails] = useState(false);
 
   //get stats of australia
   // React.useEffect(() => {
@@ -863,7 +864,7 @@ export default function CheckoutPage() {
                     {/*</Box>*/}
                     <Box sx={{
                       display: 'flex',
-                      flexDirection: { xs: 'column', md: 'row' , xl:'column'},
+                      flexDirection: { xs: 'column', md: 'row' , xl:'row'},
                       gap: { md: 1, xs: 2.5, xl:3 },
                       mb: {md:0, '4k':4}
                     }}>
@@ -1134,7 +1135,120 @@ export default function CheckoutPage() {
                           {`AUD ${expressShippingRate}`}
                         </Typography>
                       </Box>
-                      <Box
+                      
+                    
+                      {/* {formik.values.state && ( */}
+                        <Box sx={{ mt: 2, mb: 2 }}>
+                          <Box 
+                            sx={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              cursor: 'pointer',
+                              p: 1,
+                              borderRadius: 1,
+                              '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' }
+                            }}
+                            onClick={() => setShowShippingDetails(!showShippingDetails)}
+                          >
+                            <Typography 
+                        
+                              sx={{ 
+                                fontSize: {md: '14px', xl: '16px', '4k': '20px' },
+                                fontWeight: 900,
+                                color: '#666',
+                                flex: 1
+                              }}
+                            >
+                              Delivery Information
+                            </Typography>
+                            <IconButton size="small" sx={{ p: 0.5 }}>
+                              {showShippingDetails ? <Remove /> : <Add />}
+                            </IconButton>
+                          </Box>
+                          
+                          {showShippingDetails && (
+                            <Box sx={{ 
+                              mt: 2, 
+                              p: 2, 
+                              bgcolor: '#f8f9fa', 
+                              borderRadius: 2,
+                              border: '1px solid #e9ecef'
+                            }}>
+                              {/* Shipping method and details in one row */}
+                              <Box sx={{ 
+                                display: 'flex', 
+                                flexDirection: {xs:'column', md:'row'},
+                                justifyContent: 'space-between', 
+                                alignItems: { xs:'flex-start', md:'center'},
+                                mb: 2
+                              }}>
+                                <Typography 
+                                  sx={{ 
+                                    fontSize: {md: '16px', xl: '18px', '4k': '22px' },
+                                    fontWeight: 700,
+                                    color: '#333'
+                                  }}
+                                >
+                                  {!expressShipping ? 'Standard Delivery' : 'Express Delivery'}
+                                </Typography>
+                                
+                                <Typography 
+                                  sx={{ 
+                                    fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                    fontWeight: 600,
+                                    color: '#555'
+                                  }}
+                                >
+                                  {!expressShipping ? (
+                                    formik.values.state === 'Victoria' 
+                                      ? 'Victoria: 3-5 business days'
+                                      : `${formik.values.state}: 4-7 business days`
+                                  ) : (
+                                    formik.values.state === 'Victoria' 
+                                      ? 'Victoria: 1-2 business days'
+                                      : `${formik.values.state}: 1-3 business days`
+                                  )}
+                                </Typography>
+                              </Box>
+                              
+                              {/* Australia Post link in one row */}
+                              <Box sx={{ 
+                                display: 'flex', 
+                                flexDirection: {xs:'column', md:'row'},
+                                justifyContent: 'space-between', 
+                                alignItems: { xs:'flex-start', md:'center'},
+                                pt: 2,
+                                borderTop: '1px solid #dee2e6'
+                              }}>
+                                <Typography 
+                                  sx={{ 
+                                    fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                    color: '#666'
+                                  }}
+                                >
+                                  For more information visit Australia Post website
+                                </Typography>
+                                <Typography 
+                                  component="a"
+                                  href="https://share.google/Cnu1S0f4NUZknEHE9"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  sx={{ 
+                                    fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                    color: '#1976d2',
+                                    textDecoration: 'underline',
+                                    '&:hover': { textDecoration: 'none' }
+                                  }}
+                                >
+                                  Delivery speeds and coverage - Australia Post
+                                </Typography>
+                              </Box>
+                            </Box>
+                          )}
+                        </Box>
+                      {/* )} */}
+                      
+                      {/* <Box
                         sx={{
                           display: 'flex',
                           alignItems: 'center',
@@ -1142,7 +1256,7 @@ export default function CheckoutPage() {
                           mb: 1,
                         }}
                       >
-                        {/* Left side: Label + Icon */}
+                      
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <Typography fontWeight={700} sx={{ color: ACCENT }}>
                             Approximate Shipping Days
@@ -1154,7 +1268,7 @@ export default function CheckoutPage() {
                           />
                         </Box>
 
-                        {/* Right side: Value */}
+                   
                         {showShippingDays && (
                           <Typography
                             variant="body2"
@@ -1163,7 +1277,7 @@ export default function CheckoutPage() {
                             {STATE_SHIPPING_DAYS[formik.values.state] || 'Select a state'}
                           </Typography>
                         )}
-                      </Box>
+                      </Box> */}
 
                       {/*<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb:1 }}>*/}
                       {/*  <Typography*/}

@@ -174,14 +174,15 @@ const PopularCards = () => {
                 autoplay={{ delay: 1500 }}
                 loop={getDisplayCards().length > 1}
                 breakpoints={{
-                  360:{slidesPerView: 3, spaceBetween: 10},
-                  344:{slidesPerView: 3, spaceBetween: 10},
-                  375:{slidesPerView: 3, spaceBetween: 10},
+                  360:{slidesPerView: 2, spaceBetween: 10},
+                  344:{slidesPerView: 2, spaceBetween: 10},
+                  375:{slidesPerView: 3, spaceBetween: 20},
                   640: { slidesPerView: 3, spaceBetween: 0 },
                   768: { slidesPerView: 4, spaceBetween: 20 },
-                  1024: { slidesPerView: 5, spaceBetween: 20 },
-                  1400: { slidesPerView: 6, spaceBetween: 40 },
-                  2000:{ slidesPerView: 6, spaceBetween: 40},
+                  1024: { slidesPerView: 4, spaceBetween: 20 },
+                  1400: { slidesPerView: 7, spaceBetween: 20 },
+                  2000:{ slidesPerView: 8, spaceBetween: 20},
+                  3000:{ slidesPerView: 13, spaceBetween: 20},
                 }}
                 pagination={{
                   clickable: true,
@@ -197,43 +198,327 @@ const PopularCards = () => {
                 {getDisplayCards().map((card, index) => {
                   console.log('Rendering card:', card._id, card.title, card.frontDesign);
                   return (
-                    <SwiperSlide key={card._id || index}>
-                      <Box 
-                        sx={{ 
-                          display:'flex', 
-                          flexDirection:'column', 
-                          alignItems:'center', 
-                          py: 2, 
-                          mb:5,
-                          cursor: 'pointer'
-                        }}
-                        onClick={() => gotoEditor(card._id)}
-                      >
-                        <Box
-                          component="img"
-                          src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
-                          alt={card.title || `card${index}`}
-                          sx={{
-                            width:'100%',
-                            // width: {
-                            //   xs: '100%',
-                            //   md: '40%',
-                            //   lg:'30%',
-                            //   xl:'20%'
-                            // },
-                            height: 'auto',
-                            display: 'block',
-                            mx: 'auto',
-                            my: 2,
-                            borderRadius: 2,
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                            '&:hover': {
-                              transform: 'scale(1.05)',
-                              boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
-                            }
-                          }}
-                        />
+//                     <SwiperSlide key={card._id || index}>
+//   <Box
+//     onClick={() => gotoEditor(card._id)}
+//     sx={{
+//       position: 'relative',
+//       display: 'grid',
+//       placeItems: 'center',
+//       py: 5,              // extra vertical space so top/bottom cut na ho
+//       mb: 6,
+//       cursor: 'pointer',
+//       overflow: 'visible',
+//       minHeight: { xs: 260, md: 300 } // enough room for rotated envelope
+//     }}
+//   >
+//     {card.envelope && (
+//       <Box
+//         component="img"
+//         src={resolveImageUrl(card.envelope)}
+//         alt="Envelope"
+//         sx={{
+//           position: 'absolute',
+//           top: 24,                       // tweak if needed
+//           left: '50%',                   // center horizontally
+//           transform: 'translateX(-50%) rotate(-15deg)',
+//           // width: { xs: '92%', md: '100%' },
+//           zIndex: 0,
+//           borderRadius: 1,
+//           filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.35))',
+//           pointerEvents: 'none',
+//         }}
+//       />
+//     )}
+//  <Box
+//                           component="img"
+//                           src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
+//                           alt={card.title || `card${index}`}
+//                           sx={{
+//                             width:'100%',
+//                             // width: {
+//                             //   xs: '100%',
+//                             //   md: '40%',
+//                             //   lg:'30%',
+//                             //   xl:'20%'
+//                             // },
+//                             height: 'auto',
+//                             display: 'block',
+//                             mx: 'auto',
+//                             my: 2,
+//                             // borderRadius: 2,
+//                             boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+//                             transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+//                             '&:hover': {
+//                               transform: 'scale(1.05)',
+//                               boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
+//                             }
+//                           }}
+//                         />
+//   </Box>
+// </SwiperSlide>
+
+<SwiperSlide key={card._id || index}>
+  <Box
+    onClick={() => gotoEditor(card.uuid)}
+    sx={{
+      position: 'relative',
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      mt: 5, mb: 6,
+      cursor: 'pointer',
+      overflow: 'visible'
+      ,'&:hover': {
+        transform: 'scale(1.05)',
+        boxShadow: '0 12px 20px rgba(0,0,0,0.45)',
+      },
+
+      // ONE source of truth
+      '--cardH': { xs: '140px', sm: '180px', md: '220px', lg: '260px' },
+      // '--cardW': { xs: '25vw', sm: '24vw', md: '190px', lg: '220px' },
+    
+      '--cardW': 'calc(var(--cardH) * 0.7)', // 280px for 400px height
+      minHeight: 'calc(var(--cardH) + 20px)',
+    }}
+  >
+    {/* Envelope (behind, tilted) */}
+    {card.envelope && (
+      <Box
+        component="img"
+        src={resolveImageUrl(card.envelope)}
+        alt="Envelope"
+        sx={{
+          position: 'absolute',
+          top: 10,
+          left: '50%',
+          width: 'var(--cardW) !important',   // 🔑 force width
+          height: 'var(--cardH) !important',  // 🔑 force height
+          objectFit: 'cover',
+          transform: 'translateX(-50%) rotate(-30deg)',
+          transformOrigin: 'center',
+          zIndex: 0,
+          display: 'block',
+          filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.35))',
+          pointerEvents: 'none',
+        }}
+      />
+    )}
+
+    {/* Card (straight, aligned on top) */}
+    <Box
+      sx={{
+        position: 'relative',
+        zIndex: 2,
+        width: 'var(--cardW)',
+        height: 'var(--cardH)',
+        overflow: 'hidden',
+        boxShadow: '0 6px 12px rgba(0,0,0,0.35)',
+      }}
+    >
+      <Box
+        component="img"
+        src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
+        alt={card.title || `card${index}`}
+        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block'}}
+      />
+    </Box>
+  </Box>
+</SwiperSlide>
+
+
+
+
+//  <SwiperSlide key={card._id || index}>
+//   <Box
+//     onClick={() => gotoEditor(card.uuid)}
+//     sx={{
+//       position: 'relative',
+//       display: 'grid',
+//       placeItems: 'center',
+//       py: 5,
+//       mb: 6,
+//       cursor: 'pointer',
+//       overflow: 'visible',
+
+//       // 🔑 fixed size for all screens
+//       '--cardH': '350px',
+//       // '--cardW': '300px', // adjust as per ratio
+//     }}
+//   >
+
+//     {card.envelope && (
+//       <Box
+//         component="img"
+//         src={resolveImageUrl(card.envelope)}
+//         alt="Envelope"
+//         sx={{
+//           position: 'absolute',
+//           top: 24,
+//           left: '50%',
+//           // width: 'var(--cardW)',
+//           height: 'var(--cardH)',     // ✅ fixed 400px
+//           // objectFit: 'covesr',
+//           transform: 'translateX(-50%) rotate(-15deg)',
+//           zIndex: 0,
+//           filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.35))',
+//           pointerEvents: 'none',
+//         }}
+//       />
+//     )}
+
+  
+//     <Box
+//       sx={{
+//         position: 'relative',
+//         zIndex: 2,
+//         // width: 'var(--cardW)',
+//         height: 'var(--cardH)',       // ✅ fixed 400px
+//         // borderRadius: 2,
+//         overflow: 'hidden',
+//         // boxShadow: '0 6px 12px rgba(0,0,0,0.35)',
+//         transition: 'transform .3s ease, box-shadow .3s ease',
+//         '&:hover': {
+//           transform: 'scale(1.05)',
+//           boxShadow: '0 12px 20px rgba(0,0,0,0.45)',
+//         },
+//       }}
+//     >
+//       <Box
+//         component="img"
+//         src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
+//         alt={card.title || `card${index}`}
+//         sx={{
+//           width:'100%',
+//           // width: 'var(--cardW)',
+//           height: 'var(--cardH)',  
+//           // width: '100%',
+//           // height: '100%',
+//           // objectFit: 'cover',
+//           display: 'block',
+//         }}
+//       />
+//     </Box>
+//   </Box>
+// </SwiperSlide> 
+
+
+
+          
+//  <SwiperSlide key={card._id || index} >
+// <Box
+//   onClick={() => gotoEditor(card.uuid)}
+//   sx={{
+//     position: 'relative',
+//     display: 'grid',
+//     placeItems: 'center',
+//     py: 5,
+//     mb: 6,
+//     cursor: 'pointer',
+//     overflow: 'visible',
+//     // minHeight: { xs: 260, md: 500 }
+//   }}
+// >
+
+//   {card.envelope && (
+//     <Box
+//       component="img"
+//       src={resolveImageUrl(card.envelope)}
+//       alt="Envelope"
+//       sx={{
+//         position: 'absolute',
+//         top: 28,
+//         left: '50%',
+//         width: { xs: '74%', md: '70%' }, // Same width as card
+//         height: 'auto',
+//         transform: 'translateX(-50%) rotate(-20deg)',
+//         zIndex: 0,                       // ✅ always behind
+//         borderRadius: 1,
+//         filter: 'drop-shadow(0 8px 18px rgba(0,0,0,0.35))',
+//         pointerEvents: 'none'
+//       }}
+//     />
+//   )}
+
+//   <Box
+//     component="img"
+//     src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
+//     alt={card.title || `card${index}`}
+//     sx={{
+//       position: 'relative',
+//       zIndex: 2,                       // ✅ always above envelope
+//       width: { xs: '74%', md: '70%' }, // Same width as envelope
+//       height: 200,
+//       display: 'block',
+//       mx: 'auto',
+//       my: 2,
+//       borderRadius: 2,
+//       boxShadow: '0 6px 12px rgba(0,0,0,0.35)',
+//       transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+//       '&:hover': {
+//         transform: 'scale(1.05)',
+//         boxShadow: '0 12px 20px rgba(0,0,0,0.45)',
+//       }
+//     }}
+//   />
+// </Box>
+// </SwiperSlide> 
+  
+
+
+
+
+                  );
+                })}
+              </Swiper>
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default PopularCards;
+
+
+                    // <SwiperSlide key={card._id || index}>
+                    //   <Box 
+                    //     sx={{ 
+                    //       display:'flex', 
+                    //       flexDirection:'column', 
+                    //       alignItems:'center', 
+                    //       py: 2, 
+                    //       mb:5,
+                    //       cursor: 'pointer'
+                    //     }}
+                    //     onClick={() => gotoEditor(card._id)}
+                    //   >
+                    //     <Box
+                    //       component="img"
+                    //       src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
+                    //       alt={card.title || `card${index}`}
+                    //       sx={{
+                    //         width:'100%',
+                    //         // width: {
+                    //         //   xs: '100%',
+                    //         //   md: '40%',
+                    //         //   lg:'30%',
+                    //         //   xl:'20%'
+                    //         // },
+                    //         height: 'auto',
+                    //         display: 'block',
+                    //         mx: 'auto',
+                    //         my: 2,
+                    //         borderRadius: 2,
+                    //         boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                    //         transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                    //         '&:hover': {
+                    //           transform: 'scale(1.05)',
+                    //           boxShadow: '0 8px 16px rgba(0,0,0,0.4)',
+                    //         }
+                    //       }}
+                    //     />
                         {/* {card.title && (
                           <Typography 
                             variant="body2" 
@@ -247,17 +532,5 @@ const PopularCards = () => {
                             {card.title}
                           </Typography>
                         )} */}
-                      </Box>
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            )}
-          </Box>
-        </Box>
-      </Box>
-    </>
-  );
-};
-
-export default PopularCards;
+                      {/* </Box>
+                    </SwiperSlide> */}

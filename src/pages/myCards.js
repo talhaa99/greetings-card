@@ -116,8 +116,8 @@ const LoginUserCards = () => {
             // pl: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
             // pr: { md: '15%', laptop: '15%', lg: '15%', xl: '20%', xs: '5%', ipad: '25%' },
             // bgcolor:"blue",
-            pt: { md: 10, xs: 10 },
-            // pb: {xs: 5 },
+            pt: { md: 15, xs: 10 },
+            pb: 5,
             display: 'flex', justifyContent: 'center', alignItems: 'center',
             // bgcolor:'red',
             flexDirection: 'column', height: '100%',   minHeight: '100vh'
