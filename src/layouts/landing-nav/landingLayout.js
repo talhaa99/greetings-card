@@ -16,7 +16,7 @@ import {
   Popover,
   Divider,
   MenuList,
-  MenuItem, useTheme
+  MenuItem, useTheme,Tooltip
 } from '@mui/material';
 import axios from 'axios';
 import Button from '@mui/material/Button';
@@ -594,7 +594,27 @@ export const LandingNav = () => {
                   alignItems: 'center',
                 }}
               >
-                <Typography
+                 {/* <Tooltip title="Incardible" arrow> */}
+    <Typography
+      gutterBottom
+      variant="h3"
+      sx={{
+        mt: 2,
+        fontFamily: '"Eden Meadow", serif !important',
+        fontSize: '40pt',
+        textAlign: 'center',
+        fontWeight: 'normal',
+        color: '#c09b9b',
+        userSelect: 'none',   // ❌ prevent text selection
+        caretColor: 'transparent', // ❌ hide cursor
+        pointerEvents: 'auto',
+        cursor: 'default',
+      }}
+    >
+      Incardible
+    </Typography>
+  {/* </Tooltip> */}
+                {/* <Typography
                   gutterBottom
                   variant="h3"
                   sx={{
@@ -612,7 +632,7 @@ export const LandingNav = () => {
                   }}
                 >
                   Incardible
-                </Typography>
+                </Typography> */}
               </Box>
 
 

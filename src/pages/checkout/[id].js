@@ -445,12 +445,21 @@ export default function CheckoutPage() {
         ? encodeURI(data.frontDesign) // encode special characters
         : encodeURI(`${API_URL}${data?.frontDesign}`);
 
+      // Get envelope image if available
+      // const envelopeImage = data?.cardId?.envelope?.startsWith('http')
+      //   ? encodeURI(data.cardId.envelope)
+      //   : data?.cardId?.envelope 
+      //     ? encodeURI(`${API_URL}${data.cardId.envelope}`)
+      //     : null;
+
       console.log('frontCardImage', frontCardImage);
+      // console.log('envelopeImage', envelopeImage);
 
       const productPayload = {
         title: data?.cardId?.title || 'AR Greeting Card',
         price: audCalculatedTotalPrice,
         frontCardImage: frontCardImage,
+        // envelopeImage: envelopeImage,
         userId: data?.user_id,
         cardCustomizationId: data?._id
       };

@@ -143,6 +143,10 @@ const PopularCards = () => {
                 borderRadius: '30px !important',
                 fontSize: { md: '45px', xs: '25px' },
                 fontWeight:'bolder',
+                userSelect: 'none',   // ❌ prevent text selection
+                caretColor: 'transparent', // ❌ hide cursor
+                pointerEvents: 'auto',
+                cursor: 'default'
               }}
             >
               Popular Cards

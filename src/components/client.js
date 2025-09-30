@@ -102,7 +102,11 @@ const Clients = () => {
               textAlign: 'center',
               fontWeight: 900,
               color: { xs: '#c165a0', md: '#1A1D25' },
-              fontSize: { md: '40px',xs: '25px'}
+              fontSize: { md: '40px',xs: '25px'},
+              userSelect: 'none',   // ❌ prevent text selection
+              caretColor: 'transparent', // ❌ hide cursor
+              pointerEvents: 'auto',
+              cursor: 'default',
             }}
           >
             Our Happy Clients

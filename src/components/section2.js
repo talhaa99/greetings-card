@@ -429,7 +429,11 @@ const Section2 = () => {
             fontSize: { md: '40px', xs: '25px' },
             // backgroundColor: '#ffecc8',
             color: { xs: '#c165a0', md: '#1A1D25' },
-            fontWeight: 'bolder'
+            fontWeight: 'bolder',
+            userSelect: 'none',   // ❌ prevent text selection
+            caretColor: 'transparent', // ❌ hide cursor
+            pointerEvents: 'auto',
+            cursor: 'default'
             // backgroundColor: '#1a1d25 !important',
             // color: '#c09b9b',
             // boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
