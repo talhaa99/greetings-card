@@ -619,9 +619,13 @@ export default function CheckoutPage() {
         
         // 2) When preparing the payload in onSubmit:
         // const frontCardImage = imgURL(data?.cardId?.frontDesign);
-        const frontCardImage =`${API_URL}/${data?.cardId?.frontDesign}`;
+        // const frontCardImage =`${API_URL}/${data?.cardId?.frontDesign}`;
+        const frontCardImage =
+        `${(API_URL || '').replace(/^http:\/\//, 'https://').replace(/\/+$/, '')}/${String(
+          data?.cardId?.frontDesign || ''
+        ).replace(/^\/+/, '')}`;
 
-
+        console.log('frontCardImage', frontCardImage);
         // Get userId from token or data
         let userId = data?.user_id;
         if (!userId) {
