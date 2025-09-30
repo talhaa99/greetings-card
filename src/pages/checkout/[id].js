@@ -441,25 +441,27 @@ export default function CheckoutPage() {
         return;
       }
 
-      const frontCardImage = data?.frontDesign?.startsWith('http')
-        ? encodeURI(data.frontDesign) // encode special characters
-        : encodeURI(`${API_URL}${data?.frontDesign}`);
+      const frontCardImage = data?.cardId?.frontDesign?.startsWith('http')
+        ? encodeURI(data.cardId.frontDesign) // encode special characters
+        : data?.cardId?.frontDesign 
+          ? encodeURI(`${API_URL}${data.cardId.frontDesign}`)
+          : null;
 
       // Get envelope image if available
-      // const envelopeImage = data?.cardId?.envelope?.startsWith('http')
-      //   ? encodeURI(data.cardId.envelope)
-      //   : data?.cardId?.envelope 
-      //     ? encodeURI(`${API_URL}${data.cardId.envelope}`)
-      //     : null;
+      const envelopeImage = data?.cardId?.envelope?.startsWith('http')
+        ? encodeURI(data.cardId.envelope)
+        : data?.cardId?.envelope 
+          ? encodeURI(`${API_URL}${data.cardId.envelope}`)
+          : null;
 
       console.log('frontCardImage', frontCardImage);
-      // console.log('envelopeImage', envelopeImage);
+      console.log('envelopeImage', envelopeImage);
 
       const productPayload = {
         title: data?.cardId?.title || 'AR Greeting Card',
         price: audCalculatedTotalPrice,
         frontCardImage: frontCardImage,
-        // envelopeImage: envelopeImage,
+        envelopeImage: envelopeImage,
         userId: data?.user_id,
         cardCustomizationId: data?._id
       };
