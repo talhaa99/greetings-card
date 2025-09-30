@@ -505,6 +505,9 @@ export default function CheckoutPage() {
       toast.error('Error initiating checkout');
     }
   };
+
+  // put near top of CheckoutPage.jsx
+
   //
   // useEffect(() => {
   //   if (auth?.isAuthenticated) {
@@ -610,20 +613,14 @@ export default function CheckoutPage() {
           discount_price: values.discount_price || 0
         };
 
-        console.log('Transaction data prepared:', transactionData);
+  
+        const imgURL = (p) =>
+          p ? `${(API_URL || '').replace(/\/+$/,'').replace(/^http:\/\//,'https://')}/${String(p).replace(/^[\/\\]+/,'').replace(/\\/g,'/')}` : null;
+        
+        // 2) When preparing the payload in onSubmit:
+        const frontCardImage = imgURL(data?.cardId?.frontDesign);
 
-        // 2) Create Stripe checkout session
-        const frontCardImage = data?.frontDesign && data.frontDesign !== 'undefined'
-          ? (data.frontDesign.startsWith('http') 
-              ? encodeURI(data.frontDesign) 
-              : encodeURI(`${API_URL}${data.frontDesign}`))
-          : 'https://via.placeholder.com/300x200?text=AR+Greeting+Card';
 
-        console.log('🖼️ Frontend image details:', {
-          frontDesign: data?.frontDesign,
-          frontCardImage: frontCardImage,
-          API_URL: API_URL
-        });
 
         // Get userId from token or data
         let userId = data?.user_id;
