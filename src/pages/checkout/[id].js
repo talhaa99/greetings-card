@@ -1138,7 +1138,7 @@ export default function CheckoutPage() {
                       
                     
                       {/* {formik.values.state && ( */}
-                        <Box sx={{ mt: 2, mb: 2 }}>
+                        <Box sx={{  mb: 2 }}>
                           <Box 
                             sx={{ 
                               display: 'flex', 
@@ -1150,19 +1150,21 @@ export default function CheckoutPage() {
                             }}
                             onClick={() => setShowShippingDetails(!showShippingDetails)}
                           >
-                            <Typography 
+                          <Typography 
                         
-                              sx={{ 
-                                fontSize: {md: '14px', xl: '16px', '4k': '20px' },
-                                fontWeight: 900,
-                                color: '#666',
-                                flex: 1
-                              }}
-                            >
-                              Delivery Information
-                            </Typography>
+                            sx={{ 
+                              fontSize: {md: '14px', xl: '16px', '4k': '20px' },
+                              fontWeight: 900,
+                              color: '#333',
+                              flex: 1
+                            }}
+                          >
+                            <strong>Delivery Information</strong>
+                          </Typography>
                             <IconButton size="small" sx={{ p: 0.5 }}>
-                              {showShippingDetails ? <Remove /> : <Add />}
+                              {showShippingDetails ? <Remove  sx={{fontWeight: 900,
+                              color: '#333'}}/> : <Add sx={{fontWeight: 900,
+                                color: '#333'}}/>}
                             </IconButton>
                           </Box>
                           
@@ -1174,44 +1176,82 @@ export default function CheckoutPage() {
                               borderRadius: 2,
                               border: '1px solid #e9ecef'
                             }}>
-                              {/* Shipping method and details in one row */}
-                              <Box sx={{ 
-                                display: 'flex', 
-                                flexDirection: {xs:'column', md:'row'},
-                                justifyContent: 'space-between', 
-                                alignItems: { xs:'flex-start', md:'center'},
-                                mb: 2
-                              }}>
-                                <Typography 
-                                  sx={{ 
-                                    fontSize: {md: '16px', xl: '18px', '4k': '22px' },
-                                    fontWeight: 700,
-                                    color: '#333'
-                                  }}
-                                >
-                                  {!expressShipping ? 'Standard Delivery' : 'Express Delivery'}
-                                </Typography>
-                                
-                                <Typography 
-                                  sx={{ 
-                                    fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                    fontWeight: 600,
-                                    color: '#555'
-                                  }}
-                                >
-                                  {!expressShipping ? (
-                                    formik.values.state === 'Victoria' 
-                                      ? 'Victoria: 3-5 business days'
-                                      : `${formik.values.state}: 4-7 business days`
-                                  ) : (
-                                    formik.values.state === 'Victoria' 
-                                      ? 'Victoria: 1-2 business days'
-                                      : `${formik.values.state}: 1-3 business days`
-                                  )}
-                                </Typography>
-                              </Box>
+                              {/* Show delivery info based on shipping method */}
+                              {!expressShipping ? (
+                                // Standard Shipping
+                                <Box sx={{ mb: 2 }}>
+                                  <Typography 
+                                    sx={{ 
+                                      fontSize: {md: '16px', xl: '18px', '4k': '22px' },
+                                      fontWeight: 700,
+                                      mb: 2,
+                                      color: '#333'
+                                    }}
+                                  >
+                                    Standard Delivery
+                                  </Typography>
+                                  
+                                  <Box sx={{ mb: 1 }}>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                        fontWeight: 600,
+                                        color: '#555',
+                                        mb: 0.5
+                                      }}
+                                    >
+                                      In Victoria: 3-5 business days
+                                    </Typography>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                        fontWeight: 600,
+                                        color: '#555'
+                                      }}
+                                    >
+                                      Interstate: 4-7 business days
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              ) : (
+                                // Express Shipping
+                                <Box sx={{ mb: 2 }}>
+                                  <Typography 
+                                    sx={{ 
+                                      fontSize: {md: '16px', xl: '18px', '4k': '22px' },
+                                      fontWeight: 700,
+                                      mb: 2,
+                                      color: '#333'
+                                    }}
+                                  >
+                                    Express Delivery
+                                  </Typography>
+                                  
+                                  <Box sx={{ mb: 1 }}>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                        fontWeight: 600,
+                                        color: '#555',
+                                        mb: 0.5
+                                      }}
+                                    >
+                                      In Victoria: 1-2+ business days
+                                    </Typography>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                        fontWeight: 600,
+                                        color: '#555'
+                                      }}
+                                    >
+                                      Interstate: 1-3+ business days
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              )}
                               
-                              {/* Australia Post link in one row */}
+                              {/* Australia Post link */}
                               <Box sx={{ 
                                 display: 'flex', 
                                 flexDirection: {xs:'column', md:'row'},
