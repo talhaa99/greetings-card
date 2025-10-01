@@ -1421,29 +1421,47 @@ const Editor = () => {
           Card Saved Successfully
         </DialogTitle>
         <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
-          <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 }}>
-            Your card has been saved successfully!
-          </Typography>
           <Box sx={{ 
             mt: 2, 
             p: 3, 
-            bgcolor: '#FFF', 
+            bgcolor: '#d4edda', 
             borderRadius: 3,
-            border: '2px solid #E697B1',
-            boxShadow: '0 4px 12px rgba(230, 151, 177, 0.15)'
+            border: '2px solid #28a745',
+            boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
           }}>
             <Typography sx={{ 
               fontSize: '15px', 
-              color: '#000', 
+              color: '#155724', 
               fontWeight: 700,
               lineHeight: 1.6,
               display: 'flex',
               alignItems: 'center',
               gap: 1
             }}>
-              Your card is saved in &quot;My Cards&quot; under your profile
+              Your card has been saved successfully!
             </Typography>
           </Box>
+          {/* <Box sx={{ 
+            mt: 2, 
+            p: 3, 
+            bgcolor: '#FFF', 
+            borderRadius: 3,
+            border: '2px solid #E697B1',
+            boxShadow: '0 4px 12px rgba(230, 151, 177, 0.15)'
+          }}> */}
+            <Typography sx={{ 
+              fontSize: '15px', 
+              color: '#000', 
+              fontWeight: 700,
+              lineHeight: 1.6,
+              p:3,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
+            }}>
+              Your card is saved in &quot;My Cards&quot; under your profile
+            </Typography>
+          {/* </Box> */}
         </DialogContent>
         <DialogActions sx={{ p: 2, backgroundColor: '#FDF7FB' }}>
           <Button
@@ -1493,12 +1511,29 @@ const Editor = () => {
           ⚠️ Unsaved Changes
         </DialogTitle>
         <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
-          <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 2 }}>
+          <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 }}>
             Did you save your changes?
           </Typography>
-          <Typography sx={{ fontSize: '14px', color: '#666' }}>
-            You have unsaved changes that will be lost if you leave this page.
-          </Typography>
+          <Box sx={{ 
+            mt: 2, 
+            p: 3, 
+            bgcolor: '#fff3cd', 
+            borderRadius: 3,
+            border: '2px solid #ffc107',
+            boxShadow: '0 4px 12px rgba(255, 193, 7, 0.2)'
+          }}>
+            <Typography sx={{ 
+              fontSize: '15px', 
+              color: '#856404', 
+              fontWeight: 700,
+              lineHeight: 1.6,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
+            }}>
+              ⚠️ You have unsaved changes that will be lost if you leave this page
+            </Typography>
+          </Box>
         </DialogContent>
         <DialogActions sx={{ p: 2, gap: 2, backgroundColor: '#FDF7FB' }}>
           <Button

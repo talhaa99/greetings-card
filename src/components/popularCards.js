@@ -80,17 +80,19 @@ const PopularCards = () => {
         
         const response = await axios.get(`${API_BASE_URL}/api/statistics/popular-cards?limit=15`);
         
-        if (response.data && response.data.success && response.data.data) {
-          console.log('Popular cards fetched successfully:', response.data.data);
-          setPopularCards(response.data.data);
+        if (response.data && response.data.success) {
+          // API returns either popular cards with sales or available cards from database
+          const cards = response.data.data || [];
+          console.log('Cards fetched successfully:', cards);
+          console.log('Card type:', cards.length > 0 && cards[0].salesCount > 0 ? 'Popular (with sales)' : 'Available (no sales yet)');
+          setPopularCards(cards);
         } else {
-          console.log('No popular cards data received');
+          console.log('No cards data received');
           setPopularCards([]);
         }
       } catch (error) {
         console.error('Error fetching popular cards:', error);
         setPopularCards([]);
-        // Don't show error toast to users, just fall back to raw cards
       } finally {
         setLoading(false);
       }
