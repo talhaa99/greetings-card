@@ -1282,18 +1282,21 @@ const Editor = () => {
       };
 
       gameIframe.current.contentWindow.goBack = async () => {
+        
+        setUnsavedChangesDialog(true);
+        
         // If not authenticated, always show unsaved changes popup
-        if (!auth?.isAuthenticated) {
-          setUnsavedChangesDialog(true);
-        } 
-        // If authenticated, check if there are unsaved changes
-        else if (hasUnsavedChanges) {
-          setUnsavedChangesDialog(true);
-        } 
-        // If authenticated and no unsaved changes, navigate directly
-        else {
-          router.push('/');
-        }
+        // if (!auth?.isAuthenticated) {
+        //   setUnsavedChangesDialog(true);
+        // } 
+        // // If authenticated, check if there are unsaved changes
+        // else if (hasUnsavedChanges) {
+        //   setUnsavedChangesDialog(true);
+        // } 
+        // // If authenticated and no unsaved changes, navigate directly
+        // else {
+        //   router.push('/');
+        // }
       };
 
       gameIframe.current.contentWindow.checkout = async () => {
@@ -1522,7 +1525,7 @@ const Editor = () => {
               transition: 'all 0.2s ease'
             }}
           >
-          Cancel
+         Go Back
           </Button>
           <Button
             onClick={async () => {
