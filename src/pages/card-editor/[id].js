@@ -1438,7 +1438,7 @@ const Editor = () => {
               alignItems: 'center',
               gap: 1
             }}>
-              Your card is saved in "My Cards" under your profile
+              Your card is saved in &quot;My Cards&quot; under your profile
             </Typography>
           </Box>
         </DialogContent>
