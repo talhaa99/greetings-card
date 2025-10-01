@@ -575,7 +575,8 @@ import {
   CardContent,
   Container,
   Typography, Tab, IconButton, Menu, CircularProgress,
-  Grid, Box, useMediaQuery, useTheme, Button, MenuItem, Select
+  Grid, Box, useMediaQuery, useTheme, Button, MenuItem, Select,
+  Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -626,7 +627,47 @@ const Editor = () => {
   const [url, setUrl] = useState(null);
   const [token, setToken] = useState(null);
   const redirectedRef   = useRef(false);
+  const [saveConfirmationDialog, setSaveConfirmationDialog] = useState(false);
+  const [unsavedChangesDialog, setUnsavedChangesDialog] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
   console.log('userTemplateData', userTemplateData);
+
+  // Helper function to trigger Unity save
+  const triggerUnitySave = () => {
+    const instance = gameIframe.current?.contentWindow?.gameInstance;
+    if (instance) {
+      // Tell Unity to save by calling its save function
+      instance.SendMessage('JsonDataHandlerAndParser', 'SaveButtonClicked', '');
+    }
+  };
+
+  // Handle browser back button and route changes
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      if (hasUnsavedChanges) {
+        setUnsavedChangesDialog(true);
+        router.events.emit('routeChangeError');
+        throw 'Route change aborted due to unsaved changes';
+      }
+    };
+
+    const handleBeforeUnload = (e) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasUnsavedChanges, router]);
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
@@ -1136,6 +1177,25 @@ const Editor = () => {
           );
           console.log('response of save data===> ', response);
           setUserTemplateData(response?.data?.data);
+          
+          // Mark as saved
+          setHasUnsavedChanges(false);
+          
+          // If should navigate after save (from back button flow), navigate
+          if (shouldNavigateAfterSave) {
+            setShouldNavigateAfterSave(false);
+            setUnsavedChangesDialog(false);
+            router.push('/');
+            return; // Exit early
+          }
+          
+          // Normal save button flow
+          // If user is authenticated, show save confirmation
+          if (auth?.isAuthenticated) {
+            setSaveConfirmationDialog(true);
+          }
+          
+          // Handle completion and checkout flow
           if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
             openLogin();
           }
@@ -1222,8 +1282,18 @@ const Editor = () => {
       };
 
       gameIframe.current.contentWindow.goBack = async () => {
-        router.push('/');
-
+        // If not authenticated, always show unsaved changes popup
+        if (!auth?.isAuthenticated) {
+          setUnsavedChangesDialog(true);
+        } 
+        // If authenticated, check if there are unsaved changes
+        else if (hasUnsavedChanges) {
+          setUnsavedChangesDialog(true);
+        } 
+        // If authenticated and no unsaved changes, navigate directly
+        else {
+          router.push('/');
+        }
       };
 
       gameIframe.current.contentWindow.checkout = async () => {
@@ -1324,6 +1394,170 @@ const Editor = () => {
           ></iframe>
         </Box>
       </Box>
+
+      {/* Save Confirmation Dialog */}
+      <Dialog
+        open={saveConfirmationDialog}
+        onClose={() => setSaveConfirmationDialog(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            backgroundColor: '#FDF7FB',
+            border: '2px solid #E697B1',
+            borderRadius: 3
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          backgroundColor: '#FDF7FB', 
+          borderBottom: '2px solid #E697B1',
+          fontWeight: 600,
+          color: '#333'
+        }}>
+          Card Saved Successfully
+        </DialogTitle>
+        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
+          <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 }}>
+            Your card has been saved successfully!
+          </Typography>
+          <Box sx={{ 
+            mt: 2, 
+            p: 3, 
+            bgcolor: '#FFF', 
+            borderRadius: 3,
+            border: '2px solid #E697B1',
+            boxShadow: '0 4px 12px rgba(230, 151, 177, 0.15)'
+          }}>
+            <Typography sx={{ 
+              fontSize: '15px', 
+              color: '#000', 
+              fontWeight: 700,
+              lineHeight: 1.6,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
+            }}>
+              Your card is saved in "My Cards" under your profile
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 2, backgroundColor: '#FDF7FB' }}>
+          <Button
+            onClick={() => setSaveConfirmationDialog(false)}
+            variant="contained"
+            sx={{
+              backgroundColor: '#c16889',
+              // backgroundColor: '#d17a9a',
+              // color: 'white',
+              px: 4,
+              py: 1,
+              fontSize: '16px',
+              fontWeight: 600,
+              '&:hover': { 
+                backgroundColor: '#c16889',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Got it!
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Unsaved Changes Dialog */}
+      <Dialog
+        open={unsavedChangesDialog}
+        onClose={() => setUnsavedChangesDialog(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            backgroundColor: '#FDF7FB',
+            border: '2px solid #E697B1',
+            borderRadius: 3
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          backgroundColor: '#FDF7FB', 
+          borderBottom: '2px solid #E697B1',
+          fontWeight: 600,
+          color: '#333'
+        }}>
+          ⚠️ Unsaved Changes
+        </DialogTitle>
+        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
+          <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 2 }}>
+            Did you save your changes?
+          </Typography>
+          <Typography sx={{ fontSize: '14px', color: '#666' }}>
+            You have unsaved changes that will be lost if you leave this page.
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ p: 2, gap: 2, backgroundColor: '#FDF7FB' }}>
+          <Button
+            onClick={() => {
+              setHasUnsavedChanges(false);
+              setUnsavedChangesDialog(false);
+              router.push('/');
+            }}
+            variant="outlined"
+            sx={{
+              borderColor: '#E697B1',
+              color: '#E697B1',
+              px: 3,
+              py: 1,
+              fontSize: '15px',
+              fontWeight: 600,
+              '&:hover': { 
+                borderColor: '#d17a9a',
+                // backgroundColor: '#FFF',
+                color: '#E697B1',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.2)'
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+          Cancel
+          </Button>
+          <Button
+            onClick={async () => {
+              setUnsavedChangesDialog(false);
+              
+              // If not authenticated, show login popup first
+              if (!auth?.isAuthenticated) {
+                setShouldNavigateAfterSave(true);
+                await openLogin();
+              } else {
+                // If authenticated, trigger save and navigate
+                setShouldNavigateAfterSave(true);
+                triggerUnitySave();
+              }
+            }}
+            variant="contained"
+            sx={{
+              backgroundColor: '#c16889',
+              color: 'white',
+              px: 4,
+              py: 1,
+              fontSize: '16px',
+              fontWeight: 600,
+              '&:hover': { 
+                backgroundColor: '#c16889',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Please Save
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </>
   );

@@ -76,9 +76,9 @@ const PopularCards = () => {
     const fetchPopularCards = async () => {
       try {
         setLoading(true);
-        console.log('Fetching popular cards from:', `${API_BASE_URL}/api/statistics/popular-cards?limit=10`);
+        console.log('Fetching popular cards from:', `${API_BASE_URL}/api/statistics/popular-cards?limit=15`);
         
-        const response = await axios.get(`${API_BASE_URL}/api/statistics/popular-cards?limit=10`);
+        const response = await axios.get(`${API_BASE_URL}/api/statistics/popular-cards?limit=15`);
         
         if (response.data && response.data.success && response.data.data) {
           console.log('Popular cards fetched successfully:', response.data.data);
