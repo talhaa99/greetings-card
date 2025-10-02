@@ -606,7 +606,12 @@ export default function CheckoutPage() {
           expressShipping: values.expressShipping,
           expressShippingRate: expressShipping ? expressShippingRate : 0,
           shipping,
-          shippingDays: expressShipping ? "3-5" : "7-10", // Express shipping: 3-5 days, Normal: 7-10 days
+          // Create shipping days object based on user selection (standard or express)
+          // This object stores both Victoria and Interstate shipping information
+          shippingDays: {
+            inVictoria: expressShipping ? "1-2+ business days" : "3-5 business days",    // Express: 1-2 days, Standard: 3-5 days
+            interstate: expressShipping ? "1-3+ business days" : "4-7 business days"     // Express: 2-3 days, Standard: 4-7 days
+          },
           total,
           gst: formatPrice(gst),
           // Coupon fields
