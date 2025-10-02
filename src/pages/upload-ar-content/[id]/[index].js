@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import {
-  Box, useTheme, useMediaQuery, Button, Alert, IconButton, Collapse, Stack, CircularProgress
+  Box, useTheme, useMediaQuery, Button, Alert, IconButton, Collapse, Stack, CircularProgress, Typography
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -228,7 +228,7 @@ const Upload = () => {
         // router.push(WEB_URL);
         // window.close();
 
-      }, 2000);
+      }, 10000);
 
       return () => clearTimeout(timer);
     }
@@ -283,6 +283,17 @@ const Upload = () => {
                 width: '50%'
               }}
             />
+              {/* <Typography
+    variant="h2"
+    sx={{
+      // mt: 2,
+      fontWeight: 'bold',
+      color: '#C165A0', // bold pink
+    }}
+  >
+    Thank you for uploading. Your data has been saved. Please go to the website
+  </Typography> */}
+  
             {/*<Button*/}
             {/*  sx={{*/}
             {/*    display: showMsgAfterUploadContent ? 'block' : 'none',*/}
