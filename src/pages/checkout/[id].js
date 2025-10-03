@@ -179,8 +179,8 @@ function OrderItem({ item, onQty }) {
                 gap: 0.5,
                 whiteSpace: 'nowrap'
               }}
-            >
-              AUD {item?.price}
+              >
+                $ {Number(item?.price).toFixed(2)}
               <Typography
                 // variant='h5'
                 component="span"
@@ -192,7 +192,7 @@ function OrderItem({ item, onQty }) {
             </Typography>
 
             <Typography variant="h7" sx={{mt:1, fontSize:{xl:'25px','4k':'30px'},}} color="text.secondary">
-              AUD {item?.price} × {item.qty} = <b>AUD {line}</b>
+              ${Number(item?.price).toFixed(2)} × {item.qty} = <b> ${Number(line).toFixed(2)}</b>
             </Typography>
           </Stack>
           <Box
@@ -354,6 +354,7 @@ export default function CheckoutPage() {
   const expressShippingRate = 4;
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const gst = expressShipping ? (subtotal + shipping + expressShippingRate) * 0.1 : (subtotal + shipping) * 0.1;
+  const withoutGst = expressShipping ? (subtotal + shipping + expressShippingRate) : (subtotal + shipping);
   // const gst = (subtotal) * 0.1;
   const total = expressShipping
     ? Number(subtotal + shipping + gst + expressShippingRate).toFixed(2)
@@ -889,7 +890,7 @@ export default function CheckoutPage() {
                       <FormControl
                         fullWidth
                         error={phoneError}
-                        sx={{ mb: { md: 2, xs: 2.5 } }}
+                        // sx={{ mb: { md: 2, xs: 2.5 } }}
                       >
                         <PhoneInput
                           country="au"
@@ -953,19 +954,7 @@ export default function CheckoutPage() {
                         </FormHelperText>
                       </FormControl>
 
-
-
-
-                      {/*<TextField fullWidth label="Phone Number"*/}
-                      {/*           error={!!(formik.touched.phone_number*/}
-                      {/*             && formik.errors.phone_number)}*/}
-                      {/*           helperText={formik.touched.phone_number*/}
-                      {/*             && formik.errors.phone_number}*/}
-                      {/*           name="phone_number"*/}
-                      {/*           onBlur={formik.handleBlur}*/}
-                      {/*           onChange={formik.handleChange}*/}
-                      {/*           value={formik.values.phone_number}*/}
-                      {/*/>*/}
+              
                     </Box>
 
                     <Box
@@ -1098,7 +1087,7 @@ export default function CheckoutPage() {
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT, fontSize:{'4k':25} }}>Shipping
                           Price:</Typography>
-                        <Typography  sx={{ fontSize:{'4k':25}}} fontWeight={700}>AUD {shipping.toFixed(2)}</Typography></Box>
+                         <Typography  sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(shipping).toFixed(2)}</Typography></Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', mt: '3' }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -1136,13 +1125,13 @@ export default function CheckoutPage() {
                             marginLeft: '-10px'
                           }}
                         />
-                        <Typography sx={{ fontSize:{'4k':25}}} fontWeight={700}>
-                          {`AUD ${expressShippingRate}`}
-                        </Typography>
+                          <Typography sx={{ fontSize:{'4k':25}}} fontWeight={700}>
+                           {`$ ${Number(expressShippingRate).toFixed(2)}`}
+                          </Typography>
                       </Box>
                       
                     
-                      {/* {formik.values.state && ( */}
+                      {formik.values.state && (
                         <Box sx={{  mb: 2 }}>
                           <Box 
                             sx={{ 
@@ -1181,7 +1170,7 @@ export default function CheckoutPage() {
                               borderRadius: 2,
                               border: '1px solid #e9ecef'
                             }}>
-                              {/* Show delivery info based on shipping method */}
+                              {/* Show delivery info based on shipping method and selected state */}
                               {!expressShipping ? (
                                 // Standard Shipping
                                 <Box sx={{ mb: 2 }}>
@@ -1197,25 +1186,51 @@ export default function CheckoutPage() {
                                   </Typography>
                                   
                                   <Box sx={{ mb: 1 }}>
-                                    <Typography 
-                                      sx={{ 
-                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                        fontWeight: 600,
-                                        color: '#555',
-                                        mb: 0.5
-                                      }}
-                                    >
-                                      In Victoria: 3-5 business days
-                                    </Typography>
-                                    <Typography 
-                                      sx={{ 
-                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                        fontWeight: 600,
-                                        color: '#555'
-                                      }}
-                                    >
-                                      Interstate: 4-7 business days
-                                    </Typography>
+                                    {formik.values.state === 'Victoria' ? (
+                                      <Typography 
+                                        sx={{ 
+                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                          fontWeight: 600,
+                                          color: '#555',
+                                          mb: 0.5
+                                        }}
+                                      >
+                                        Victoria: 3-5 business days
+                                      </Typography>
+                                    ) : formik.values.state ? (
+                                      <Typography 
+                                        sx={{ 
+                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                          fontWeight: 600,
+                                          color: '#555',
+                                          mb: 0.5
+                                        }}
+                                      >
+                                        {formik.values.state}: 4-7 business days
+                                      </Typography>
+                                    ) : (
+                                      <>
+                                        <Typography 
+                                          sx={{ 
+                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                            fontWeight: 600,
+                                            color: '#555',
+                                            mb: 0.5
+                                          }}
+                                        >
+                                          Victoria: 3-5 business days
+                                        </Typography>
+                                        <Typography 
+                                          sx={{ 
+                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                            fontWeight: 600,
+                                            color: '#555'
+                                          }}
+                                        >
+                                          Other States: 4-7 business days
+                                        </Typography>
+                                      </>
+                                    )}
                                   </Box>
                                 </Box>
                               ) : (
@@ -1233,25 +1248,51 @@ export default function CheckoutPage() {
                                   </Typography>
                                   
                                   <Box sx={{ mb: 1 }}>
-                                    <Typography 
-                                      sx={{ 
-                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                        fontWeight: 600,
-                                        color: '#555',
-                                        mb: 0.5
-                                      }}
-                                    >
-                                      In Victoria: 1-2+ business days
-                                    </Typography>
-                                    <Typography 
-                                      sx={{ 
-                                        fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                        fontWeight: 600,
-                                        color: '#555'
-                                      }}
-                                    >
-                                      Interstate: 1-3+ business days
-                                    </Typography>
+                                    {formik.values.state === 'Victoria' ? (
+                                      <Typography 
+                                        sx={{ 
+                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                          fontWeight: 600,
+                                          color: '#555',
+                                          mb: 0.5
+                                        }}
+                                      >
+                                        Victoria: 1-2+ business days
+                                      </Typography>
+                                    ) : formik.values.state ? (
+                                      <Typography 
+                                        sx={{ 
+                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                          fontWeight: 600,
+                                          color: '#555',
+                                          mb: 0.5
+                                        }}
+                                      >
+                                        {formik.values.state}: 1-3+ business days
+                                      </Typography>
+                                    ) : (
+                                      <>
+                                        <Typography 
+                                          sx={{ 
+                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                            fontWeight: 600,
+                                            color: '#555',
+                                            mb: 0.5
+                                          }}
+                                        >
+                                          Victoria: 1-2+ business days
+                                        </Typography>
+                                        <Typography 
+                                          sx={{ 
+                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
+                                            fontWeight: 600,
+                                            color: '#555'
+                                          }}
+                                        >
+                                          Other States: 1-3+ business days
+                                        </Typography>
+                                      </>
+                                    )}
                                   </Box>
                                 </Box>
                               )}
@@ -1291,7 +1332,7 @@ export default function CheckoutPage() {
                             </Box>
                           )}
                         </Box>
-                      {/* )} */}
+                      )}
                       
                       {/* <Box
                         sx={{
@@ -1396,7 +1437,15 @@ export default function CheckoutPage() {
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography fontWeight={800} variant="body2"
                                     sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>GST (10%):</Typography>
-                        <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>AUD {formatPrice(gst)}</Typography></Box>
+                         <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(gst).toFixed(2)}</Typography></Box>
+
+                      {/* Subtotal (without GST) */}
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography fontWeight={800} variant="body2"
+                                    sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>Subtotal (excl. GST):</Typography>
+                                        <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(withoutGst).toFixed(2)}</Typography>
+                        {/* <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {formatPrice(Number(total) - gst)}</Typography> */}
+                      </Box>
 
                       {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
                       {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>*/}
@@ -1411,7 +1460,7 @@ export default function CheckoutPage() {
                       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography  variant="h6" fontWeight={900}
                                     sx={{ color: ACCENT }}>Total:</Typography>
-                        <Typography variant="h6" fontWeight={900}>AUD {total}</Typography>
+                         <Typography variant="h6" fontWeight={900}>$ {Number(total).toFixed(2)}</Typography>
                       </Box>
                     </Box>
                     {/*<Divider sx={{ mt: 2, mb: 1 }} />*/}

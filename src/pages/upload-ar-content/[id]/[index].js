@@ -159,11 +159,10 @@ const Upload = () => {
     //   toast.error(`Video too large (${sizeInMB} MB). Max allowed size is 1 MB.`);
     //   return;
     // }
-    if (file.size > 20 * 1024 * 1024) {
-      toast.error(`Video too large (${sizeInMB} MB). Max allowed size is 20 MB.`);
+    if (file.size > 100 * 1024 * 1024) {
+      toast.error(`Video too large (${sizeInMB} MB). Max allowed size is 100 MB.`);
       return;
     }
-
     const url = URL.createObjectURL(file);
     // setPreviewVideoUrls(res?.data?.data?.video);
     setVideoLoading(true);

@@ -400,7 +400,7 @@ export default function CardsCarousel({ allCards = [] }) {
 
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Typography variant="h6" color="text.secondary" sx={{ fontWeight: 'bolder' }}>
-                        {`${price} AUD`}
+                        {`${price} $`}
                       </Typography>
 
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
