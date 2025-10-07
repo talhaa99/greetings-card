@@ -1475,13 +1475,14 @@ const Editor = () => {
               px: 4,
               py: 1,
               fontSize: '16px',
-              fontWeight: 600,
+              borderRadius: '16px !important',
+              // fontWeight: 600,
               '&:hover': { 
                 backgroundColor: '#c16889',
-                transform: 'translateY(-2px)',
+                // transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
               },
-              transition: 'all 0.2s ease'
+              // transition: 'all 0.2s ease'
             }}
           >
             Got it!
@@ -1539,7 +1540,7 @@ const Editor = () => {
           p: 2, 
           backgroundColor: '#FDF7FB',
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center'
         }}>
           <Button
@@ -1548,20 +1549,21 @@ const Editor = () => {
               setUnsavedChangesDialog(false);
               router.push('/');
             }}
-            variant="outlined"
+            variant="contained"
             sx={{
-              backgroundColor: '#c16889',
-              color: 'white',
+              borderRadius: '16px !important',
+              backgroundColor: 'lightgray',
+              color: 'black',
               px: 4,
               py: 1,
               fontSize: '16px',
-              fontWeight: 600,
+              // fontWeight: 600,
               '&:hover': { 
-                backgroundColor: '#c16889',
-                // transform: 'translateY(-2px)',
-                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+                backgroundColor: 'lightgray',
+                color: 'black',
+                // boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
               },
-              // transition: 'all 0.2s ease'
+              transition: 'all 0.2s ease'
             }}
           >
          Go Back
@@ -1582,12 +1584,13 @@ const Editor = () => {
             }}
             variant="contained"
             sx={{
+              borderRadius: '16px !important',
               backgroundColor: '#c16889',
               color: 'white',
               px: 4,
               py: 1,
               fontSize: '16px',
-              fontWeight: 600,
+              // fontWeight: 600,
               '&:hover': { 
                 backgroundColor: '#c16889',
                 // transform: 'translateY(-2px)',

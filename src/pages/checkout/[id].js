@@ -39,6 +39,8 @@ import 'react-phone-input-2/lib/material.css';
 import PhoneInput from 'react-phone-input-2';
 import { FormControl, FormHelperText, InputLabel } from '@mui/material';
 import { Visibility, VisibilityOff  } from '@mui/icons-material';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 import InfoOutlined from '@mui/icons-material/InfoOutlined';
 
@@ -2031,7 +2033,7 @@ function CheckoutFormContent({
                               fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
                               fontSmoothing: 'antialiased',
                               '::placeholder': {
-                                color: '#aab7c4',
+                                color: 'transparent',
                               },
                             },
                             invalid: {
@@ -2212,30 +2214,90 @@ function CheckoutFormContent({
                         STRIPE CARD ELEMENT
                         ======================================== */}
                     <Box sx={{ mb: 2 }}>
-                      <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
-                        Payment Information
-                      </Typography>
-                      <CardElement
-                        options={{
-                          style: {
-                            base: {
-                              fontSize: '16px',
-                              color: '#424770',
-                              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                              fontSmoothing: 'antialiased',
-                              '::placeholder': {
-                                color: '#aab7c4',
-                              },
-                            },
-                            invalid: {
-                              color: '#fa755a',
-                              iconColor: '#fa755a',
-                            },
-                          },
-                          hidePostalCode: true,
-                        }}
-                      />
-                    </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                        <Typography fontWeight={800} variant="body2" sx={{ color: ACCENT, fontSize: {'4k': 25} }}>
+                          Payment Information
+                        </Typography>
+                        <Box sx={{ display: 'flex', gap: 1, ml: 1, alignItems: 'center', flexWrap: 'wrap' }}>
+                          {/* Visa */}
+                          <Box sx={{ 
+                            width: { xs: '50px', md: '60px', '4k': '70px' },
+                            height: { xs: '32px', md: '36px', '4k': '40px' },
+                            background: 'linear-gradient(135deg, #1A1F71 0%, #1A1F71 100%)',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: { xs: '10px', md: '12px', '4k': '14px' },
+                            fontWeight: 'bold',
+                            fontFamily: 'Arial, sans-serif',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                            border: '1px solid #1A1F71'
+                          }}>
+                            VISA
+                          </Box>
+                          
+                          {/* Mastercard */}
+                          <Box sx={{ 
+                            width: { xs: '50px', md: '60px', '4k': '70px' },
+                            height: { xs: '32px', md: '36px', '4k': '40px' },
+                            background: 'linear-gradient(135deg, #EB001B 0%, #F79E1B 100%)',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: { xs: '10px', md: '12px', '4k': '14px' },
+                            fontWeight: 'bold',
+                            fontFamily: 'Arial, sans-serif',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                            border: '1px solid #EB001B'
+                          }}>
+                            MC
+                          </Box>
+                          
+                          {/* American Express */}
+                          <Box sx={{ 
+                            width: { xs: '50px', md: '60px', '4k': '70px' },
+                            height: { xs: '32px', md: '36px', '4k': '40px' },
+                            backgroundColor: '#006FCF',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: { xs: '8px', md: '10px', '4k': '12px' },
+                            fontWeight: 'bold',
+                            fontFamily: 'Arial, sans-serif',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                            border: '1px solid #006FCF'
+                          }}>
+                            AMEX
+                          </Box>
+                          
+                          {/* Discover */}
+                          <Box sx={{ 
+                            width: { xs: '50px', md: '60px', '4k': '70px' },
+                            height: { xs: '32px', md: '36px', '4k': '40px' },
+                            backgroundColor: '#FF6000',
+                            borderRadius: '6px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontSize: { xs: '8px', md: '10px', '4k': '12px' },
+                            fontWeight: 'bold',
+                            fontFamily: 'Arial, sans-serif',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                            border: '1px solid #FF6000'
+                          }}>
+                            DISC
+                          </Box>
+                        </Box>
+                      </Box>
+                     <CardElement options={{ style: { base: { fontSize: '16px', color: '#424770', fontFamily: '"Helvetica Neue", Helvetica, sans-serif', fontSmoothing: 'antialiased', '::placeholder': { color: '#aab7c4', }, }, invalid: { color: '#fa755a', iconColor: '#fa755a', }, }, hidePostalCode: true, }} /> </Box>
+                   
 
                     <Button
                       fullWidth

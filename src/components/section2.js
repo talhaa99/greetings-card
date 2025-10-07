@@ -919,7 +919,7 @@ const Section2 = () => {
 
                                         {/* Price always on right */}
                                         <Typography variant="subtitle1" sx={{ fontWeight: 800, flexShrink: 0 }}>
-                                          {`${data.price} $`}
+                                          {`${data.price}.00 $`}
                                         </Typography>
                                       </Box>
                                     )}
