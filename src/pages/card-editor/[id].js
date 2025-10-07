@@ -1469,16 +1469,16 @@ const Editor = () => {
             onClick={() => setSaveConfirmationDialog(false)}
             variant="contained"
             sx={{
-              backgroundColor: '#c16889',
+              backgroundColor: '#C1649F',
               // backgroundColor: '#d17a9a',
-              // color: 'white',
+              color: '#ffffff',
               px: 4,
               py: 1,
               fontSize: '16px',
               borderRadius: '16px !important',
               // fontWeight: 600,
               '&:hover': { 
-                backgroundColor: '#c16889',
+                backgroundColor: '#C1649F',
                 // transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
               },
@@ -1552,15 +1552,15 @@ const Editor = () => {
             variant="contained"
             sx={{
               borderRadius: '16px !important',
-              backgroundColor: 'lightgray',
-              color: 'black',
+              backgroundColor: '#d9d9d9',
+              color: '#444444',
               px: 4,
               py: 1,
               fontSize: '16px',
               // fontWeight: 600,
               '&:hover': { 
-                backgroundColor: 'lightgray',
-                color: 'black',
+                backgroundColor: '#d9d9d9',
+                color: '#444444',
                 // boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
               },
               transition: 'all 0.2s ease'
@@ -1585,14 +1585,14 @@ const Editor = () => {
             variant="contained"
             sx={{
               borderRadius: '16px !important',
-              backgroundColor: '#c16889',
-              color: 'white',
+              backgroundColor: '#C1649F',
+              color: '#ffffff',
               px: 4,
               py: 1,
               fontSize: '16px',
               // fontWeight: 600,
               '&:hover': { 
-                backgroundColor: '#c16889',
+                backgroundColor: '#C1649F',
                 // transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
               },
