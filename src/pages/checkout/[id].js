@@ -2214,85 +2214,69 @@ function CheckoutFormContent({
                         STRIPE CARD ELEMENT
                         ======================================== */}
                     <Box sx={{ mb: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                        <Typography fontWeight={800} variant="body2" sx={{ color: ACCENT, fontSize: {'4k': 25} }}>
+                    <Typography fontWeight={800} variant="body2" sx={{ color: ACCENT, fontSize: {'4k': 25} }}>
                           Payment Information
                         </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
+                        <Typography fontWeight={800} variant="body2" sx={{ color: ACCENT, fontSize: {'4k': 25} }}>
+                          Supported Cards
+                        </Typography>
                         <Box sx={{ display: 'flex', gap: 1, ml: 1, alignItems: 'center', flexWrap: 'wrap' }}>
-                          {/* Visa */}
+                          {/* Mastercard Icon */}
                           <Box sx={{ 
-                            width: { xs: '50px', md: '60px', '4k': '70px' },
-                            height: { xs: '32px', md: '36px', '4k': '40px' },
-                            background: 'linear-gradient(135deg, #1A1F71 0%, #1A1F71 100%)',
-                            borderRadius: '6px',
+                            // width: { xs: '40px', md: '48px', '4k': '56px' },
+                            // height: { xs: '24px', md: '28px', '4k': '32px' },
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: { xs: '10px', md: '12px', '4k': '14px' },
-                            fontWeight: 'bold',
-                            fontFamily: 'Arial, sans-serif',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                            border: '1px solid #1A1F71'
+                            justifyContent: 'center'
                           }}>
-                            VISA
+                            <img 
+                              src="https://img.icons8.com/color/48/mastercard.png" 
+                              alt="Mastercard"
+                              style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'contain' 
+                              }}
+                            />
                           </Box>
                           
-                          {/* Mastercard */}
+                          {/* Credit Card Icon */}
                           <Box sx={{ 
-                            width: { xs: '50px', md: '60px', '4k': '70px' },
-                            height: { xs: '32px', md: '36px', '4k': '40px' },
-                            background: 'linear-gradient(135deg, #EB001B 0%, #F79E1B 100%)',
-                            borderRadius: '6px',
+                            // width: { xs: '40px', md: '48px', '4k': '56px' },
+                            // height: { xs: '24px', md: '28px', '4k': '32px' },
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: { xs: '10px', md: '12px', '4k': '14px' },
-                            fontWeight: 'bold',
-                            fontFamily: 'Arial, sans-serif',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                            border: '1px solid #EB001B'
+                            justifyContent: 'center'
                           }}>
-                            MC
+                            <img 
+                              src="https://img.icons8.com/color/48/visa.png" 
+                              alt="Credit Card"
+                              style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'contain' 
+                              }}
+                            />
                           </Box>
                           
-                          {/* American Express */}
+                          {/* Debit Card Icon */}
                           <Box sx={{ 
-                            width: { xs: '50px', md: '60px', '4k': '70px' },
-                            height: { xs: '32px', md: '36px', '4k': '40px' },
-                            backgroundColor: '#006FCF',
-                            borderRadius: '6px',
+                            // width: { xs: '40px', md: '48px', '4k': '56px' },
+                            // height: { xs: '24px', md: '28px', '4k': '32px' },
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: { xs: '8px', md: '10px', '4k': '12px' },
-                            fontWeight: 'bold',
-                            fontFamily: 'Arial, sans-serif',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                            border: '1px solid #006FCF'
+                            justifyContent: 'center'
                           }}>
-                            AMEX
-                          </Box>
-                          
-                          {/* Discover */}
-                          <Box sx={{ 
-                            width: { xs: '50px', md: '60px', '4k': '70px' },
-                            height: { xs: '32px', md: '36px', '4k': '40px' },
-                            backgroundColor: '#FF6000',
-                            borderRadius: '6px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: { xs: '8px', md: '10px', '4k': '12px' },
-                            fontWeight: 'bold',
-                            fontFamily: 'Arial, sans-serif',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                            border: '1px solid #FF6000'
-                          }}>
-                            DISC
+                            <img 
+                              src="https://img.icons8.com/color/48/amex.png" 
+                              alt="Debit Card"
+                              style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                objectFit: 'contain' 
+                              }}
+                            />
                           </Box>
                         </Box>
                       </Box>
