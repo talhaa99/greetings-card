@@ -129,7 +129,7 @@ function OrderItem({ item, onQty }) {
     <Card variant="outlined" sx={{
       borderRadius: 1.5,
       // minWidth:{md:400, lg: 600, xl:700, '4k': 1000},
-      minWidth:{md:400, lg: 600, xl:700, '4k': 1000},
+      minWidth:{md:400, lg: 300, xl:500, '4k': 600},
       minHeight:{'4k':400},
       mb: 2.5,
       width: '100%',
@@ -1051,8 +1051,8 @@ function CheckoutFormContent({
         <Box  sx={{
           pl: { md: '20%', laptop: '10%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
           pr: { md: '20%', laptop: '10%', lg: '15%', xl: '10%', xs: '5%', ipad: '25%' },
-          mt: { xs: 5, md: 0 },
-          mb: { xs: 5, md: 0 },
+          mt: { xs: 5, md: 5 },
+          mb: { xs: 5, md: 5 },
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -1064,7 +1064,7 @@ function CheckoutFormContent({
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
                 <Card variant="outlined" sx={{ borderRadius: 1.5, pb: '0 !important', width:'100%',
-                  minWidth:{md:400, lg: 400, xl:700, '4k':1000},
+                  minWidth:{md:400, lg: 300, xl:500, '4k':600},
                   height:'100%',  minHeight:{'4k':600}}}>
                   <CardContent sx={{ p: 2, pb: '0 !important' }}>
                     <Typography variant="h6" fontWeight={800}
@@ -1102,51 +1102,27 @@ function CheckoutFormContent({
 
 
 
-                    {/*<Box*/}
-                    {/*  sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', md: 'row' } }}>*/}
-                    <TextField fullWidth label="Suburb"
-                               error={!!(formik.touched.suburb
-                                 && formik.errors.suburb)}
-                               helperText={formik.touched.suburb
-                                 && formik.errors.suburb}
-                               name="suburb"
-                               onBlur={formik.handleBlur}
-                               onChange={formik.handleChange}
-                               value={formik.values.suburb}
-                               sx={{ mb: {md: 2, '4k':4 , xs:2.5} }}/>
-                    {/*<FormControl fullWidth*/}
-                    {/*             error={Boolean(formik.touched.state && formik.errors.state)}>*/}
-                    {/*  <InputLabel id="state-label">State</InputLabel>*/}
-                    {/*  <Select*/}
-                    {/*    labelId="state-label"*/}
-                    {/*    label="State"*/}
-                    {/*    name="state"*/}
-                    {/*    value={formik.values.state}*/}
-                    {/*    onChange={formik.handleChange}*/}
-                    {/*    onBlur={formik.handleBlur}*/}
-                    {/*  >*/}
-                    {/*    {[*/}
-                    {/*      'Australian Capital Territory',*/}
-                    {/*      'New South Wales',*/}
-                    {/*      'Victoria',*/}
-                    {/*      'Queensland',*/}
-                    {/*      'Northern Territory',*/}
-                    {/*      'South Australia',*/}
-                    {/*      'Tasmania',*/}
-                    {/*      'Western Australia'*/}
-                    {/*    ].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}*/}
-                    {/*  </Select>*/}
-                    {/*  <FormHelperText>*/}
-                    {/*    {(formik.touched.state && formik.errors.state) || ' '}*/}
-                    {/*  </FormHelperText>*/}
-                    {/*</FormControl>*/}
-                    {/*<FormControl fullWidth error={Boolean(formik.touched.state && formik.errors.state)}>*/}
-                      {/*<InputLabel  id="state-label">*/}
-                      {/*  State*/}
-                      {/*</InputLabel>*/}
-
+                    <Box
+                      sx={{ 
+                        display: 'flex', 
+                        gap: { md: 1, xs: 2.5, xl: 3 }, 
+                        flexDirection: { xs: 'column', md: 'row' },
+                        mb: { md: 0, '4k': 4, xs: 2.5 }
+                      }}>
+                      <TextField 
+                        fullWidth 
+                        label="Suburb"
+                        error={!!(formik.touched.suburb && formik.errors.suburb)}
+                        helperText={formik.touched.suburb && formik.errors.suburb}
+                        name="suburb"
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        value={formik.values.suburb}
+                      />
+                      
                       <Autocomplete
                         id="state"
+                        fullWidth
                         options={[
                           "Australian Capital Territory",
                           "New South Wales",
@@ -1162,7 +1138,6 @@ function CheckoutFormContent({
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            // variant="outlined"
                             label="State"
                             name="state"
                             onBlur={formik.handleBlur}
@@ -1172,8 +1147,7 @@ function CheckoutFormContent({
                           />
                         )}
                       />
-                    {/*</FormControl>*/}
-                    {/*</Box>*/}
+                    </Box>
                     <Box sx={{
                       display: 'flex',
                       flexDirection: { xs: 'column', md: 'row' , xl:'row'},
@@ -1339,6 +1313,9 @@ function CheckoutFormContent({
                       sx={{ borderRadius: 1.5, width: '100%' }}>
                   <CardContent sx={{ p: 2 }}>
                     {items.map(i => <OrderItem key={i.id} item={i} onQty={onQty}/>)}
+
+                    {/* COMMENTED OUT - Card details moved to 3rd box below */}
+                    {/* Card Customization Details would go here */}
 
 
                       {/*<Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>*/}
@@ -1908,10 +1885,11 @@ function CheckoutFormContent({
                     {/*  onCancel={() => toast('Payment cancelled')}*/}
                     {/*/>*/}
 
+                    {/* COMMENTED OUT - Moved to 3rd card below */}
                     {/* ========================================
-                        NEW: DISCOUNT/COUPON FIELD (IMPROVED UI)
+                        DISCOUNT/COUPON FIELD (MOVED TO 3RD CARD)
                         ======================================== */}
-                    <Divider sx={{ mt: 2, mb: 2 }} />
+                    {/* <Divider sx={{ mt: 2, mb: 2 }} />
                     
                     <Box sx={{ mb: 2 }}>
                       <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
@@ -2031,6 +2009,195 @@ function CheckoutFormContent({
 
                     <Divider sx={{ mb: 2 }} />
 
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                      <Typography variant="h6" fontWeight={900} sx={{ color: ACCENT }}>
+                        Final Total:
+                      </Typography>
+                      <Typography variant="h6" fontWeight={900} color="primary">
+                        $ {Number(finalTotal).toFixed(2)}
+                      </Typography>
+                    </Box>
+
+                    <Box sx={{ mb: 2 }}>
+                      <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
+                        Payment Information
+                      </Typography>
+                      <CardElement
+                        options={{
+                          style: {
+                            base: {
+                              fontSize: '16px',
+                              color: '#424770',
+                              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                              fontSmoothing: 'antialiased',
+                              '::placeholder': {
+                                color: '#aab7c4',
+                              },
+                            },
+                            invalid: {
+                              color: '#fa755a',
+                              iconColor: '#fa755a',
+                            },
+                          },
+                          hidePostalCode: true,
+                        }}
+                      />
+                    </Box>
+
+                    <Button
+                      fullWidth
+                      onClick={handlePayment}
+                      variant="contained"
+                      disabled={processing || !stripe || !elements}
+                      sx={{
+                        mt: { md:2, '4k':1 , xs:2 },
+                        borderRadius: 1.5,
+                        bgcolor: '#c165a0',
+                        '&:hover': { bgcolor: '#a0528a' },
+                        '&:disabled': {
+                          bgcolor: '#ccc',
+                          color: '#666'
+                        }
+                      }}
+                    >
+                      {processing ? 'Processing...' : 'Pay Now'}
+                    </Button> */}
+                  </CardContent>
+
+                </Card>
+              </Grid>
+
+              {/* Third Box - Card Details (Centered) */}
+              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                <Card 
+                  variant="outlined" 
+                  sx={{ 
+                    borderRadius: 1.5, 
+                    width: '100%',
+                    maxWidth: { md: '50%', xs: '100%' },
+                    minWidth: { md: 400, lg: 300, xl: 500, '4k': 600 }
+                  }}
+                >
+                  <CardContent sx={{ p: 2 }}>
+                    {/* ========================================
+                        DISCOUNT/COUPON FIELD
+                        ======================================== */}
+                    <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
+                      Have a discount code?
+                    </Typography>
+                    
+                    {!couponApplied ? (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        placeholder="Enter coupon code"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && couponCode.trim()) {
+                            handleApplyCoupon();
+                          }
+                        }}
+                        disabled={validatingCoupon}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Button
+                                variant="contained"
+                                onClick={handleApplyCoupon}
+                                disabled={validatingCoupon || !couponCode.trim()}
+                                sx={{
+                                  bgcolor: '#c165a0',
+                                  color: 'white',
+                                  minWidth: 80,
+                                  height: 36,
+                                  fontSize: '0.875rem',
+                                  fontWeight: 600,
+                                  textTransform: 'none',
+                                  borderRadius: 1,
+                                  '&:hover': {
+                                    bgcolor: '#a0528a'
+                                  },
+                                  '&:disabled': {
+                                    bgcolor: '#e0e0e0',
+                                    color: '#9e9e9e'
+                                  }
+                                }}
+                              >
+                                {validatingCoupon ? 'Checking...' : 'Apply'}
+                              </Button>
+                            </InputAdornment>
+                          )
+                        }}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            paddingRight: 1,
+                            '& fieldset': {
+                              borderColor: 'divider'
+                            },
+                            '&:hover fieldset': {
+                              borderColor: '#c165a0'
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#c165a0'
+                            }
+                          }
+                        }}
+                      />
+                    ) : (
+                      <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        p: 1.5,
+                        backgroundColor: '#e8f5e9',
+                        borderRadius: 1,
+                        border: '1px solid #4caf50'
+                      }}>
+                        <Box sx={{ flex: 1 }}>
+                          <Typography variant="body2" fontWeight={600} color="#2e7d32">
+                            ✓ Coupon &quot;{couponCode}&quot; applied
+                          </Typography>
+                          {couponDiscount && (
+                            <Typography variant="caption" color="text.secondary">
+                              {couponDiscount.percent_off
+                                ? `${couponDiscount.percent_off}% off`
+                                : `$${(couponDiscount.amount_off / 100).toFixed(2)} off`}
+                            </Typography>
+                          )}
+                        </Box>
+                        <Button
+                          size="small"
+                          onClick={handleRemoveCoupon}
+                          sx={{
+                            color: '#2e7d32',
+                            minWidth: 'auto',
+                            fontSize: '0.75rem',
+                            textTransform: 'none',
+                            '&:hover': {
+                              bgcolor: 'rgba(46, 125, 50, 0.08)',
+                              color: '#2e7d32',
+                            }
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      </Box>
+                    )}
+                    
+                    {formik.values.discount_price > 0 && (
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1.5, p: 1, bgcolor: '#f1f8e9', borderRadius: 1 }}>
+                        <Typography variant="body2" fontWeight={600} color="success.main" sx={{ fontSize: {'4k': 20} }}>
+                          You Save:
+                        </Typography>
+                        <Typography variant="body2" fontWeight={700} color="success.main" sx={{ fontSize: {'4k': 20} }}>
+                          -$ {Number(formik.values.discount_price).toFixed(2)}
+                        </Typography>
+                      </Box>
+                    )}
+
+                    <Divider sx={{ mt: 2, mb: 2 }} />
+
                     {/* Display Final Total */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                       <Typography variant="h6" fontWeight={900} sx={{ color: ACCENT }}>
@@ -2042,7 +2209,7 @@ function CheckoutFormContent({
                     </Box>
 
                     {/* ========================================
-                        NEW: STRIPE CARD ELEMENT
+                        STRIPE CARD ELEMENT
                         ======================================== */}
                     <Box sx={{ mb: 2 }}>
                       <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
@@ -2088,8 +2255,8 @@ function CheckoutFormContent({
                     >
                       {processing ? 'Processing...' : 'Pay Now'}
                     </Button>
-                  </CardContent>
 
+                  </CardContent>
                 </Card>
               </Grid>
 

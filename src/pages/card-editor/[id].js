@@ -1406,41 +1406,42 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
+          width:500,
             backgroundColor: '#FDF7FB',
             border: '2px solid #E697B1',
             borderRadius: 3
           }
         }}
       >
-        <DialogTitle sx={{ 
+        {/* <DialogTitle sx={{ 
           backgroundColor: '#FDF7FB', 
           borderBottom: '2px solid #E697B1',
           fontWeight: 600,
           color: '#333'
         }}>
           Card Saved Successfully
-        </DialogTitle>
+        </DialogTitle> */}
         <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
-          <Box sx={{ 
+          {/* <Box sx={{ 
             mt: 2, 
             p: 3, 
-            bgcolor: '#d4edda', 
+            // bgcolor: '#d4edda', 
             borderRadius: 3,
-            border: '2px solid #28a745',
-            boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
-          }}>
+            // border: '2px solid #28a745',
+            // boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
+          }}> */}
             <Typography sx={{ 
-              fontSize: '15px', 
-              color: '#155724', 
+              fontSize: '20px', 
+              // color: '#155724', 
               fontWeight: 700,
               lineHeight: 1.6,
               display: 'flex',
-              alignItems: 'center',
+             textAlign: 'center',
               gap: 1
             }}>
-              Your card has been saved successfully!
+              Your card has been saved successfully!. Your card is saved in &quot;My Cards&quot; under your profile
             </Typography>
-          </Box>
+          {/* </Box> */}
           {/* <Box sx={{ 
             mt: 2, 
             p: 3, 
@@ -1449,7 +1450,7 @@ const Editor = () => {
             border: '2px solid #E697B1',
             boxShadow: '0 4px 12px rgba(230, 151, 177, 0.15)'
           }}> */}
-            <Typography sx={{ 
+            {/* <Typography sx={{ 
               fontSize: '15px', 
               color: '#000', 
               fontWeight: 700,
@@ -1460,7 +1461,7 @@ const Editor = () => {
               gap: 1
             }}>
               Your card is saved in &quot;My Cards&quot; under your profile
-            </Typography>
+            </Typography> */}
           {/* </Box> */}
         </DialogContent>
         <DialogActions sx={{ p: 2, backgroundColor: '#FDF7FB' }}>
@@ -1496,46 +1497,51 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
+            width:500,
             backgroundColor: '#FDF7FB',
             border: '2px solid #E697B1',
             borderRadius: 3
           }
         }}
       >
-        <DialogTitle sx={{ 
+        {/* <DialogTitle sx={{ 
           backgroundColor: '#FDF7FB', 
           borderBottom: '2px solid #E697B1',
           fontWeight: 600,
           color: '#333'
         }}>
           ⚠️ Unsaved Changes
-        </DialogTitle>
+        </DialogTitle> */}
         <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
-          <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 }}>
+          {/* <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 ,  fontWeight: 700}}>
             Did you save your changes?
-          </Typography>
-          <Box sx={{ 
+          </Typography> */}
+          {/* <Box sx={{ 
             mt: 2, 
             p: 3, 
-            bgcolor: '#fff3cd', 
+            bgcolor: '#FDF7FB', 
             borderRadius: 3,
-            border: '2px solid #ffc107',
-            boxShadow: '0 4px 12px rgba(255, 193, 7, 0.2)'
-          }}>
+            // border: '2px solid #ffc107',
+            // boxShadow: '0 4px 12px rgba(255, 193, 7, 0.2)'
+          }}> */}
             <Typography sx={{ 
-              fontSize: '15px', 
-              color: '#856404', 
+              fontSize: '20px', 
+              // color: '#856404', 
               fontWeight: 700,
               lineHeight: 1.6,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1
+              textAlign: 'center'
             }}>
-              ⚠️ You have unsaved changes that will be lost if you leave this page
+            You have unsaved changes that will be lost if you leave this page
             </Typography>
-          </Box>
+          {/* </Box> */}
         </DialogContent>
-        <DialogActions sx={{ p: 2, gap: 2, backgroundColor: '#FDF7FB' }}>
+        <DialogActions sx={{ 
+          p: 2, 
+          backgroundColor: '#FDF7FB',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
           <Button
             onClick={() => {
               setHasUnsavedChanges(false);
@@ -1544,20 +1550,18 @@ const Editor = () => {
             }}
             variant="outlined"
             sx={{
-              borderColor: '#E697B1',
-              color: '#E697B1',
-              px: 3,
+              backgroundColor: '#c16889',
+              color: 'white',
+              px: 4,
               py: 1,
-              fontSize: '15px',
+              fontSize: '16px',
               fontWeight: 600,
               '&:hover': { 
-                borderColor: '#d17a9a',
-                // backgroundColor: '#FFF',
-                color: '#E697B1',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.2)'
+                backgroundColor: '#c16889',
+                // transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
               },
-              transition: 'all 0.2s ease'
+              // transition: 'all 0.2s ease'
             }}
           >
          Go Back
@@ -1586,10 +1590,10 @@ const Editor = () => {
               fontWeight: 600,
               '&:hover': { 
                 backgroundColor: '#c16889',
-                transform: 'translateY(-2px)',
+                // transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
               },
-              transition: 'all 0.2s ease'
+              // transition: 'all 0.2s ease'
             }}
           >
             Please Save
