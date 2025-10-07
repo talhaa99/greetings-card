@@ -16,8 +16,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 // PAYPAL INTEGRATION COMMENTED OUT - SWITCHING TO STRIPE
 // import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import AddressAutocompleteLocationIQ from '../../components/locationIqAutocomplete';
+
+// NEW: STRIPE ELEMENTS FOR DIRECT PAYMENT
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import StripeCardElement from '../../components/StripeCardElement';
+
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_your_key_here';
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 const ACCENT = '#000'; // headings in mock are black; change if needed
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -435,6 +443,11 @@ export default function CheckoutPage() {
     fetchOtherCurrencies();
   }, []);
 
+  // ========================================
+  // OLD: STRIPE CHECKOUT SESSION (Redirect to Stripe)
+  // COMMENTED OUT - KEEPING FOR REFERENCE
+  // ========================================
+  /*
   const handleCheckout = async (audCalculatedTotalPrice) => {
     try {
       const token = localStorage.getItem('token');
@@ -507,6 +520,7 @@ export default function CheckoutPage() {
       toast.error('Error initiating checkout');
     }
   };
+  */
 
   // put near top of CheckoutPage.jsx
 
@@ -527,6 +541,13 @@ export default function CheckoutPage() {
   console.log("currency", currency);
 // put near the top of the component file
   const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+  // State for discount/coupon
+  const [couponCode, setCouponCode] = useState('');
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [couponDiscount, setCouponDiscount] = useState(null);
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [stripeReady, setStripeReady] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       cardCustomizationId: '',
@@ -550,7 +571,7 @@ export default function CheckoutPage() {
       gst: '',
       submit: null,
       // Coupon fields
-      coupon_code: null,
+      coupon_code: '',
       discount_price: 0
     },
     validationSchema: Yup.object({
@@ -577,6 +598,18 @@ export default function CheckoutPage() {
 
     }),
     onSubmit: async (values, helpers) => {
+      // This will be handled by CheckoutFormWithStripe component
+      // See the implementation in the return statement below
+    }
+
+  });
+
+  // ========================================
+  // OLD ONSUBMIT HANDLER (Redirect to Stripe)
+  // COMMENTED OUT - KEEPING FOR REFERENCE
+  // ========================================
+  /*
+  const oldOnSubmit = async (values, helpers) => {
       const loading = toast.loading(
         'order is  in process......',
         { duration: 15000 });
@@ -703,9 +736,54 @@ export default function CheckoutPage() {
       }
       toast.dismiss(loading);
       setLoading(false);
+    };
+  */
+
+  // Handle coupon validation
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast.error('Please enter a coupon code');
+      return;
     }
 
-  });
+    setValidatingCoupon(true);
+    try {
+      const response = await axios.post(`${API_URL}/api/payment/validate-coupon`, {
+        couponCode: couponCode.trim()
+      });
+
+      if (response.data.valid) {
+        setCouponApplied(true);
+        setCouponDiscount(response.data.coupon);
+        formik.setFieldValue('coupon_code', couponCode.trim());
+        
+        // Calculate discount based on current total
+        let discountAmount = 0;
+        if (response.data.coupon.percent_off) {
+          discountAmount = (total * response.data.coupon.percent_off) / 100;
+        } else if (response.data.coupon.amount_off) {
+          discountAmount = response.data.coupon.amount_off / 100; // Stripe amounts are in cents
+        }
+        formik.setFieldValue('discount_price', discountAmount);
+        
+        toast.success(`Coupon applied! You saved $${discountAmount.toFixed(2)}`);
+      }
+    } catch (error) {
+      console.error('Error validating coupon:', error);
+      toast.error(error.response?.data?.error || 'Invalid coupon code');
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponCode('');
+    setCouponApplied(false);
+    setCouponDiscount(null);
+    formik.setFieldValue('coupon_code', '');
+    formik.setFieldValue('discount_price', 0);
+    toast.success('Coupon removed');
+  };
 // helpers (top of file, inside component)
 // inside component (before return)
   const phoneError =
@@ -724,8 +802,236 @@ export default function CheckoutPage() {
     "Australian Capital Territory": "2–4 business days",
   };
 
+  // Calculate final total with discount
+  const finalTotal = Number(total) - (formik.values.discount_price || 0);
+  // Fix: Since prices are already in AUD, don't multiply by currency rate
+  const audCalculatedTotalPrice = Number(finalTotal.toFixed(2));
 
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutFormContent 
+        formik={formik}
+        items={items}
+        onQty={onQty}
+        data={data}
+        expressShipping={expressShipping}
+        setExpressShipping={setExpressShipping}
+        expressShippingRate={expressShippingRate}
+        shipping={shipping}
+        total={total}
+        finalTotal={finalTotal}
+        withoutGst={withoutGst}
+        gst={gst}
+        formatPrice={formatPrice}
+        ACCENT={ACCENT}
+        WEB_URL={WEB_URL}
+        API_URL={API_URL}
+        open={open}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        setShowShippingDetails={setShowShippingDetails}
+        showShippingDetails={showShippingDetails}
+        phoneError={phoneError}
+        couponCode={couponCode}
+        setCouponCode={setCouponCode}
+        couponApplied={couponApplied}
+        couponDiscount={couponDiscount}
+        validatingCoupon={validatingCoupon}
+        handleApplyCoupon={handleApplyCoupon}
+        handleRemoveCoupon={handleRemoveCoupon}
+        audCalculatedTotalPrice={audCalculatedTotalPrice}
+        setLoading={setLoading}
+        loading={loading}
+        currency={currency}
+      />
+    </Elements>
+  );
+}
 
+// Checkout form component that uses Stripe hooks
+function CheckoutFormContent({
+  formik,
+  items,
+  onQty,
+  data,
+  expressShipping,
+  setExpressShipping,
+  expressShippingRate,
+  shipping,
+  total,
+  finalTotal,
+  withoutGst,
+  gst,
+  formatPrice,
+  ACCENT,
+  WEB_URL,
+  API_URL,
+  open,
+  handleClickOpen,
+  handleClose,
+  setShowShippingDetails,
+  showShippingDetails,
+  phoneError,
+  couponCode,
+  setCouponCode,
+  couponApplied,
+  couponDiscount,
+  validatingCoupon,
+  handleApplyCoupon,
+  handleRemoveCoupon,
+  audCalculatedTotalPrice,
+  setLoading,
+  loading,
+  currency
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const router = useRouter();
+  const [processing, setProcessing] = useState(false);
+
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    
+    // Validate form first
+    const errors = await formik.validateForm();
+    if (Object.keys(errors).length > 0) {
+      formik.setTouched(
+        Object.keys(errors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
+      );
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    if (!stripe || !elements) {
+      toast.error('Stripe is not loaded yet. Please try again.');
+      return;
+    }
+
+    setProcessing(true);
+    const loadingToast = toast.loading('Processing payment...');
+
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        toast.error('Please login to continue with checkout');
+        setProcessing(false);
+        toast.dismiss(loadingToast);
+        return;
+      }
+
+      // Get userId from token
+      let userId = data?.user_id;
+      if (!userId) {
+        try {
+          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+          userId = tokenPayload.user_id;
+        } catch (e) {
+          console.log('Could not decode token for userId');
+        }
+      }
+
+      // Prepare transaction data
+      const transactionData = {
+        cardCustomizationId: data?._id,
+        title: data?.cardId?.title,
+        price: data?.cardId?.price,
+        quantity: items[0].qty,
+        aud: audCalculatedTotalPrice,
+        delivery_address: formik.values.delivery_address,
+        suburb: formik.values.suburb,
+        state: formik.values.state,
+        postal_code: formik.values.postal_code,
+        phone_number: formik.values.phone_number,
+        newsAndOffers: formik.values.newsAndOffers,
+        expressShipping: formik.values.expressShipping,
+        expressShippingRate: expressShipping ? expressShippingRate : 0,
+        shipping,
+        shippingDays: {
+          inVictoria: expressShipping ? "1-2+ business days" : "3-5 business days",
+          interstate: expressShipping ? "1-3+ business days" : "4-7 business days"
+        },
+        total: total, // Original total BEFORE discount
+        gst: formatPrice(gst),
+        coupon_code: formik.values.coupon_code || null,
+        discount_price: formik.values.discount_price || 0
+      };
+
+      // Create Payment Intent
+      const paymentIntentResponse = await axios.post(
+        `${API_URL}/api/payment/create-payment-intent`,
+        {
+          amount: audCalculatedTotalPrice, // This is the final discounted amount
+          userId: userId,
+          cardCustomizationId: data?._id,
+          transactionData: transactionData,
+          couponCode: formik.values.coupon_code || null // Send coupon code for reference
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          }
+        }
+      );
+
+      const { clientSecret, transactionId, paymentIntentId } = paymentIntentResponse.data;
+
+      // Confirm payment with Stripe
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            address: {
+              line1: formik.values.delivery_address,
+              city: formik.values.suburb,
+              state: formik.values.state,
+              postal_code: formik.values.postal_code,
+              country: 'AU',
+            },
+            phone: formik.values.phone_number,
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Payment error:', error);
+        toast.dismiss(loadingToast);
+        toast.error(error.message || 'Payment failed');
+        setProcessing(false);
+        return;
+      }
+
+      if (paymentIntent.status === 'succeeded') {
+        // Confirm payment on backend
+        await axios.post(
+          `${API_URL}/api/payment/confirm-payment`,
+          {
+            paymentIntentId: paymentIntent.id,
+            transactionId: transactionId
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'x-access-token': token
+            }
+          }
+        );
+
+        toast.dismiss(loadingToast);
+        toast.success('Payment successful!');
+        
+        // Redirect to success page
+        router.push('/success');
+      }
+
+    } catch (error) {
+      console.error('Payment processing error:', error);
+      toast.dismiss(loadingToast);
+      toast.error(error.response?.data?.error || error.message || 'Payment failed');
+    } finally {
+      setProcessing(false);
+    }
+  };
 
   return (
     <>
@@ -1440,7 +1746,7 @@ export default function CheckoutPage() {
                          <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(gst).toFixed(2)}</Typography></Box>
 
                       {/* Subtotal (without GST) */}
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}> 
                         <Typography fontWeight={800} variant="body2"
                                     sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>Subtotal (excl. GST):</Typography>
                                         <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(withoutGst).toFixed(2)}</Typography>
@@ -1602,23 +1908,185 @@ export default function CheckoutPage() {
                     {/*  onCancel={() => toast('Payment cancelled')}*/}
                     {/*/>*/}
 
+                    {/* ========================================
+                        NEW: DISCOUNT/COUPON FIELD (IMPROVED UI)
+                        ======================================== */}
+                    <Divider sx={{ mt: 2, mb: 2 }} />
+                    
+                    <Box sx={{ mb: 2 }}>
+                      <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
+                        Have a discount code?
+                      </Typography>
+                      
+                      {!couponApplied ? (
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          placeholder="Enter coupon code"
+                          value={couponCode}
+                          onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && couponCode.trim()) {
+                              handleApplyCoupon();
+                            }
+                          }}
+                          disabled={validatingCoupon}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Button
+                                  variant="contained"
+                                  onClick={handleApplyCoupon}
+                                  disabled={validatingCoupon || !couponCode.trim()}
+                                  sx={{
+                                    bgcolor: '#c165a0',
+                                    color: 'white',
+                                    minWidth: 80,
+                                    height: 36,
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    textTransform: 'none',
+                                    borderRadius: 1,
+                                    '&:hover': {
+                                      bgcolor: '#a0528a'
+                                    },
+                                    '&:disabled': {
+                                      bgcolor: '#e0e0e0',
+                                      color: '#9e9e9e'
+                                    }
+                                  }}
+                                >
+                                  {validatingCoupon ? 'Checking...' : 'Apply'}
+                                </Button>
+                              </InputAdornment>
+                            )
+                          }}
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              paddingRight: 1,
+                              '& fieldset': {
+                                borderColor: 'divider'
+                              },
+                              '&:hover fieldset': {
+                                borderColor: '#c165a0'
+                              },
+                              '&.Mui-focused fieldset': {
+                                borderColor: '#c165a0'
+                              }
+                            }
+                          }}
+                        />
+                      ) : (
+                        <Box sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          p: 1.5,
+                          backgroundColor: '#e8f5e9',
+                          borderRadius: 1,
+                          border: '1px solid #4caf50'
+                        }}>
+                          <Box sx={{ flex: 1 }}>
+                            <Typography variant="body2" fontWeight={600} color="#2e7d32">
+                              ✓ Coupon &quot;{couponCode}&quot; applied
+                            </Typography>
+                            {couponDiscount && (
+                              <Typography variant="caption" color="text.secondary">
+                                {couponDiscount.percent_off
+                                  ? `${couponDiscount.percent_off}% off`
+                                  : `$${(couponDiscount.amount_off / 100).toFixed(2)} off`}
+                              </Typography>
+                            )}
+                          </Box>
+                          <Button
+                            size="small"
+                            onClick={handleRemoveCoupon}
+                            sx={{
+                              color: '#2e7d32',
+                              minWidth: 'auto',
+                              fontSize: '0.75rem',
+                              textTransform: 'none',
+                              '&:hover': {
+                                bgcolor: 'rgba(46, 125, 50, 0.08)',
+                                color: '#2e7d32',
+                              }
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </Box>
+                      )}
+                      
+                      {formik.values.discount_price > 0 && (
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1.5, p: 1, bgcolor: '#f1f8e9', borderRadius: 1 }}>
+                          <Typography variant="body2" fontWeight={600} color="success.main" sx={{ fontSize: {'4k': 20} }}>
+                            You Save:
+                          </Typography>
+                          <Typography variant="body2" fontWeight={700} color="success.main" sx={{ fontSize: {'4k': 20} }}>
+                            -$ {Number(formik.values.discount_price).toFixed(2)}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Display Final Total */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                      <Typography variant="h6" fontWeight={900} sx={{ color: ACCENT }}>
+                        Final Total:
+                      </Typography>
+                      <Typography variant="h6" fontWeight={900} color="primary">
+                        $ {Number(finalTotal).toFixed(2)}
+                      </Typography>
+                    </Box>
+
+                    {/* ========================================
+                        NEW: STRIPE CARD ELEMENT
+                        ======================================== */}
+                    <Box sx={{ mb: 2 }}>
+                      <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
+                        Payment Information
+                      </Typography>
+                      <CardElement
+                        options={{
+                          style: {
+                            base: {
+                              fontSize: '16px',
+                              color: '#424770',
+                              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                              fontSmoothing: 'antialiased',
+                              '::placeholder': {
+                                color: '#aab7c4',
+                              },
+                            },
+                            invalid: {
+                              color: '#fa755a',
+                              iconColor: '#fa755a',
+                            },
+                          },
+                          hidePostalCode: true,
+                        }}
+                      />
+                    </Box>
 
                     <Button
                       fullWidth
-                      type="submit"
-                      // form="checkout-form"
+                      onClick={handlePayment}
                       variant="contained"
-                      // loading={loading}
-                      disabled={formik.isSubmitting}
+                      disabled={processing || !stripe || !elements}
                       sx={{
                         mt: { md:2, '4k':1 , xs:2 },
-                        // py: 1.25,
                         borderRadius: 1.5,
                         bgcolor: '#c165a0',
-                        '&:hover': { bgcolor: '#c165a0' }
+                        '&:hover': { bgcolor: '#a0528a' },
+                        '&:disabled': {
+                          bgcolor: '#ccc',
+                          color: '#666'
+                        }
                       }}
                     >
-                      Checkout
+                      {processing ? 'Processing...' : 'Pay Now'}
                     </Button>
                   </CardContent>
 
