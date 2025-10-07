@@ -2225,7 +2225,7 @@ function CheckoutFormContent({
                           {/* Mastercard Icon */}
                           <Box sx={{ 
                             // width: { xs: '40px', md: '48px', '4k': '56px' },
-                            // height: { xs: '24px', md: '28px', '4k': '32px' },
+                            height: '40px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center'
@@ -2244,7 +2244,7 @@ function CheckoutFormContent({
                           {/* Credit Card Icon */}
                           <Box sx={{ 
                             // width: { xs: '40px', md: '48px', '4k': '56px' },
-                            // height: { xs: '24px', md: '28px', '4k': '32px' },
+                            height: '40px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center'
@@ -2263,7 +2263,7 @@ function CheckoutFormContent({
                           {/* Debit Card Icon */}
                           <Box sx={{ 
                             // width: { xs: '40px', md: '48px', '4k': '56px' },
-                            // height: { xs: '24px', md: '28px', '4k': '32px' },
+                            height: '40px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center'
