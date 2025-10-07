@@ -1716,19 +1716,19 @@ function CheckoutFormContent({
                       {/*    </Typography>*/}
                       {/*  )}*/}
                       {/*</Box>*/}
-
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography fontWeight={800} variant="body2"
-                                    sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>GST (10%):</Typography>
-                         <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(gst).toFixed(2)}</Typography></Box>
-
-                      {/* Subtotal (without GST) */}
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}> 
+{/* Subtotal (without GST) */}
+<Box sx={{ display: 'flex', justifyContent: 'space-between' }}> 
                         <Typography fontWeight={800} variant="body2"
                                     sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>Subtotal (excl. GST):</Typography>
                                         <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(withoutGst).toFixed(2)}</Typography>
                         {/* <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {formatPrice(Number(total) - gst)}</Typography> */}
                       </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography fontWeight={800} variant="body2"
+                                    sx={{ mb: .5, color: ACCENT , fontSize:{'4k':25} }}>GST (10%):</Typography>
+                         <Typography variant="body2" sx={{ fontSize:{'4k':25}}} fontWeight={700}>$ {Number(gst).toFixed(2)}</Typography></Box>
+
+                      
 
                       {/*<Box sx={{ display: 'flex', justifyContent: 'space-between' }}>*/}
                       {/*  <Typography fontWeight={800} sx={{ mb: .5, color: ACCENT }}>*/}
