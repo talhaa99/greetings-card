@@ -2221,7 +2221,7 @@ function CheckoutFormContent({
                         <Typography fontWeight={800} variant="body2" sx={{ color: ACCENT, fontSize: {'4k': 25} }}>
                           Supported Cards
                         </Typography>
-                        <Box sx={{ display: 'flex', gap: 1, ml: 1, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                           {/* Mastercard Icon */}
                           <Box sx={{ 
                             // width: { xs: '40px', md: '48px', '4k': '56px' },
