@@ -8,6 +8,7 @@ import {
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
+import Close from '@mui/icons-material/Close';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -1417,15 +1418,15 @@ function CheckoutFormContent({
                       
                     
                       {formik.values.state && (
-                        <Box sx={{  mb: 2 }}>
+                        <Box sx={{  mb: 1 }}>
                           <Box 
                             sx={{ 
                               display: 'flex', 
                               alignItems: 'center', 
                               cursor: 'pointer',
-                              p: 1,
+                              // p: 1,
                               borderRadius: 1,
-                              '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' }
+                              // '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' }
                             }}
                             onClick={() => setShowShippingDetails(!showShippingDetails)}
                           >
@@ -1449,135 +1450,82 @@ function CheckoutFormContent({
                           
                           {showShippingDetails && (
                             <Box sx={{ 
-                              mt: 2, 
-                              p: 2, 
+                              mt: 1, 
+                              p: 1, 
+                              // width:300,s
                               bgcolor: '#f8f9fa', 
-                              borderRadius: 2,
+                              borderRadius: 1.5,
                               border: '1px solid #e9ecef'
                             }}>
                               {/* Show delivery info based on shipping method and selected state */}
                               {!expressShipping ? (
                                 // Standard Shipping
-                                <Box sx={{ mb: 2 }}>
+                                <Box sx={{ mb: 1 }}>
                                   <Typography 
                                     sx={{ 
-                                      fontSize: {md: '16px', xl: '18px', '4k': '22px' },
+                                      fontSize: {md: '14px', xl: '16px', '4k': '20px' },
                                       fontWeight: 700,
-                                      mb: 2,
+                                      mb: 1,
                                       color: '#333'
                                     }}
                                   >
                                     Standard Delivery
                                   </Typography>
                                   
-                                  <Box sx={{ mb: 1 }}>
-                                    {formik.values.state === 'Victoria' ? (
-                                      <Typography 
-                                        sx={{ 
-                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                          fontWeight: 600,
-                                          color: '#555',
-                                          mb: 0.5
-                                        }}
-                                      >
-                                        Victoria: 3-5 business days
-                                      </Typography>
-                                    ) : formik.values.state ? (
-                                      <Typography 
-                                        sx={{ 
-                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                          fontWeight: 600,
-                                          color: '#555',
-                                          mb: 0.5
-                                        }}
-                                      >
-                                        {formik.values.state}: 4-7 business days
-                                      </Typography>
-                                    ) : (
-                                      <>
-                                        <Typography 
-                                          sx={{ 
-                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                            fontWeight: 600,
-                                            color: '#555',
-                                            mb: 0.5
-                                          }}
-                                        >
-                                          Victoria: 3-5 business days
-                                        </Typography>
-                                        <Typography 
-                                          sx={{ 
-                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                            fontWeight: 600,
-                                            color: '#555'
-                                          }}
-                                        >
-                                          Other States: 4-7 business days
-                                        </Typography>
-                                      </>
-                                    )}
+                                  <Box sx={{ mb: 0.5, display: 'flex', flexDirection: 'column', gap: 0.5, flexWrap: 'wrap' }}>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                        fontWeight: 600,
+                                        color: '#555'
+                                      }}
+                                    >
+                                      In Victoria: 3-5 business days
+                                    </Typography>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                        fontWeight: 600,
+                                        color: '#555'
+                                      }}
+                                    >
+                                      Interstate: 4-7 business days
+                                    </Typography>
                                   </Box>
                                 </Box>
                               ) : (
                                 // Express Shipping
-                                <Box sx={{ mb: 2 }}>
+                                <Box sx={{ mb: 1 }}>
                                   <Typography 
                                     sx={{ 
-                                      fontSize: {md: '16px', xl: '18px', '4k': '22px' },
+                                      fontSize: {md: '14px', xl: '16px', '4k': '20px' },
                                       fontWeight: 700,
-                                      mb: 2,
+                                      mb: 1,
                                       color: '#333'
                                     }}
                                   >
                                     Express Delivery
                                   </Typography>
                                   
-                                  <Box sx={{ mb: 1 }}>
-                                    {formik.values.state === 'Victoria' ? (
-                                      <Typography 
-                                        sx={{ 
-                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                          fontWeight: 600,
-                                          color: '#555',
-                                          mb: 0.5
-                                        }}
-                                      >
-                                        Victoria: 1-2+ business days
-                                      </Typography>
-                                    ) : formik.values.state ? (
-                                      <Typography 
-                                        sx={{ 
-                                          fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                          fontWeight: 600,
-                                          color: '#555',
-                                          mb: 0.5
-                                        }}
-                                      >
-                                        {formik.values.state}: 1-3+ business days
-                                      </Typography>
-                                    ) : (
-                                      <>
-                                        <Typography 
-                                          sx={{ 
-                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                            fontWeight: 600,
-                                            color: '#555',
-                                            mb: 0.5
-                                          }}
-                                        >
-                                          Victoria: 1-2+ business days
-                                        </Typography>
-                                        <Typography 
-                                          sx={{ 
-                                            fontSize: {md: '14px', xl: '16px', '4k': '18px' },
-                                            fontWeight: 600,
-                                            color: '#555'
-                                          }}
-                                        >
-                                          Other States: 1-3+ business days
-                                        </Typography>
-                                      </>
-                                    )}
+                                  <Box sx={{ mb: 0.5, display: 'flex', flexDirection: 'row', gap: 2, flexWrap: 'wrap' }}>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                        fontWeight: 600,
+                                        color: '#555'
+                                      }}
+                                    >
+                                      In Victoria: 1-2+ business days
+                                    </Typography>
+                                    <Typography 
+                                      sx={{ 
+                                        fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                        fontWeight: 600,
+                                        color: '#555'
+                                      }}
+                                    >
+                                      Interstate: 1-3+ business days
+                                    </Typography>
                                   </Box>
                                 </Box>
                               )}
@@ -1588,18 +1536,18 @@ function CheckoutFormContent({
                                 flexDirection: {xs:'column', md:'row'},
                                 justifyContent: 'space-between', 
                                 alignItems: { xs:'flex-start', md:'center'},
-                                pt: 2,
+                                pt: 1,
                                 borderTop: '1px solid #dee2e6'
                               }}>
                                 <Typography 
                                   sx={{ 
-                                    fontSize: {md: '12px', xl: '14px', '4k': '16px' },
+                                    fontSize: {md: '11px', xl: '13px', '4k': '15px' },
                                     color: '#666'
                                   }}
                                 >
-                                  For more information visit Australia Post website
+                                 Delivery times may vary — please check the latest estimates on the  <a style={{color: '#1976d2', textDecoration: 'underline', '&:hover': { textDecoration: 'none' }}} href="https://share.google/Cnu1S0f4NUZknEHE9" target="_blank" rel="noopener noreferrer">Delivery speeds and coverage - Australia Posts</a>
                                 </Typography>
-                                <Typography 
+                                {/* <Typography 
                                   component="a"
                                   href="https://share.google/Cnu1S0f4NUZknEHE9"
                                   target="_blank"
@@ -1612,7 +1560,7 @@ function CheckoutFormContent({
                                   }}
                                 >
                                   Delivery speeds and coverage - Australia Post
-                                </Typography>
+                                </Typography> */}
                               </Box>
                             </Box>
                           )}
@@ -2333,6 +2281,17 @@ function CheckoutFormContent({
           }}
         >
           <DialogContent>
+            <IconButton
+              onClick={handleClose}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                // color: '#c165a0',
+              }}
+            >
+              <Close />
+            </IconButton>
             <Grid container spacing={2}>
               <Grid item xs={12} md={12}>
                 <Card sx={{

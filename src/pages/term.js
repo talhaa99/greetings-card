@@ -4,7 +4,7 @@ import {
   CardContent,
   Container,
   Typography,
-  Grid, Box
+  Grid, Box, Button
 } from '@mui/material';
 import * as React from 'react';
 import CardMedia from '@mui/material/CardMedia';
@@ -12,9 +12,9 @@ import LandingNav from '../layouts/landing-nav/landingLayout';
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
-
+import { useRouter } from 'next/router';
 const Page = () => {
-
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -391,6 +391,23 @@ const Page = () => {
                 </CardContent>
               </Card>
             </Grid>
+            <Box sx={{ display: 'flex', justifyContent: {md:'flex-end', xs:'center'}, mt: 3, mb: 2, pr: 2 , width: '100%'}}>
+              <Button
+                variant="contained"
+                onClick={() => router.back()}
+                sx={{
+                  backgroundColor: '#c165a0',
+                  color: '#fff',
+                  '&:hover': {
+                    backgroundColor: '#a0527f',
+                  },
+                  fontSize: { md: '14px', xl: '18px', '4k': '22px' },
+                  padding: { md: '8px 24px', xl: '10px 30px', '4k': '12px 36px' }
+                }}
+              >
+                Go Back
+              </Button>
+            </Box>
           </Grid>
         </Container>
       </Box>
