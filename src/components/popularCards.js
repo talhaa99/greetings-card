@@ -176,15 +176,16 @@ const PopularCards = () => {
                 autoplay={{ delay: 1500 }}
                 loop={getDisplayCards().length > 1}
                 breakpoints={{
-                  360:{slidesPerView: 2, spaceBetween: 10},
-                  344:{slidesPerView: 2, spaceBetween: 10},
+                  360:{slidesPerView: 3, spaceBetween: 10},
+                  344:{slidesPerView: 3, spaceBetween: 10},
                   375:{slidesPerView: 3, spaceBetween: 20},
                   640: { slidesPerView: 3, spaceBetween: 0 },
-                  768: { slidesPerView: 4, spaceBetween: 20 },
-                  1024: { slidesPerView: 4, spaceBetween: 20 },
-                  1400: { slidesPerView: 7, spaceBetween: 20 },
-                  2000:{ slidesPerView: 8, spaceBetween: 20},
-                  3000:{ slidesPerView: 13, spaceBetween: 20},
+                  768: { slidesPerView: 6, spaceBetween: 20 },
+                  1024: { slidesPerView: 5, spaceBetween: 20 },
+                  // 1200: { slidesPerView: 5, spaceBetween: 20 },
+                  1920: { slidesPerView: 6, spaceBetween: 20 },   1500: { slidesPerView: 5, spaceBetween: 20 },
+                  2000:{ slidesPerView: 6, spaceBetween: 20},
+                  3000:{ slidesPerView: 6, spaceBetween: 20},
                 }}
                 pagination={{
                   clickable: true,
@@ -268,7 +269,7 @@ const PopularCards = () => {
       display: 'inline-flex',
       justifyContent: 'center',
       alignItems: 'center',
-      mt: 5, mb: 6,
+      mt: 0, mb: 5,
       cursor: 'pointer',
       overflow: 'visible'
       ,'&:hover': {
@@ -277,15 +278,17 @@ const PopularCards = () => {
       },
 
       // ONE source of truth
-      '--cardH': { xs: '140px', sm: '180px', md: '220px', lg: '260px' },
+      '--cardH': { xs: '140px', sm: '150px', md: '200px', lg: '350px', xl: '500px', '4k': '750px' },
       // '--cardW': { xs: '25vw', sm: '24vw', md: '190px', lg: '220px' },
     
       '--cardW': 'calc(var(--cardH) * 0.7)', // 280px for 400px height
       minHeight: 'calc(var(--cardH) + 20px)',
     }}
   >
+    
     {/* Envelope (behind, tilted) */}
-    {card.envelope && (
+    
+    {/* {card.envelope && (
       <Box
         component="img"
         src={resolveImageUrl(card.envelope)}
@@ -305,7 +308,7 @@ const PopularCards = () => {
           pointerEvents: 'none',
         }}
       />
-    )}
+    )} */}
 
     {/* Card (straight, aligned on top) */}
     <Box
@@ -322,7 +325,7 @@ const PopularCards = () => {
         component="img"
         src={card.frontDesign ? resolveImageUrl(card.frontDesign) : (card.url || `${WEB_URL}/1.png`)}
         alt={card.title || `card${index}`}
-        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block'}}
+        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', borderRadius: 2}}
       />
     </Box>
   </Box>
