@@ -1972,26 +1972,42 @@ function CheckoutFormContent({
                       <Typography fontWeight={800} variant="body2" sx={{ mb: 1.5, color: ACCENT, fontSize: {'4k': 25} }}>
                         Payment Information
                       </Typography>
-                      <CardElement
-                        options={{
-                          style: {
-                            base: {
-                              fontSize: '16px',
-                              color: '#424770',
-                              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                              fontSmoothing: 'antialiased',
-                              '::placeholder': {
-                                color: 'transparent',
+                      <Box
+                        sx={{
+                          border: '1px solid #e0e0e0',
+                          borderRadius: 1,
+                          p: 2,
+                          backgroundColor: '#fff',
+                          '&:hover': {
+                            borderColor: '#c165a0',
+                          },
+                          '&:focus-within': {
+                            borderColor: '#c165a0',
+                            borderWidth: '2px',
+                          },
+                        }}
+                      >
+                        <CardElement
+                          options={{
+                            style: {
+                              base: {
+                                fontSize: '16px',
+                                color: '#424770',
+                                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                                fontSmoothing: 'antialiased',
+                                '::placeholder': {
+                                  color: '#aab7c4',
+                                },
+                              },
+                              invalid: {
+                                color: '#fa755a',
+                                iconColor: '#fa755a',
                               },
                             },
-                            invalid: {
-                              color: '#fa755a',
-                              iconColor: '#fa755a',
-                            },
-                          },
-                          hidePostalCode: true,
-                        }}
-                      />
+                            hidePostalCode: true,
+                          }}
+                        />
+                      </Box>
                     </Box>
 
                     <Button
@@ -2228,7 +2244,24 @@ function CheckoutFormContent({
                           </Box>
                         </Box>
                       </Box>
-                     <CardElement options={{ style: { base: { fontSize: '16px', color: '#424770', fontFamily: '"Helvetica Neue", Helvetica, sans-serif', fontSmoothing: 'antialiased', '::placeholder': { color: '#aab7c4', }, }, invalid: { color: '#fa755a', iconColor: '#fa755a', }, }, hidePostalCode: true, }} /> </Box>
+                     <Box
+                        sx={{
+                          border: '1px solid #e0e0e0',
+                          borderRadius: 1,
+                          p: 2,
+                          backgroundColor: '#fff',
+                          '&:hover': {
+                            borderColor: '#c165a0',
+                          },
+                          '&:focus-within': {
+                            borderColor: '#c165a0',
+                            borderWidth: '2px',
+                          },
+                        }}
+                      >
+                        <CardElement options={{ style: { base: { fontSize: '16px', color: '#424770', fontFamily: '"Helvetica Neue", Helvetica, sans-serif', fontSmoothing: 'antialiased', '::placeholder': { color: '#aab7c4', }, }, invalid: { color: '#fa755a', iconColor: '#fa755a', }, }, hidePostalCode: true, }} />
+                      </Box>
+                    </Box>
                    
 
                     <Button
@@ -2307,7 +2340,7 @@ function CheckoutFormContent({
                       TERMS & CONDITIONS
                     </Typography>
                     <Typography gutterBottom variant="h6" padding="10px" sx={{ textAlign: 'center' }}>
-                      Welcome to Greetings Card
+                      Welcome to Incardible
                     </Typography>
 
                     <CardMedia/>

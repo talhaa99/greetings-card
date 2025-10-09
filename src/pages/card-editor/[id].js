@@ -596,6 +596,7 @@ import QRCodeGenerator from '../../components/qrCode';
 import { useAuth } from '../../hooks/use-auth';
 import Checkout from '../../components/checkout';
 
+
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const Editor = () => {
   const auth = useAuth();
@@ -673,7 +674,9 @@ const Editor = () => {
     const runOnceAfterLogin = async () => {
       if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
         hasCreatedTemplateRef.current = true;
-        console.log('going to call create template 1');
+        console.log('🔐 User authenticated - initializing editor');
+        console.log('✅ auth.isAuthenticated:', auth.isAuthenticated);
+        console.log('🔑 Token in localStorage:', localStorage.getItem('token'));
         
         try {
           // Get fresh data from the permanent table after login
@@ -980,6 +983,7 @@ const Editor = () => {
       console.log('✅ Unity gameInstance loaded after:', instance);
       console.log('✅userTemplateData after', userTemplateData);
       console.log('data after---', data);
+      console.log('🔑 Token available when creating callbacks:', localStorage.getItem('token'));
 
       instance.SendMessage(
         'JsonDataHandlerAndParser',
@@ -1024,7 +1028,16 @@ const Editor = () => {
         console.log('userId----------------------in else');
         setIsUnityReady(false);
         try {
-          const isAuth = auth?.isAuthenticated;
+          // Check token directly from localStorage to avoid stale closure
+          const token = localStorage.getItem('token');
+          const isAuth = !!token;
+          console.log('🖼️ SAVE IMAGE - Auth check:', {
+            hasToken: !!token,
+            isAuth: isAuth,
+            authContextState: auth?.isAuthenticated,
+            hasUser: !!auth?.user,
+            userName: auth?.user?.firstName
+          });
           // Convert the input array to Uint8Array
           const uint8Array = new Uint8Array(array);
 
@@ -1080,7 +1093,9 @@ const Editor = () => {
         setIsUnityReady(false);
         console.log('userId----- in else', userCardId);
         try {
-          const isAuth = auth?.isAuthenticated;
+          // Check token directly from localStorage to avoid stale closure
+          const token = localStorage.getItem('token');
+          const isAuth = !!token;
           const blobResponse = await fetch(url);
           const blob = await blobResponse.blob();
 
@@ -1128,7 +1143,9 @@ const Editor = () => {
 
         console.log('userId----------------------', userCardId);
         try {
-          const isAuth = auth?.isAuthenticated;
+          // Check token directly from localStorage to avoid stale closure
+          const token = localStorage.getItem('token');
+          const isAuth = !!token;
           const response = await axios.post(
             `${BASE_URL}/api/user/edit-data`,
             {
@@ -1154,13 +1171,26 @@ const Editor = () => {
 
       //unity developer call this function to send data to me  not in instance this function is call in window
       gameIframe.current.contentWindow.saveData = async (json) => {
-
+      
         console.log('----------recieving json:', json);
         const parsed = JSON.parse(json);
         console.log('----------recieving json after parse:', parsed);
+        
+        // Check token directly from localStorage to avoid stale closure
+        const token = localStorage.getItem('token');
+        const isAuth = !!token; // If token exists, user is authenticated
+        
+        console.log('💾 SAVE DATA - Authentication check:', {
+          hasToken: !!token,
+          isAuthenticated: isAuth,
+          authContextState: auth?.isAuthenticated,
+          hasUser: !!auth?.user,
+          userName: auth?.user?.firstName
+        });
 
         try {
-          const isAuth = auth?.isAuthenticated;
+          console.log('📤 Sending to API with isAuthenticated:', isAuth);
+          
           const response = await axios.post(
             `${BASE_URL}/api/cards/upload-ar-data`,
             {
@@ -1175,32 +1205,36 @@ const Editor = () => {
               }
             }
           );
-          console.log('response of save data===> ', response);
+          console.log('✅ Save data response:', response);
           setUserTemplateData(response?.data?.data);
-          
+          // setSaveConfirmationDialog(true);
           // Mark as saved
           setHasUnsavedChanges(false);
           
           // If should navigate after save (from back button flow), navigate
-          if (shouldNavigateAfterSave) {
-            setShouldNavigateAfterSave(false);
-            setUnsavedChangesDialog(false);
-            router.push('/');
-            return; // Exit early
-          }
+          // if (shouldNavigateAfterSave) {
+          //   setShouldNavigateAfterSave(false);
+          //   setUnsavedChangesDialog(false);
+          //   router.push('/');
+          //   return; // Exit early
+          // }
           
           // Normal save button flow
           // If user is authenticated, show save confirmation
-          if (auth?.isAuthenticated) {
+          console.log('🔐 After save - isAuth (from token):', isAuth);
+          if (isAuth) {
+            console.log('✅ User is authenticated - showing save confirmation dialog');
             setSaveConfirmationDialog(true);
           }
           
           // Handle completion and checkout flow
-          if (parsed?.isCustomizationComplete && !auth?.isAuthenticated) {
+          if (parsed?.isCustomizationComplete && !isAuth) {
+            console.log('⚠️ Customization complete but not authenticated - opening login');
             openLogin();
           }
 
-          if (!auth?.isAuthenticated) {
+          if (!isAuth) {
+            console.log('⚠️ User not authenticated - setting redirect flag and opening login');
             localStorage.setItem('redirectToCheckout', 'true');
             await openLogin();
           }
@@ -1259,8 +1293,16 @@ const Editor = () => {
         console.log('----------recieving id when template is changed:', id);
 
         try {
-          const isAuth = auth?.isAuthenticated;
-          console.log('isAuth in change temoplate', isAuth);
+          // Check token directly from localStorage to avoid stale closure
+          const token = localStorage.getItem('token');
+          const isAuth = !!token;
+          console.log('🔄 CHANGE TEMPLATE - Auth check:', {
+            hasToken: !!token,
+            isAuth: isAuth,
+            authContextState: auth?.isAuthenticated,
+            hasUser: !!auth?.user,
+            userName: auth?.user?.firstName
+          });
           const response = await axios.post(
             `${BASE_URL}/api/cards/update-data`,
             {
@@ -1301,6 +1343,10 @@ const Editor = () => {
 
       gameIframe.current.contentWindow.checkout = async () => {
         // if (parsed?.isCustomizationComplete) {
+            // Check token directly from localStorage to avoid stale closure
+            const token = localStorage.getItem('token');
+            const isAuth = !!token;
+            
             const isAlreadyPaid = userTemplateData?.isPaid === true;
             
             if (isAlreadyPaid) {
@@ -1308,10 +1354,12 @@ const Editor = () => {
               return; // Don't redirect if already paid
             }
             
-            if (!auth?.isAuthenticated) {
+            if (!isAuth) {
+              console.log('⚠️ Checkout clicked but not authenticated - opening login');
               localStorage.setItem('redirectToCheckout', 'true');
               await openLogin();
             } else {
+              console.log('✅ User authenticated - redirecting to checkout');
               router.push(`/checkout/${userTemplateData._id}`);
               // handleCheckout();
             }
@@ -1406,7 +1454,7 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
-          width:500,
+          width:600,
             backgroundColor: '#FDF7FB',
             border: '2px solid #E697B1',
             borderRadius: 3
@@ -1431,7 +1479,7 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '20px', 
+              fontSize: '25px', 
               // color: '#155724', 
               fontWeight: 700,
               lineHeight: 1.6,
@@ -1439,7 +1487,17 @@ const Editor = () => {
              textAlign: 'center',
               gap: 1
             }}>
-              Your card has been saved successfully!. Your card is saved in &quot;My Cards&quot; under your profile
+              Your card has been saved successfully!
+            </Typography>
+            <Typography sx={{ 
+               fontSize: '25px', 
+                 fontWeight: 700,
+                 lineHeight: 1.6,
+                 display: 'flex',
+                textAlign: 'center',
+              gap: 1
+            }}>
+              &quot;Your card is saved in &quot;My Cards&quot; under your profile&quot;
             </Typography>
           {/* </Box> */}
           {/* <Box sx={{ 
@@ -1498,7 +1556,7 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
-            width:500,
+            width:600,
             backgroundColor: '#FDF7FB',
             border: '2px solid #E697B1',
             borderRadius: 3

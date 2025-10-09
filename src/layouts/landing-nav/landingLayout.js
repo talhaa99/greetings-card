@@ -279,6 +279,9 @@ export const LandingNav = () => {
       setLoading(true);
       try {
         await SignIn({ email: values.email, password: values.password });
+        
+        // Force refresh auth state after login
+        await auth.initialize(true);
 
         formik.resetForm(); // Reset the form immediately
         // handleVerifyClose();
@@ -476,6 +479,10 @@ export const LandingNav = () => {
       const email = loginUserData.email;
       try {
         await SignInWithGoogle({ name, email });
+        
+        // Force refresh auth state after Google login
+        await auth.initialize(true);
+        
         // ✅ Block future calls and clear click flag
         localStorage.setItem('hasCalled', 'true');
         localStorage.removeItem('googleClicked');
@@ -1037,10 +1044,14 @@ export const LandingNav = () => {
           onClose={handleRegisterClose}
           aria-labelledby="customized-dialog-title"
           open={openRegister}
+          maxWidth="sm"
+          fullWidth
           PaperProps={{
             sx: {
-              width: '100%',
-              maxWidth: '500px' // Adjust to preferred fixed width
+              width: 500,
+              backgroundColor: '#FDF7FB',
+              border: '2px solid #E697B1',
+              borderRadius: 3
             }
           }}
 
@@ -1113,7 +1124,7 @@ export const LandingNav = () => {
                       onChange={registerFormik.handleChange}
                       value={registerFormik.values.lastName}
                     />
-                  < /Box>
+                  </Box>
                   <Box sx={{
                     display: 'flex',
                     flexDirection: { md: 'row', xs: 'column' },
@@ -1136,7 +1147,7 @@ export const LandingNav = () => {
                       type="email"
                       value={registerFormik.values.email}
                     />
-                  < /Box>
+                  </Box>
                   <Box sx={{
                     display: 'flex',
                     flexDirection: { md: 'row', xs: 'column' },
@@ -1201,7 +1212,7 @@ export const LandingNav = () => {
                         )
                       }}
                     />
-                  < /Box>
+                  </Box>
                 </DialogContent>
                 <DialogActions sx={{
                   pr: '0 !important',
@@ -1215,11 +1226,27 @@ export const LandingNav = () => {
                     <Button
                       fullWidth
                       size="large"
-                      // sx={{ mt: 3 }}
                       type="submit"
-                      //disabled button
                       disabled={registerFormik.isSubmitting}
                       variant="contained"
+                      sx={{
+                        borderRadius: '16px !important',
+                        backgroundColor: '#C1649F',
+                        color: '#ffffff',
+                        px: 4,
+                        py: 1,
+                        fontSize: '16px',
+                        '&:hover': { 
+                          backgroundColor: '#C1649F',
+                          boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+                        },
+                        '&:disabled': { 
+                          backgroundColor: '#C1649F', 
+                          color: '#ffffff', 
+                          opacity: 0.6 
+                        },
+                        transition: 'all 0.2s ease'
+                      }}
                     >
                       Sign Up
                     </Button>
@@ -1303,10 +1330,14 @@ export const LandingNav = () => {
           onClose={handleClose}
           aria-labelledby="customized-dialog-title"
           open={open}
+          maxWidth="sm"
+          fullWidth
           PaperProps={{
             sx: {
-              width: '100%',
-              maxWidth: '500px' // Adjust to preferred fixed width
+              width: 500,
+              backgroundColor: '#FDF7FB',
+              border: '2px solid #E697B1',
+              borderRadius: 3
             }
           }}
 
@@ -1428,15 +1459,27 @@ export const LandingNav = () => {
                   <Button
                     fullWidth
                     size="large"
-                    sx={{
-                      '&:hover': {
-                        // borderColor: '#dcdbdb', // Keeps same color on hover
-                        backgroundColor: '#c165a0' // Optional subtle hover
-                      }
-                    }}
                     type="submit"
                     variant="contained"
                     disabled={formik.isSubmitting}
+                    sx={{
+                      borderRadius: '16px !important',
+                      backgroundColor: '#C1649F',
+                      color: '#ffffff',
+                      px: 4,
+                      py: 1,
+                      fontSize: '16px',
+                      '&:hover': { 
+                        backgroundColor: '#C1649F',
+                        boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+                      },
+                      '&:disabled': { 
+                        backgroundColor: '#C1649F', 
+                        color: '#ffffff', 
+                        opacity: 0.6 
+                      },
+                      transition: 'all 0.2s ease'
+                    }}
                   >
                     Sign In
                   </Button>
@@ -1515,10 +1558,14 @@ export const LandingNav = () => {
           onClose={handleVerifyClose}
           aria-labelledby="customized-dialog-title"
           open={verifyOpen}
+          maxWidth="sm"
+          fullWidth
           PaperProps={{
             sx: {
-              width: '100%',
-              maxWidth: '500px' // Adjust to preferred fixed width
+              width: 500,
+              backgroundColor: '#FDF7FB',
+              border: '2px solid #E697B1',
+              borderRadius: 3
             }
           }}
         >
@@ -1582,15 +1629,27 @@ export const LandingNav = () => {
               <DialogActions>
                 <Button
                   size="large"
-                  sx={{
-                    '&:hover': {
-                      // borderColor: '#dcdbdb', // Keeps same color on hover
-                      backgroundColor: '#c165a0' // Optional subtle hover
-                    }
-                  }}
                   type="submit"
                   variant="contained"
                   disabled={forgetFormik.isSubmitting}
+                  sx={{
+                    borderRadius: '16px !important',
+                    backgroundColor: '#C1649F',
+                    color: '#ffffff',
+                    px: 4,
+                    py: 1,
+                    fontSize: '16px',
+                    '&:hover': { 
+                      backgroundColor: '#C1649F',
+                      boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+                    },
+                    '&:disabled': { 
+                      backgroundColor: '#C1649F', 
+                      color: '#ffffff', 
+                      opacity: 0.6 
+                    },
+                    transition: 'all 0.2s ease'
+                  }}
                 >
                   Send password reset link
                 </Button>
@@ -1608,10 +1667,14 @@ export const LandingNav = () => {
           onClose={handleCloseReset}
           aria-labelledby="customized-dialog-title"
           open={resetOpen}
+          maxWidth="sm"
+          fullWidth
           PaperProps={{
             sx: {
-              width: '100%',
-              maxWidth: '500px' // Adjust to preferred fixed width
+              width: 500,
+              backgroundColor: '#FDF7FB',
+              border: '2px solid #E697B1',
+              borderRadius: 3
             }
           }}
         >
@@ -1734,15 +1797,27 @@ export const LandingNav = () => {
               <DialogActions>
                 <Button
                   size="large"
-                  sx={{
-                    '&:hover': {
-                      // borderColor: '#dcdbdb', // Keeps same color on hover
-                      backgroundColor: '#c165a0' // Optional subtle hover
-                    }
-                  }}
                   type="submit"
                   variant="contained"
                   disabled={resetFormik.isSubmitting}
+                  sx={{
+                    borderRadius: '16px !important',
+                    backgroundColor: '#C1649F',
+                    color: '#ffffff',
+                    px: 4,
+                    py: 1,
+                    fontSize: '16px',
+                    '&:hover': { 
+                      backgroundColor: '#C1649F',
+                      boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+                    },
+                    '&:disabled': { 
+                      backgroundColor: '#C1649F', 
+                      color: '#ffffff', 
+                      opacity: 0.6 
+                    },
+                    transition: 'all 0.2s ease'
+                  }}
                 >
                   Reset Password
                 </Button>

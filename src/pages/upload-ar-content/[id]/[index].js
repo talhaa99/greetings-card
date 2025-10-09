@@ -38,6 +38,11 @@ const Upload = () => {
   const [galleryVideos, setGalleryVideos] = useState(true);
   const [selectedGalleryImages, setSelectedGalleryImages] = useState([]);
   const [showMsgAfterUploadContent, setShowMsgAfterUploadContent] = useState(false);
+  
+  // Debug log for state changes
+  useEffect(() => {
+    console.log('🔄 showMsgAfterUploadContent state changed:', showMsgAfterUploadContent);
+  }, [showMsgAfterUploadContent]);
   const [previewUrls, setPreviewUrls] = useState('');
   const [previewVideoUrls, setPreviewVideoUrls] = useState('');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -90,8 +95,8 @@ const Upload = () => {
 
     const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
 
-    if (file.size > 4 * 1024 * 1024) {
-      toast.error(`File too large (${sizeInMB} MB). Max allowed: 4 MB.`);
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error(`File too large (${sizeInMB} MB). Max allowed: 5 MB.`);
       return;
     }
     // if (file.size > 1024 * 1024) {
@@ -114,8 +119,14 @@ const Upload = () => {
           return;
         }
         const formData = new FormData();
-        const isAuth = auth?.isAuthenticated;
-        console.log('isAuth in image', typeof isAuth, isAuth);
+        // Check token directly from localStorage to avoid stale closure
+        const token = localStorage.getItem('token');
+        const isAuth = !!token;
+        console.log('🖼️ Image upload - Auth check:', {
+          hasToken: !!token,
+          isAuth: isAuth,
+          authContextState: auth?.isAuthenticated
+        });
         formData.append('uuid', id);
         formData.append('isAuthenticated', isAuth);
         formData.append('index', index);
@@ -131,6 +142,7 @@ const Upload = () => {
           setPreviewUrls(res?.data?.data?.image);
           toast.success('Image uploaded!');
           setShowWarning(true);
+          console.log('🖼️ Image uploaded - setting showMsgAfterUploadContent to true');
           setShowMsgAfterUploadContent(true);
           // clean the url
           const { token, ...rest } = router.query;
@@ -166,8 +178,14 @@ const Upload = () => {
     const url = URL.createObjectURL(file);
     // setPreviewVideoUrls(res?.data?.data?.video);
     setVideoLoading(true);
-    const authenticatedUser = auth?.isAuthenticated;
-    console.log('authenticatedUser in video', typeof authenticatedUser, authenticatedUser);
+    // Check token directly from localStorage to avoid stale closure
+    const token = localStorage.getItem('token');
+    const authenticatedUser = !!token;
+    console.log('🎥 Video upload - Auth check:', {
+      hasToken: !!token,
+      isAuth: authenticatedUser,
+      authContextState: auth?.isAuthenticated
+    });
     const formData = new FormData();
     formData.append('uuid', id);
     formData.append('isAuthenticated', authenticatedUser);
@@ -180,6 +198,7 @@ const Upload = () => {
       toast.success('Video uploaded successfully.');
       setPreviewVideoUrls(res?.data?.data?.video);
       setShowWarning(true);
+      console.log('🎥 Video uploaded - setting showMsgAfterUploadContent to true');
       setShowMsgAfterUploadContent(true);
       // clean the url
       const { token, ...rest } = router.query;
@@ -197,7 +216,14 @@ const Upload = () => {
   const delete0IndexContent = async (isImage) => {
 
     try {
-      const isAuthenticated = auth?.isAuthenticated;
+      // Check token directly from localStorage to avoid stale closure
+      const token = localStorage.getItem('token');
+      const isAuthenticated = !!token;
+      console.log('🗑️ Delete content - Auth check:', {
+        hasToken: !!token,
+        isAuth: isAuthenticated,
+        authContextState: auth?.isAuthenticated
+      });
       const res = await axios.post(`${BASE_URL}/api/user/ar-experience/remove-0-index-content`, {
         uuid: id, isImage, isAuthenticated: isAuthenticated
       });
@@ -270,6 +296,7 @@ const Upload = () => {
             alignItems: 'center',
             height: '100vh'
           }}>
+            {console.log('🎉 Rendering thank you GIF - showMsgAfterUploadContent:', showMsgAfterUploadContent)}
             <Box
               data-aos="zoom-in"
               data-aos-duration="600"
@@ -277,6 +304,8 @@ const Upload = () => {
               component="img"
               src={`${WEB_URL}/thankYou.gif`}
               alt="thank you"
+              onLoad={() => console.log('✅ Thank you GIF loaded successfully')}
+              onError={(e) => console.error('❌ Thank you GIF failed to load:', e)}
               // sx={{ position: 'absolute', top: {md: '25%', xs:'25%' }, right: {md: - 150, xs:-30 }, width: {md: '30%', xs:'50%' }, zIndex: 4 }}
               sx={{
                 width: '50%'

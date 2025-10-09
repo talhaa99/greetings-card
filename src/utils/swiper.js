@@ -491,24 +491,69 @@ export default function CardsCarousel({ allCards = [] }) {
         </Box>
       )}
 
-      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel} aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-description">
+      <Dialog 
+        open={deleteDialogOpen} 
+        onClose={handleDeleteCancel} 
+        aria-labelledby="delete-dialog-title" 
+        aria-describedby="delete-dialog-description"
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            width: 500,
+            backgroundColor: '#FDF7FB',
+            border: '2px solid #E697B1',
+            borderRadius: 3
+          }
+        }}
+      >
         <DialogTitle id="delete-dialog-title">Delete Card</DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Are you sure you want to delete this card? This action cannot be reversible.
+            Are you sure you want to delete this card? 
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteCancel} color="primary" sx={{ '&:hover': { backgroundColor: 'white', color: '#c165a0' },}} >Cancel</Button>
+          <Button 
+            onClick={handleDeleteCancel}
+            variant="contained"
+            sx={{
+              borderRadius: '16px !important',
+              backgroundColor: '#d9d9d9',
+              color: '#444444',
+              px: 4,
+              py: 1,
+              fontSize: '16px',
+              '&:hover': { 
+                backgroundColor: '#d9d9d9',
+                color: '#444444',
+              },
+              transition: 'all 0.2s ease'
+            }}
+          >
+            Cancel
+          </Button>
           <Button
             onClick={handleDeleteConfirm}
             variant="contained"
             disabled={loadingId === cardToDelete?._id}
             sx={{
-              backgroundColor: '#c165a0',
-              color: 'white',
-              '&:hover': { backgroundColor: '#c165a0', color: 'white' },
-              '&:disabled': { backgroundColor: '#c165a0', color: 'white', opacity: 0.6 }
+              borderRadius: '16px !important',
+              backgroundColor: '#C1649F',
+              color: '#ffffff',
+              px: 4,
+              py: 1,
+              fontSize: '16px',
+              '&:hover': { 
+                backgroundColor: '#C1649F',
+                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+              },
+              '&:disabled': { 
+                backgroundColor: '#C1649F', 
+                color: '#ffffff', 
+                opacity: 0.6 
+              },
+              transition: 'all 0.2s ease'
             }}
           >
             {loadingId === cardToDelete?._id ? 'Deleting...' : 'Delete'}
