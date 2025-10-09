@@ -580,6 +580,7 @@ import {
 } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import CloseIcon from '@mui/icons-material/Close';
 import * as React from 'react';
 import { useEffect, useState, useRef } from 'react';
 import toast from 'react-hot-toast';
@@ -1288,25 +1289,32 @@ const Editor = () => {
         console.log('----------msg when picker is clicked from website:');
       };
 
-      gameIframe.current.contentWindow.changeTemplate = async (id) => {
+      gameIframe.current.contentWindow.changeTemplate = async (id, json) => {
 
         console.log('----------recieving id when template is changed:', id);
+        console.log('----------recieving json:', json);
+        const parsed = JSON.parse(json);
+        console.log('----------recieving json after parse:', parsed);
+        
+        const token = localStorage.getItem('token');
+        const isAuth = !!token; 
+        
+        console.log('💾 SAVE DATA - Authentication check:', {
+          hasToken: !!token,
+          isAuthenticated: isAuth,
+          authContextState: auth?.isAuthenticated,
+          hasUser: !!auth?.user,
+          userName: auth?.user?.firstName
+        });
 
         try {
-          // Check token directly from localStorage to avoid stale closure
-          const token = localStorage.getItem('token');
-          const isAuth = !!token;
-          console.log('🔄 CHANGE TEMPLATE - Auth check:', {
-            hasToken: !!token,
-            isAuth: isAuth,
-            authContextState: auth?.isAuthenticated,
-            hasUser: !!auth?.user,
-            userName: auth?.user?.firstName
-          });
-          const response = await axios.post(
-            `${BASE_URL}/api/cards/update-data`,
+          console.log('📤 Step 1: Saving data via upload-ar-data API');
+          
+          const saveResponse = await axios.post(
+            `${BASE_URL}/api/cards/upload-ar-data`,
             {
-              id: userTemplateData._id,
+              uuid: userCardId,
+              data: parsed,
               isAuthenticated: isAuth
 
             },
@@ -1316,11 +1324,50 @@ const Editor = () => {
               }
             }
           );
-          console.log('response when template ===> ', response);
-          setUserTemplateData(response?.data?.data);
+          console.log('✅ Save data response:', saveResponse);
+          setUserTemplateData(saveResponse?.data?.data);
+        
+          // setHasUnsavedChanges(false);
+   
+          console.log('🔐 After save - isAuth (from token):', isAuth);
+          if (isAuth) {
+            console.log('✅ User is authenticated - showing save confirmation dialog');
+            // setSaveConfirmationDialog(true);
+          }
+          
+          // Handle completion and checkout flow
+          if (parsed?.isCustomizationComplete && !isAuth) {
+            console.log('⚠️ Customization complete but not authenticated - opening login');
+            openLogin();
+          }
+
+          if (!isAuth) {
+            console.log('⚠️ User not authenticated - setting redirect flag and opening login');
+            localStorage.setItem('redirectToCheckout', 'true');
+            await openLogin();
+          }
+
+          console.log('📤 Step 2: Updating template via update-data API');
+          const updateResponse = await axios.post(
+            `${BASE_URL}/api/cards/update-data`,
+            {
+              id: saveResponse?.data?.data?._id,
+              isAuthenticated: isAuth
+
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          console.log('✅ Template update response:', updateResponse);
+          setUserTemplateData(updateResponse?.data?.data);
+
         } catch (error) {
-          console.log('error in change template data', error);
+          console.log('❌ Error in changeTemplate:', error);
         }
+
       };
 
       gameIframe.current.contentWindow.goBack = async () => {
@@ -1457,18 +1504,26 @@ const Editor = () => {
           width:600,
             backgroundColor: '#FDF7FB',
             border: '2px solid #E697B1',
-            borderRadius: 3
+            borderRadius: 3,
+            position: 'relative'
           }
         }}
       >
-        {/* <DialogTitle sx={{ 
-          backgroundColor: '#FDF7FB', 
-          borderBottom: '2px solid #E697B1',
-          fontWeight: 600,
-          color: '#333'
-        }}>
-          Card Saved Successfully
-        </DialogTitle> */}
+        <IconButton
+          onClick={() => setSaveConfirmationDialog(false)}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: '#666',
+            '&:hover': {
+              backgroundColor: 'rgba(193, 100, 159, 0.1)',
+              color: '#C1649F'
+            }
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
           {/* <Box sx={{ 
             mt: 2, 
@@ -1559,18 +1614,26 @@ const Editor = () => {
             width:600,
             backgroundColor: '#FDF7FB',
             border: '2px solid #E697B1',
-            borderRadius: 3
+            borderRadius: 3,
+            position: 'relative'
           }
         }}
       >
-        {/* <DialogTitle sx={{ 
-          backgroundColor: '#FDF7FB', 
-          borderBottom: '2px solid #E697B1',
-          fontWeight: 600,
-          color: '#333'
-        }}>
-          ⚠️ Unsaved Changes
-        </DialogTitle> */}
+        <IconButton
+          onClick={() => setUnsavedChangesDialog(false)}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: '#666',
+            '&:hover': {
+              backgroundColor: 'rgba(193, 100, 159, 0.1)',
+              color: '#C1649F'
+            }
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
           {/* <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 ,  fontWeight: 700}}>
             Did you save your changes?
@@ -1624,7 +1687,7 @@ const Editor = () => {
               transition: 'all 0.2s ease'
             }}
           >
-         Go Back
+        Back
           </Button>
           <Button
             onClick={async () => {
@@ -1657,7 +1720,7 @@ const Editor = () => {
               // transition: 'all 0.2s ease'
             }}
           >
-            Please Save
+            Save
           </Button>
         </DialogActions>
       </Dialog>
