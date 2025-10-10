@@ -1327,7 +1327,7 @@ const Editor = () => {
           console.log('✅ Save data response:', saveResponse);
           setUserTemplateData(saveResponse?.data?.data);
         
-          // setHasUnsavedChanges(false);
+          setHasUnsavedChanges(false);
    
           console.log('🔐 After save - isAuth (from token):', isAuth);
           if (isAuth) {
@@ -1501,10 +1501,10 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
-          width:600,
-            backgroundColor: '#FDF7FB',
+          width:500,
+            backgroundColor: '#EEE3EA',
             border: '2px solid #E697B1',
-            borderRadius: 3,
+            borderRadius: 2,
             position: 'relative'
           }
         }}
@@ -1524,7 +1524,7 @@ const Editor = () => {
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
+        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#EEE3EA' }}>
           {/* <Box sx={{ 
             mt: 2, 
             p: 3, 
@@ -1534,7 +1534,7 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '25px', 
+              fontSize: '23px', 
               // color: '#155724', 
               fontWeight: 700,
               lineHeight: 1.6,
@@ -1545,7 +1545,7 @@ const Editor = () => {
               Your card has been saved successfully!
             </Typography>
             <Typography sx={{ 
-               fontSize: '25px', 
+               fontSize: '18px', 
                  fontWeight: 700,
                  lineHeight: 1.6,
                  display: 'flex',
@@ -1577,7 +1577,7 @@ const Editor = () => {
             </Typography> */}
           {/* </Box> */}
         </DialogContent>
-        <DialogActions sx={{ p: 2, backgroundColor: '#FDF7FB' }}>
+        <DialogActions sx={{ p: 2, backgroundColor: '#EEE3EA' }}>
           <Button
             onClick={() => setSaveConfirmationDialog(false)}
             variant="contained"
@@ -1585,10 +1585,10 @@ const Editor = () => {
               backgroundColor: '#C1649F',
               // backgroundColor: '#d17a9a',
               color: '#ffffff',
-              px: 4,
+              px: 6,
               py: 1,
-              fontSize: '16px',
-              borderRadius: '16px !important',
+              fontSize: '14px',
+              borderRadius: '10px !important',
               // fontWeight: 600,
               '&:hover': { 
                 backgroundColor: '#C1649F',
@@ -1611,10 +1611,10 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
-            width:600,
-            backgroundColor: '#FDF7FB',
+            width:500,
+            backgroundColor: '#EEE3EA',
             border: '2px solid #E697B1',
-            borderRadius: 3,
+            borderRadius: 2,
             position: 'relative'
           }
         }}
@@ -1634,7 +1634,7 @@ const Editor = () => {
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#FDF7FB' }}>
+        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#EEE3EA' }}>
           {/* <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 ,  fontWeight: 700}}>
             Did you save your changes?
           </Typography> */}
@@ -1659,7 +1659,7 @@ const Editor = () => {
         </DialogContent>
         <DialogActions sx={{ 
           p: 2, 
-          backgroundColor: '#FDF7FB',
+          backgroundColor: '#EEE3EA',
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center'
@@ -1675,9 +1675,10 @@ const Editor = () => {
               borderRadius: '16px !important',
               backgroundColor: '#d9d9d9',
               color: '#444444',
-              px: 4,
+              px: 6,
               py: 1,
-              fontSize: '16px',
+              fontSize: '14px',
+              borderRadius: '10px !important',
               // fontWeight: 600,
               '&:hover': { 
                 backgroundColor: '#d9d9d9',
@@ -1708,9 +1709,10 @@ const Editor = () => {
               borderRadius: '16px !important',
               backgroundColor: '#C1649F',
               color: '#ffffff',
-              px: 4,
+             px: 6,
               py: 1,
-              fontSize: '16px',
+              fontSize: '14px',
+              borderRadius: '10px !important',
               // fontWeight: 600,
               '&:hover': { 
                 backgroundColor: '#C1649F',
