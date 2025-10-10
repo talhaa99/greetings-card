@@ -1049,7 +1049,7 @@ export const LandingNav = () => {
           PaperProps={{
             sx: {
               width: 500,
-              backgroundColor: '#FDF7FB',
+              backgroundColor: '#EEE3EA',
               border: '2px solid #E697B1',
               borderRadius: 3
             }
@@ -1335,7 +1335,7 @@ export const LandingNav = () => {
           PaperProps={{
             sx: {
               width: 500,
-              backgroundColor: '#FDF7FB',
+              backgroundColor: '#EEE3EA',
               border: '2px solid #E697B1',
               borderRadius: 3
             }
@@ -1563,7 +1563,7 @@ export const LandingNav = () => {
           PaperProps={{
             sx: {
               width: 500,
-              backgroundColor: '#FDF7FB',
+              backgroundColor: '#EEE3EA',
               border: '2px solid #E697B1',
               borderRadius: 3
             }
@@ -1672,7 +1672,7 @@ export const LandingNav = () => {
           PaperProps={{
             sx: {
               width: 500,
-              backgroundColor: '#FDF7FB',
+              backgroundColor: '#EEE3EA',
               border: '2px solid #E697B1',
               borderRadius: 3
             }
