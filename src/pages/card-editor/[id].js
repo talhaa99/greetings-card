@@ -1501,7 +1501,7 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
-          width:500,
+          width:450,
             backgroundColor: '#EEE3EA',
             border: '2px solid #E697B1',
             borderRadius: 2,
@@ -1512,6 +1512,7 @@ const Editor = () => {
         <IconButton
           onClick={() => setSaveConfirmationDialog(false)}
           sx={{
+            pt:0,
             position: 'absolute',
             right: 8,
             top: 8,
@@ -1522,9 +1523,9 @@ const Editor = () => {
             }
           }}
         >
-          <CloseIcon />
+          <CloseIcon sx={{ fontSize: 20 }}/>
         </IconButton>
-        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#EEE3EA' }}>
+        <DialogContent sx={{ p: 2, mt: 2, backgroundColor: '#EEE3EA' }}>
           {/* <Box sx={{ 
             mt: 2, 
             p: 3, 
@@ -1534,8 +1535,8 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '23px', 
-              // color: '#155724', 
+              fontSize: '20px', 
+              color: '#000000', 
               fontWeight: 700,
               lineHeight: 1.6,
               display: 'flex',
@@ -1544,13 +1545,13 @@ const Editor = () => {
             }}>
               Your card has been saved successfully!
             </Typography>
-            <Typography sx={{ 
-               fontSize: '18px', 
-                 fontWeight: 700,
-                 lineHeight: 1.6,
-                 display: 'flex',
-                textAlign: 'center',
-              gap: 1
+            <Typography variant="caption" sx={{ 
+                    fontSize: '18px', 
+                    color: '#000000', 
+                    // fontWeight: 700,
+                    lineHeight: 1.6,
+                    textAlign: 'center'
+    
             }}>
               &quot;Your card is saved in &quot;My Cards&quot; under your profile&quot;
             </Typography>
@@ -1577,7 +1578,7 @@ const Editor = () => {
             </Typography> */}
           {/* </Box> */}
         </DialogContent>
-        <DialogActions sx={{ p: 2, backgroundColor: '#EEE3EA' }}>
+        <DialogActions sx={{ pt:0, backgroundColor: '#EEE3EA' }}>
           <Button
             onClick={() => setSaveConfirmationDialog(false)}
             variant="contained"
@@ -1611,7 +1612,7 @@ const Editor = () => {
         fullWidth
         PaperProps={{
           sx: {
-            width:500,
+            width:450,
             backgroundColor: '#EEE3EA',
             border: '2px solid #E697B1',
             borderRadius: 2,
@@ -1622,6 +1623,7 @@ const Editor = () => {
         <IconButton
           onClick={() => setUnsavedChangesDialog(false)}
           sx={{
+            pt:0,
             position: 'absolute',
             right: 8,
             top: 8,
@@ -1632,9 +1634,9 @@ const Editor = () => {
             }
           }}
         >
-          <CloseIcon />
+          <CloseIcon  sx={{ fontSize: 20 }}/>
         </IconButton>
-        <DialogContent sx={{ p: 3, mt: 2, backgroundColor: '#EEE3EA' }}>
+        <DialogContent sx={{ p: 2, mt: 2, backgroundColor: '#EEE3EA' }}>
           {/* <Typography sx={{ fontSize: '16px', color: '#333', lineHeight: 1.6, mb: 3 ,  fontWeight: 700}}>
             Did you save your changes?
           </Typography> */}
@@ -1647,9 +1649,9 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(255, 193, 7, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '20px', 
-              // color: '#856404', 
-              fontWeight: 700,
+              fontSize: '18px', 
+              color: '#000000', 
+              // fontWeight: 700,
               lineHeight: 1.6,
               textAlign: 'center'
             }}>
@@ -1658,7 +1660,7 @@ const Editor = () => {
           {/* </Box> */}
         </DialogContent>
         <DialogActions sx={{ 
-          p: 2, 
+          pt: 0, 
           backgroundColor: '#EEE3EA',
           display: 'flex',
           justifyContent: 'flex-end',
