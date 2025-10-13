@@ -1535,23 +1535,22 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '20px', 
+              fontSize: '18px', 
               color: '#000000', 
               fontWeight: 700,
               lineHeight: 1.6,
-              display: 'flex',
-             textAlign: 'center',
-              gap: 1
+              textAlign: 'center',
+              display: 'block'
             }}>
               Your card has been saved successfully!
             </Typography>
             <Typography variant="caption" sx={{ 
-                    fontSize: '18px', 
+                    fontSize: '14px', 
                     color: '#000000', 
-                    // fontWeight: 700,
                     lineHeight: 1.6,
-                    textAlign: 'center'
-    
+                    textAlign: 'center',
+                    display: 'block',
+                    // mt: 1
             }}>
               &quot;Your card is saved in &quot;My Cards&quot; under your profile&quot;
             </Typography>
@@ -1578,7 +1577,7 @@ const Editor = () => {
             </Typography> */}
           {/* </Box> */}
         </DialogContent>
-        <DialogActions sx={{ pt:0, backgroundColor: '#EEE3EA' }}>
+        <DialogActions sx={{ pt:0, backgroundColor: '#EEE3EA', justifyContent: 'center' }}>
           <Button
             onClick={() => setSaveConfirmationDialog(false)}
             variant="contained"
@@ -1586,9 +1585,11 @@ const Editor = () => {
               backgroundColor: '#C1649F',
               // backgroundColor: '#d17a9a',
               color: '#ffffff',
-              px: 6,
-              py: 1,
-              fontSize: '14px',
+              px: 4,
+               py: .5,
+               fontSize: '14px',
+               fontWeight: 400,
+            
               borderRadius: '10px !important',
               // fontWeight: 600,
               '&:hover': { 
@@ -1649,11 +1650,11 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(255, 193, 7, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '18px', 
+              fontSize: '16px', 
               color: '#000000', 
-              // fontWeight: 700,
               lineHeight: 1.6,
-              textAlign: 'center'
+              textAlign: 'center',
+              display: 'block'
             }}>
             You have unsaved changes that will be lost if you leave this page
             </Typography>
@@ -1664,7 +1665,8 @@ const Editor = () => {
           backgroundColor: '#EEE3EA',
           display: 'flex',
           justifyContent: 'flex-end',
-          alignItems: 'center'
+          alignItems: 'center',
+          // gap: 2
         }}>
           <Button
             onClick={() => {
@@ -1674,20 +1676,17 @@ const Editor = () => {
             }}
             variant="contained"
             sx={{
-              borderRadius: '16px !important',
-              backgroundColor: '#d9d9d9',
-              color: '#444444',
-              px: 6,
-              py: 1,
-              fontSize: '14px',
               borderRadius: '10px !important',
-              // fontWeight: 600,
+              backgroundColor: '#C1649F',
+              color: '#ffffff',
+             px: 4,
+              py: .5,
+              fontSize: '14px',
+              fontWeight: 400,
               '&:hover': { 
-                backgroundColor: '#d9d9d9',
-                color: '#444444',
-                // boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)'
-              },
-              transition: 'all 0.2s ease'
+                backgroundColor: '#C1649F',
+                boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
+              }
             }}
           >
         Back
@@ -1708,20 +1707,17 @@ const Editor = () => {
             }}
             variant="contained"
             sx={{
-              borderRadius: '16px !important',
+              borderRadius: '10px !important',
               backgroundColor: '#C1649F',
               color: '#ffffff',
-             px: 6,
-              py: 1,
+             px: 4,
+              py: .5,
               fontSize: '14px',
-              borderRadius: '10px !important',
-              // fontWeight: 600,
+              fontWeight: 400,
               '&:hover': { 
                 backgroundColor: '#C1649F',
-                // transform: 'translateY(-2px)',
                 boxShadow: '0 4px 12px rgba(230, 151, 177, 0.3)'
-              },
-              // transition: 'all 0.2s ease'
+              }
             }}
           >
             Save
