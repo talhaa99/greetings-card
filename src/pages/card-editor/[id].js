@@ -1537,10 +1537,9 @@ const Editor = () => {
             <Typography sx={{ 
               fontSize: '18px', 
               color: '#000000', 
-              fontWeight: 700,
               lineHeight: 1.6,
               textAlign: 'center',
-              display: 'block'
+              display: 'block',
             }}>
               Your card has been saved successfully!
             </Typography>
