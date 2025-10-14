@@ -163,6 +163,19 @@
       gameInstance = unityInstance;
       document.querySelector("#unity-loading-bar").style.display = "none";
 
+
+      window.parent.postMessage({ type: 'UNITY_READY' }, '*');
+
+
+      window.addEventListener('message', (e) => {
+        const m = e.data;
+        if (!m || m.type !== 'UNITY_SEND' || !gameInstance) return;
+        const arg = (typeof m.payload === 'string') ? m.payload : JSON.stringify(m.payload ?? '');
+        try { gameInstance.SendMessage(m.object, m.method, arg); } catch (_) {}
+      });
+
+
+
       // document.querySelector("#unity-fullscreen-button").onclick = () => {
       //   unityInstance.SetFullscreen(1);
       // };

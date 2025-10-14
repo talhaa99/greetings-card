@@ -633,7 +633,26 @@ const Editor = () => {
   const [unsavedChangesDialog, setUnsavedChangesDialog] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
-  console.log('userTemplateData', userTemplateData);
+ 
+
+
+
+  useEffect(() => {
+    const onMsg = (e) => {
+      if (e.data?.type === 'UNITY_READY') {
+        console.log('✅ UNITY_READY message received from Unity editor');
+        console.log("e.data:", e.data);
+        setIsUnityReady(true);
+      }
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, [])
+
+
+
+
+
 
   // Helper function to trigger Unity save
   const triggerUnitySave = () => {
@@ -673,9 +692,14 @@ const Editor = () => {
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
-      // Wait for cardId to be available from router
+      // Wait for cardId and Unity to be ready
       if (!cardId) {
         console.log('⏳ Waiting for cardId from router...');
+        return;
+      }
+      
+      if (!isUnityReady) {
+        console.log('⏳ Waiting for Unity to be ready...');
         return;
       }
       
@@ -683,6 +707,7 @@ const Editor = () => {
         hasCreatedTemplateRef.current = true;
         console.log('🔐 User authenticated - initializing editor');
         console.log('✅ auth.isAuthenticated:', auth.isAuthenticated);
+        console.log('✅ Unity ready:', isUnityReady);
         console.log('🔑 Token in localStorage:', localStorage.getItem('token'));
         console.log('🆔 cardId:', cardId);
         
@@ -692,7 +717,8 @@ const Editor = () => {
           const res = await axios.get(`${BASE_URL}/api/cards/get/data/game/${cardId}`);
           setData(res.data.data);
           
-          // Create/update template data and get the fresh data
+          // Create/update template data ONLY after Unity is ready
+          console.log('🎮 Unity is ready, creating template data...');
           const freshTemplateData = await createTemplateData();
           setLoading(false);
           
@@ -729,7 +755,7 @@ const Editor = () => {
     };
 
     runOnceAfterLogin();
-  }, [auth?.isAuthenticated, cardId]);
+  }, [auth?.isAuthenticated, cardId, isUnityReady]);
 
   // Function to check redirect after login
   const checkRedirectAfterLogin = async () => {
@@ -886,11 +912,11 @@ const Editor = () => {
   // }, [auth?.isAuthenticated]);
 
   useEffect(() => {
-    if (cardId && !auth?.isAuthenticated) {
-      console.log('going to call create template 2');
+    if (cardId && !auth?.isAuthenticated && isUnityReady) {
+      console.log('🎮 Unity is ready and user not authenticated, creating template...');
       getFrontCardDetail();
     }
-  }, [cardId, auth?.isAuthenticated]);
+  }, [cardId, auth?.isAuthenticated, isUnityReady]);
 
   const getUserEmail = () => {
     if (!auth?.isAuthenticated) {
@@ -993,7 +1019,7 @@ const Editor = () => {
       }
 
     };
-  }, [data, userTemplateData]);
+  }, [data, userTemplateData, isUnityReady]);
   // }, [data && userTemplateData && token]);
   // console.log('data=============', data);
   const gameOnLoad = async () => {
