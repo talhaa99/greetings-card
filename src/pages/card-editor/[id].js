@@ -673,11 +673,18 @@ const Editor = () => {
 
   useEffect(() => {
     const runOnceAfterLogin = async () => {
+      // Wait for cardId to be available from router
+      if (!cardId) {
+        console.log('⏳ Waiting for cardId from router...');
+        return;
+      }
+      
       if (auth?.isAuthenticated && !hasCreatedTemplateRef.current) {
         hasCreatedTemplateRef.current = true;
         console.log('🔐 User authenticated - initializing editor');
         console.log('✅ auth.isAuthenticated:', auth.isAuthenticated);
         console.log('🔑 Token in localStorage:', localStorage.getItem('token'));
+        console.log('🆔 cardId:', cardId);
         
         try {
           // Get fresh data from the permanent table after login
@@ -722,7 +729,7 @@ const Editor = () => {
     };
 
     runOnceAfterLogin();
-  }, [auth?.isAuthenticated]);
+  }, [auth?.isAuthenticated, cardId]);
 
   // Function to check redirect after login
   const checkRedirectAfterLogin = async () => {
@@ -776,6 +783,12 @@ const Editor = () => {
   // }, [auth?.isAuthenticated, userTemplateData, router]);
 
   const getFrontCardDetail = async () => {
+    // Check if cardId is available
+    if (!cardId) {
+      console.log('⏳ cardId not available, skipping getFrontCardDetail');
+      return;
+    }
+    
     try {
       setLoading(true);
       const res = await axios.get(`${BASE_URL}/api/cards/get/data/game/${cardId}`);
@@ -900,6 +913,12 @@ const Editor = () => {
   };
 
   const createTemplateData = async () => {
+    // Check if cardId is available
+    if (!cardId) {
+      console.log('⏳ cardId not available, skipping template creation');
+      return null;
+    }
+    
     const email = getUserEmail();
     const isAuth = auth?.isAuthenticated;
     console.log('going to call create template ');
@@ -947,7 +966,10 @@ const Editor = () => {
   };
 
   useEffect(() => {
-    addCardView(cardId);
+    // Only call addCardView if cardId is available
+    if (cardId) {
+      addCardView(cardId);
+    }
     // if (!cardId || !data) return;
     // const day = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
     // const key = `viewed-card:${cardId}:${day}`;
