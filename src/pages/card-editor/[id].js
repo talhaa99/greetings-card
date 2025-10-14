@@ -1693,7 +1693,13 @@ const Editor = () => {
             onClick={() => {
               setHasUnsavedChanges(false);
               setUnsavedChangesDialog(false);
-              router.push('/');
+              // Navigate to home page with section1 anchor
+              router.push('/#section1').then(() => {
+                // Clean up the hash from URL after navigation
+                setTimeout(() => {
+                  window.history.replaceState(null, '', '/');
+                }, 100);
+              });
             }}
             variant="contained"
             sx={{

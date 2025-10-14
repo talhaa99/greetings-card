@@ -1541,13 +1541,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const Page = () => {
   const theme = useTheme();
   const { gifZIndex } = useZindexModal();
-  // const [info, setInfo] = useState({
-  //   innerWidth: 0,
-  //   innerHeight: 0,
-  //   screenWidth: 0,
-  //   screenHeight: 0,
-  //   devicePixelRatio: 0,
-  // });
+
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('mobile'));
   const islargeLaptop = useMediaQuery((theme) => theme.breakpoints.only('largeLaptop'));
@@ -1579,39 +1573,7 @@ const Page = () => {
   const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 
   // console.log(' width:', window.screen.width);
-  // console.log(' height:', window.screen.height);
-  // console.log('Screen width:', window.screen.width * window.devicePixelRatio);
-  // console.log('Screen height:', window.screen.height * window.devicePixelRatio);
-  // console.log('Inner width:', window.innerWidth);
-  // console.log('Inner height:', window.innerHeight);
 
-  // console.log("allLaptop", allLaptop);
-  // console.log("isLaptopScreenUp", isLaptopScreenUp);
-
-  // useEffect(() => {
-  //   const updateInfo = () => {
-
-  //     setInfo({
-  //       innerWidth: window.innerWidth,
-  //       innerHeight: window.innerHeight,
-  //       screenWidth: window.screen.width,
-  //       screenHeight: window.screen.height,
-  //       devicePixelRatio: window.devicePixelRatio,
-  //     });
-  //   };
-  //
-  //   updateInfo(); // initial load
-  //   window.addEventListener('resize', updateInfo); // update on resize
-  //
-  //   return () => window.removeEventListener('resize', updateInfo);
-  // }, []);
-
-  // console.log('innerWidth', window.innerWidth);
-  // console.log('innerHeight', window.innerHeight);
-  // console.log('screenWidth', window.screen.width);
-  // console.log('screenHeight', window.screen.height);
-  // console.log('devicePixelRatio', window.devicePixelRatio);
-  // console.log('isHDLap', isHDLap);
 
   return (
     <>
@@ -1625,6 +1587,7 @@ const Page = () => {
       {/*</pre>*/}
       {/*</div>*/}
       <Box
+        id="section1"
         sx={{
           // overflowX: 'hidden',
           // overflowY: 'hidden',

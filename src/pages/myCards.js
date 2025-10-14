@@ -168,7 +168,14 @@ const LoginUserCards = () => {
                   }}>
                   <Button
                     variant="contained"
-                    onClick={() => router.back()}
+                    onClick={() => {
+                      router.push('/#section1').then(() => {
+                        // Clean up the hash from URL after navigation
+                        setTimeout(() => {
+                          window.history.replaceState(null, '', '/');
+                        }, 100);
+                      });
+                    }}
                     sx={{
                       mt:5,
                       width: 150,

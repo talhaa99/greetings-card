@@ -45,13 +45,22 @@ import Checkout from '../components/checkout';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL;
-// const WEB_URL = 'http://localhost:3000';
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
 
 const Page = () => {
 
+  console.log('WEB_URL', process.env);
+  console.log('API_BASE_URL', API_BASE_URL);
+  console.log('------------------------------------------');
 
-
+  // Clean up hash from URL after scrolling to section
+  useEffect(() => {
+    if (window.location.hash === '#section1') {
+      setTimeout(() => {
+        window.history.replaceState(null, '', '/');
+      }, 100);
+    }
+  }, []);
 
   return (
     <>
