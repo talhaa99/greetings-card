@@ -640,7 +640,7 @@ const Editor = () => {
   useEffect(() => {
     const onMsg = (e) => {
       if (e.data?.type === 'UNITY_READY') {
-        console.log('✅ UNITY_READY message received from Unity editor');
+        console.log('✅ UNITY_READY message received from Unity editor******************************************************');
         console.log("e.data:", e.data);
         setIsUnityReady(true);
       }
@@ -1006,10 +1006,11 @@ const Editor = () => {
   }, [cardId]);
 
   useEffect(() => {
-    window.UnityLoaded = async () => {
-      console.log('Unity is loaded and ready from web');
-      setIsUnityReady(true);
-      if (data && userTemplateData) {
+    // window.UnityLoaded = async () => {
+      console.log('1 Unity is loaded and ready from web/////////////////////////////////////////////');
+      // setIsUnityReady(true);
+    // };
+    if (data && userTemplateData && isUnityReady) {
         console.log('data before calling game on load', data);
         console.log('userTemplateData before calling game on load', userTemplateData);
         // setTimeout(() => {
@@ -1018,8 +1019,9 @@ const Editor = () => {
         // gameOnLoad();
       }
 
-    };
-  }, [data, userTemplateData, isUnityReady]);
+    // };
+  }, [data && userTemplateData &&  isUnityReady]);
+
   // }, [data && userTemplateData && token]);
   // console.log('data=============', data);
   const gameOnLoad = async () => {
