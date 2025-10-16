@@ -804,7 +804,7 @@ export const LandingNav = () => {
                             </button>
                           </NextLink>
                         </li>
-                        <li>
+                        {/* <li>
                           <NextLink href="/" passHref legacyBehavior>
                           <button className="dropdown-item" style={{
                             fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
@@ -812,7 +812,7 @@ export const LandingNav = () => {
                             My Account
                           </button>
                           </NextLink>
-                        </li>
+                        </li> */}
                         {/*<li><hr className="dropdown-divider" /></li>*/}
                         <li>
                           <button className="dropdown-item" onClick={handleSignOut} style={{
@@ -901,13 +901,13 @@ export const LandingNav = () => {
                       >My Cards</button>
                     </NextLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <NextLink href="/" passHref legacyBehavior>
                     <button className="dropdown-item" style={{
                       fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
                     }}>My Account</button>
                     </NextLink>
-                  </li>
+                  </li> */}
                   <li>
                     <button className="dropdown-item" onClick={handleSignOut} style={{
                       fontSize: isSmallScreen ? '15px' :  islargeUp ? '25px' :  '18px'
