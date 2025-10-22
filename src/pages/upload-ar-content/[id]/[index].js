@@ -294,9 +294,10 @@ const Upload = () => {
             justifyContent: 'center',
             flexDirection:"column",
             alignItems: 'center',
-            height: '100vh'
+            height: '100vh',
+            gap: 3
           }}>
-            {console.log('🎉 Rendering thank you GIF - showMsgAfterUploadContent:', showMsgAfterUploadContent)}
+            {/* {console.log('🎉 Rendering thank you GIF - showMsgAfterUploadContent:', showMsgAfterUploadContent)}
             <Box
               data-aos="zoom-in"
               data-aos-duration="600"
@@ -306,39 +307,53 @@ const Upload = () => {
               alt="thank you"
               onLoad={() => console.log('✅ Thank you GIF loaded successfully')}
               onError={(e) => console.error('❌ Thank you GIF failed to load:', e)}
-              // sx={{ position: 'absolute', top: {md: '25%', xs:'25%' }, right: {md: - 150, xs:-30 }, width: {md: '30%', xs:'50%' }, zIndex: 4 }}
               sx={{
                 width: '50%'
               }}
-            />
-              {/* <Typography
-    variant="h2"
-    sx={{
-      // mt: 2,
-      fontWeight: 'bold',
-      color: '#C165A0', // bold pink
-    }}
-  >
-    Thank you for uploading. Your data has been saved. Please go to the website
-  </Typography> */}
-  
-            {/*<Button*/}
-            {/*  sx={{*/}
-            {/*    display: showMsgAfterUploadContent ? 'block' : 'none',*/}
-            {/*    minWidth: { md: 150, xs: 100 },*/}
-            {/*    backgroundColor: '#c165a0 !important',*/}
-            {/*    color: 'white',*/}
-            {/*    borderRadius: '20px',*/}
-            {/*    '&:hover': {*/}
-            {/*      backgroundColor: '#c165a0 !important',*/}
-            {/*      color: 'white'*/}
-            {/*    }*/}
-            {/*  }}*/}
-            {/*  disabled={loading}*/}
-            {/*  onClick={goToTheWebsite}*/}
-            {/*>*/}
-            {/*  Go Back To The Website*/}
-            {/*</Button>*/}
+            /> */}
+            
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 'bold',
+                color: '#C165A0',
+                textAlign: 'center',
+                px: 2
+              }}
+            >
+              Thank you for uploading!
+            </Typography>
+            
+            <Typography
+              variant="h5"
+              sx={{
+                color: 'black',
+                textAlign: 'center',
+                px: 2
+              }}
+            >
+              Your content has been saved successfully.
+            </Typography>
+{/*             
+            <Button
+              component={NextLink}
+              href="/card-editor"
+              sx={{
+                minWidth: { md: 200, xs: 150 },
+                backgroundColor: '#c165a0 !important',
+                color: 'white',
+                borderRadius: '20px',
+                fontSize: '1rem',
+                py: 1.5,
+                '&:hover': {
+                  backgroundColor: '#a04f80 !important',
+                  color: 'white'
+                }
+              }}
+            >
+              Go Back to Card Editor
+            </Button> */}
+
           </Box>
         )}
 
