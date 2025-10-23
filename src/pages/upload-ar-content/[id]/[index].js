@@ -249,7 +249,7 @@ const Upload = () => {
       const timer = setTimeout(() => {
 
         localStorage.removeItem('token');
-        // router.push('https://www.google.com');
+        router.push('https://www.google.com');
         // router.push(WEB_URL);
         // window.close();
 
@@ -313,7 +313,7 @@ const Upload = () => {
             /> */}
             
             <Typography
-              variant="h3"
+              variant="h4"
               sx={{
                 fontWeight: 'bold',
                 color: '#C165A0',
@@ -321,19 +321,20 @@ const Upload = () => {
                 px: 2
               }}
             >
-              Thank you for uploading!
+              Thank you for uploading! <br/>   Your content has been saved successfully.
             </Typography>
-            
+{/*             
             <Typography
-              variant="h5"
+              variant="h4"
               sx={{
-                color: 'black',
+                fontWeight: 'bold',
+                color: '#C165A0',
                 textAlign: 'center',
                 px: 2
               }}
             >
               Your content has been saved successfully.
-            </Typography>
+            </Typography> */}
 {/*             
 
             <Button
