@@ -249,7 +249,7 @@ const Upload = () => {
       const timer = setTimeout(() => {
 
         localStorage.removeItem('token');
-        router.push('https://www.google.com');
+        // router.push('https://www.google.com');
         // router.push(WEB_URL);
         // window.close();
 
@@ -335,6 +335,7 @@ const Upload = () => {
               Your content has been saved successfully.
             </Typography>
 {/*             
+
             <Button
               component={NextLink}
               href="/card-editor"
