@@ -1585,7 +1585,8 @@ const Editor = () => {
             // boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
           }}> */}
             <Typography sx={{ 
-              fontSize: '18px', 
+              fontWeight: 700,
+              fontSize: '20px', 
               color: '#000000', 
               lineHeight: 1.6,
               textAlign: 'center',
@@ -1601,7 +1602,7 @@ const Editor = () => {
                     display: 'block',
                     // mt: 1
             }}>
-              &quot;Your card is saved in &quot;My Cards&quot; under your profile&quot;
+              Your card is saved in &quot;My Cards&quot; under your profile
             </Typography>
           {/* </Box> */}
           {/* <Box sx={{ 

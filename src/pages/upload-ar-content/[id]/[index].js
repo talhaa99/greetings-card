@@ -321,8 +321,29 @@ const Upload = () => {
                 px: 2
               }}
             >
-              Thank you for uploading! <br/>   Your content has been saved successfully.
+             Thank you!<br/>  
+Your media is now uploaded<br/>
+Please go back to your design<br/>
             </Typography>
+            
+            <Button
+              onClick={() => window.close()}
+              sx={{
+                minWidth: { md: 150, xs: 150 },
+                backgroundColor: '#c165a0 !important',
+                color: 'white',
+                borderRadius: '20px',
+                fontSize: '1rem',
+                py: 1.5,
+                '&:hover': {
+                  backgroundColor: '#a04f80 !important',
+                  color: 'white'
+                }
+              }}
+            >
+            Great
+            </Button> 
+
 {/*             
             <Typography
               variant="h4"

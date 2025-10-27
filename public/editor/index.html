@@ -182,9 +182,10 @@
       // if (window.parent) {
       //   window.parent.postMessage('UnityReady', '*');
       // }
-      if (window.parent && window.parent.UnityLoaded) {
-        window.parent.UnityLoaded();
-      }
+      // if (window.parent && window.parent.UnityLoaded) {
+      //   window.parent.UnityLoaded();
+      // }
+
     }).catch((message) => {
       alert(message);
     });
