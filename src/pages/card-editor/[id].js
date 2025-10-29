@@ -1388,13 +1388,13 @@ const Editor = () => {
           // Handle completion and checkout flow
           if (parsed?.isCustomizationComplete && !isAuth) {
             console.log('⚠️ Customization complete but not authenticated - opening login');
-            openLogin();
+            // openLogin();
           }
 
           if (!isAuth) {
             console.log('⚠️ User not authenticated - setting redirect flag and opening login');
             localStorage.setItem('redirectToCheckout', 'true');
-            await openLogin();
+            // await openLogin();
           }
 
           console.log('📤 Step 2: Updating template via update-data API');
