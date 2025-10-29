@@ -307,7 +307,7 @@ const AboutUs = () => {
                 // width: 600,
                 width: 600,
                 // height:'100%',
-                height: { md: 530, xs: 720 },
+                height: { md: 530, xs: 730 },
                 borderRadius: { md: 15, xs: 7 },
                 position: 'relative',
                 zIndex: 2,
@@ -334,7 +334,7 @@ const AboutUs = () => {
                 >
                   About Us
                 </Typography>
-                <Typography gutterBottom variant="body1" sx={{
+                {/* <Typography gutterBottom variant="body1" sx={{
                   textAlign: 'center',
                   color: 'grey',
                   fontSize:{xs:'13px', md:'18px'}
@@ -342,7 +342,7 @@ const AboutUs = () => {
                   About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
                   nostrud exercitation ullamco laboris nisi ut aliquip.
-                </Typography>
+                </Typography> */}
               </Box>
               {/* Text Half-Outside on Left */}
               <Box
@@ -354,7 +354,7 @@ const AboutUs = () => {
                   left: {
                     md: -60, xs: '10%'
                   },
-                  top: { md: '35%', xs: '58%' },
+                  top: { md: '25%', xs: '46%' },
                   // top: {md: '30.2%', xs:'60%' },
                   width: { md: 380, xs: '80%' },
                   backgroundColor: '#fff',
@@ -363,7 +363,25 @@ const AboutUs = () => {
                   zIndex: 3
                 }}
               >
-                <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '18px' , xs:'13px'} }}>
+ <Typography variant="body1" sx={{ fontWeight: 900,  fontSize: { md: '18px' , xs:'13px'} }}>
+                  At{' '}
+                  <MuiLink component={NextLink} href="#" underline="hover" color="primary">
+                  Incardible
+                  </MuiLink>
+                  , we believe a greeting card should be more than paper — it should hold a moment that lasts.
+We’ve created a smarter, more personal way to share life’s celebrations. Every Incardible card unlocks a customised augmented-reality experience: your photos, your videos, your story — revealed with a simple scan.
+
+Designed in Australia and printed on premium stock, each card is crafted to be treasured. When someone opens an Incardible card, they don’t just read your message… they feel it.
+
+Our Mission
+To bring people closer together and help create meaningful memories — when it matters most.
+
+Incardible. Bring your messages to life
+                </Typography>
+
+
+
+                {/* <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '18px' , xs:'13px'} }}>
                   At{' '}
                   <MuiLink component={NextLink} href="#" underline="hover" color="primary">
                     Greeting Cards
@@ -376,7 +394,7 @@ const AboutUs = () => {
                   you&quot;, our designs speak from the heart. Each card is thoughtfully created with
                   unique artwork and meaningful messages. We value creativity, quality, and personal
                   touch.
-                </Typography>
+                </Typography> */}
               </Box>
 
               {/* Baby Image Half-Outside on Right */}
@@ -392,7 +410,7 @@ const AboutUs = () => {
                   right: {
                     md: -60, xs: 20
                   },
-                  top: { md: '32%', xs: '23%' },
+                  top: { md: '32%', xs: '10%' },
                   width: {
                     md: '60%',
                     xs: '90%'
@@ -410,7 +428,7 @@ const AboutUs = () => {
                 // sx={{ position: 'absolute', top: {md: '25%', xs:'25%' }, right: {md: - 150, xs:-30 }, width: {md: '30%', xs:'50%' }, zIndex: 4 }}
                 sx={{
                   position: 'absolute',
-                  top: { md: '35%', xs: '32%', lg: '34%' },
+                  top: { md: '35%', xs: '22%', lg: '34%' },
                   right: { md: 30, xs: 130 },
                   width: { md: '30%', xs: '30%' },
                   zIndex: 4
@@ -431,7 +449,7 @@ const AboutUs = () => {
                 // width: 600,
                 width: 800,
                 // height:'100%',
-                height: { md: 800, xs: 900 },
+                height: { md: 750, xs: 900 },
                 borderRadius: { md: 15, xs: 7 },
                 position: 'relative',
                 zIndex: 2,
@@ -450,14 +468,14 @@ const AboutUs = () => {
                 data-aos-easing="ease-in"
                 sx={{ mt: 3 }}>
                 <Typography
-                  variant="h4"
+                  variant="h3"
                   fontWeight="bold"
                   align="center"
                   mb={1}
                 >
                   About Us
                 </Typography>
-                <Typography gutterBottom variant="body1" sx={{
+                {/* <Typography gutterBottom variant="body1" sx={{
                   textAlign: 'center',
                   color: 'grey',
                   fontSize:  '24px'
@@ -465,7 +483,7 @@ const AboutUs = () => {
                   About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
                   nostrud exercitation ullamco laboris nisi ut aliquip.
-                </Typography>
+                </Typography> */}
               </Box>
               {/* Text Half-Outside on Left */}
               <Box
@@ -477,28 +495,29 @@ const AboutUs = () => {
                   left: {
                     md: -70, xs: '10%'
                   },
-                  top: { md: '30.2%', xs: '52%' },
+                  top: { md: '21%', xs: '52%' },
                   // top: {md: '30.2%', xs:'60%' },
-                  width: { md: 400, xs: '80%' },
+                  width: { md: 500, xs: '80%' },
                   backgroundColor: '#fff',
                   p: 3,
                   boxShadow: 3,
                   zIndex: 3
                 }}
               >
-                <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '23px' } }}>
+                <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '22px' } }}>
                   At{' '}
                   <MuiLink component={NextLink} href="#" underline="hover" color="primary">
-                    Greeting Cards
+                  Incardible
                   </MuiLink>
-                  , we believe in the power of heartfelt connections. Our mission is to bring joy,
-                  love,
-                  and warmth through beautifully crafted greeting cards for every occasion.
-                  Whether you&apos;re celebrating a birthday, anniversary, or simply want to
-                  say &quot;thank
-                  you&quot;, our designs speak from the heart. Each card is thoughtfully created with
-                  unique artwork and meaningful messages. We value creativity, quality, and personal
-                  touch.
+                  , we believe a greeting card should be more than paper — it should hold a moment that lasts.
+We’ve created a smarter, more personal way to share life’s celebrations. Every Incardible card unlocks a customised augmented-reality experience: your photos, your videos, your story — revealed with a simple scan.
+
+Designed in Australia and printed on premium stock, each card is crafted to be treasured. When someone opens an Incardible card, they don’t just read your message… they feel it.
+
+Our Mission
+To bring people closer together and help create meaningful memories — when it matters most.
+
+Incardible. Bring your messages to life
                 </Typography>
               </Box>
 
@@ -515,7 +534,7 @@ const AboutUs = () => {
                   right: {
                     md: -100, xs: 20
                   },
-                  top: { md: '23%', xs: '23%' },
+                  top: { md: '15%', xs: '23%' },
                   width: {
                     md: '75%',
                     xs: '90%'
@@ -545,7 +564,7 @@ const AboutUs = () => {
                 sx={{
                   position: 'absolute',
                   top: { md: '35%', xs: '27%', lg: '34%' },
-                  right: { md: 100, xs: 120 },
+                  right: { md: 80, xs: 120 },
                   width: { md: '30%', xs: '40%' },
                   zIndex: 4
                 }}
@@ -584,7 +603,7 @@ const AboutUs = () => {
                 // width: 600,
                 width: 600,
                 // height:'100%',
-                height: 750,
+                height: 700,
                 borderRadius: { md: 15, xs: 7 },
                 position: 'relative',
                 zIndex: 2,
@@ -610,14 +629,14 @@ const AboutUs = () => {
                 >
                   About Us
                 </Typography>
-                <Typography gutterBottom variant="body1" sx={{
+                {/* <Typography gutterBottom variant="body1" sx={{
                   textAlign: 'center',
                   color: 'grey'
                 }}>
                   About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
                   nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </Typography>
+                </Typography> */}
               </Box>
               {/* Text Half-Outside on Left */}
               <Box
@@ -627,15 +646,33 @@ const AboutUs = () => {
                 sx={{
                   position: 'absolute',
                   left: '-20%',
-                  top: '34%',
+                  top: '25%',
                   // top: {md: '30.2%', xs:'60%' },
-                  width: '75%',
+                  width: '80%',
                   backgroundColor: '#fff',
                   p: 3,
                   boxShadow: 3,
                   zIndex: 3
                 }}
               >
+ <Typography  variant="body1" sx={{ fontWeight: 900, fontSize: { md: '20px' }  }}>
+                  At{' '}
+                  <MuiLink component={NextLink} href="#" underline="hover" color="primary">
+                  Incardible
+                  </MuiLink>
+                  , we believe a greeting card should be more than paper — it should hold a moment that lasts.
+We’ve created a smarter, more personal way to share life’s celebrations. Every Incardible card unlocks a customised augmented-reality experience: your photos, your videos, your story — revealed with a simple scan.
+
+Designed in Australia and printed on premium stock, each card is crafted to be treasured. When someone opens an Incardible card, they don’t just read your message… they feel it.
+
+Our Mission
+To bring people closer together and help create meaningful memories — when it matters most.
+
+Incardible. Bring your messages to life
+                </Typography>
+
+
+{/* 
                 <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '23px' } }}>
                   At{' '}
                   <MuiLink component={NextLink} href="#" underline="hover" color="primary">
@@ -649,7 +686,7 @@ const AboutUs = () => {
                   you&quot;, our designs speak from the heart. Each card is thoughtfully created with
                   unique artwork and meaningful messages. We value creativity, quality, and personal
                   touch.
-                </Typography>
+                </Typography> */}
               </Box>
 
               {/* Baby Image Half-Outside on Right */}
@@ -663,8 +700,8 @@ const AboutUs = () => {
                 sx={{
                   position: 'absolute',
                   right: '-20%',
-                  top: '32%',
-                  width: '80%',
+                  top: '20%',
+                  width: '85%',
                   zIndex: 2
                 }}
               />
@@ -681,7 +718,7 @@ const AboutUs = () => {
                 component="img"
                 src={`${WEB_URL}/trb.gif`}
                 alt="top right balloon"
-                sx={{ position: 'absolute', top: '42%', right: '8%', width: '30%', zIndex: 4 }}
+                sx={{ position: 'absolute', top: '38%', right: '5%', width: '30%', zIndex: 4 }}
               />
 
               {/*<Box*/}
@@ -712,7 +749,7 @@ const AboutUs = () => {
               // width: 600,
               width: 550,
               // height:'100%',
-              height: 600,
+              height: 550,
               borderRadius: { md: 15, xs: 7 },
               position: 'relative',
               zIndex: 2,
@@ -738,14 +775,14 @@ const AboutUs = () => {
               >
                 About Us
               </Typography>
-              <Typography gutterBottom variant="body1" sx={{
+              {/* <Typography gutterBottom variant="body1" sx={{
                 textAlign: 'center',
                 color: 'grey'
               }}>
                 About Us Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                 tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis
                 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </Typography>
+              </Typography> */}
             </Box>
             {/* Text Half-Outside on Left */}
             <Box
@@ -754,17 +791,32 @@ const AboutUs = () => {
               data-aos-easing="ease-in"
               sx={{
                 position: 'absolute',
-                left: '-5%',
-                top: '35%',
+                left: '-13%',
+                top: '20%',
                 // top: {md: '30.2%', xs:'60%' },
-                width: '60%',
+                width: '70%',
                 backgroundColor: '#fff',
                 p: 3,
                 boxShadow: 3,
                 zIndex: 3
               }}
             >
-              <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '23px' } }}>
+               <Typography  variant="body1" sx={{ fontWeight: 900, fontSize: { md: '20px' }  }}>
+                  At{' '}
+                  <MuiLink component={NextLink} href="#" underline="hover" color="primary">
+                  Incardible
+                  </MuiLink>
+                  , we believe a greeting card should be more than paper — it should hold a moment that lasts.
+We’ve created a smarter, more personal way to share life’s celebrations. Every Incardible card unlocks a customised augmented-reality experience: your photos, your videos, your story — revealed with a simple scan.
+
+Designed in Australia and printed on premium stock, each card is crafted to be treasured. When someone opens an Incardible card, they don’t just read your message… they feel it.
+
+Our Mission
+To bring people closer together and help create meaningful memories — when it matters most.
+
+Incardible. Bring your messages to life
+                </Typography>
+              {/* <Typography variant="body1" sx={{ fontWeight: 900, fontSize: { md: '23px' } }}>
                 At{' '}
                 <MuiLink component={NextLink} href="#" underline="hover" color="primary">
                   Greeting Cards
@@ -777,7 +829,7 @@ const AboutUs = () => {
                 you&quot;, our designs speak from the heart. Each card is thoughtfully created with
                 unique artwork and meaningful messages. We value creativity, quality, and personal
                 touch.
-              </Typography>
+              </Typography> */}
             </Box>
 
             {/* Baby Image Half-Outside on Right */}
@@ -790,9 +842,9 @@ const AboutUs = () => {
               alt="baby image"
               sx={{
                 position: 'absolute',
-                right: '-7%',
-                top: '32%',
-                width: '65%',
+                right: '-15%',
+                top: '20%',
+                width: '75%',
                 zIndex: 2
               }}
             />
@@ -809,7 +861,7 @@ const AboutUs = () => {
               component="img"
               src={`${WEB_URL}/trb.gif`}
               alt="top right balloon"
-              sx={{ position: 'absolute', top: '36%', right: '12%', width: '30%', zIndex: 4 }}
+              sx={{ position: 'absolute', top: '34%', right: '8%', width: '30%', zIndex: 4 }}
             />
 
             {/*<Box*/}
