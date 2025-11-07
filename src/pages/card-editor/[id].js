@@ -635,6 +635,39 @@ const Editor = () => {
   const [shouldNavigateAfterSave, setShouldNavigateAfterSave] = useState(false);
  
 
+  // Check card expiration first, before any other logic
+  useEffect(() => {
+    const checkCardExpiration = async () => {
+      if (!userCardId) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(`${BASE_URL}/api/cards/check-expired/${userCardId}`);
+        
+        if (response.data?.data?.expired === true) {
+          console.log('❌ Card has expired, redirecting to homepage');
+          router.push('/');
+          return;
+        }
+        
+        console.log('✅ Card is valid, continuing...');
+      } catch (error) {
+        console.error('Error checking card expiration:', error);
+        // If card not found or other error, redirect to homepage for safety
+        if (error.response?.status === 404) {
+          console.log('❌ Card not found, redirecting to homepage');
+          router.push('/');
+        } else {
+          // For other errors, still redirect to be safe
+          console.log('❌ Error checking expiration, redirecting to homepage');
+          router.push('/');
+        }
+      }
+    };
+
+    checkCardExpiration();
+  }, [userCardId, router]);
 
 
   useEffect(() => {
