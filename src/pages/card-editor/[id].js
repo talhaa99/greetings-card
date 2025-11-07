@@ -647,7 +647,10 @@ const Editor = () => {
         
         if (response.data?.data?.expired === true) {
           console.log('❌ Card has expired, redirecting to homepage');
-          router.push('/');
+          toast.error('This card has expired. Redirecting to homepage...');
+          setTimeout(() => {
+            router.push('/');
+          }, 2000);
           return;
         }
         
@@ -657,11 +660,17 @@ const Editor = () => {
         // If card not found or other error, redirect to homepage for safety
         if (error.response?.status === 404) {
           console.log('❌ Card not found, redirecting to homepage');
-          router.push('/');
+          toast.error('Card not found. Redirecting to homepage...');
+          setTimeout(() => {
+            router.push('/');
+          }, 2000);
         } else {
           // For other errors, still redirect to be safe
           console.log('❌ Error checking expiration, redirecting to homepage');
-          router.push('/');
+          toast.error('Unable to verify card. Redirecting to homepage...');
+          setTimeout(() => {
+            router.push('/');
+          }, 2000);
         }
       }
     };
