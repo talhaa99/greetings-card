@@ -675,7 +675,7 @@ const Editor = () => {
       }
     };
 
-    checkCardExpiration();
+    // checkCardExpiration();
   }, [userCardId, router]);
 
 
