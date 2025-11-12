@@ -304,10 +304,21 @@ export default function CardsCarousel({ allCards = [] }) {
   // ✅ derive from STATE
   const validCards = useMemo(() => {
     return (Array.isArray(cards) ? cards : []).filter((data) => {
-      const createdDate = new Date(data?.createdAt);
+      if (data?.deleteMyCard) return false;
+
+      const createdDate = data?.createdAt ? new Date(data.createdAt) : null;
+      if (!createdDate || Number.isNaN(createdDate.getTime())) return false;
+
       const now = new Date();
       const diffInDays = (now.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
-      return diffInDays <= 30 && !data?.deleteMyCard;
+      const isPaid =
+        data?.isPaid === true ||
+        data?.isPaid === 'true' ||
+        data?.isPaid === 1 ||
+        data?.isPaid === '1';
+      const maxAgeDays = isPaid ? 90 : 7;
+
+      return diffInDays <= maxAgeDays;
     });
   }, [cards]);
 
