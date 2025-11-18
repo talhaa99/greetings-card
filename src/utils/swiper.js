@@ -378,6 +378,11 @@ export default function CardsCarousel({ allCards = [] }) {
           const img = `${BASE_URL}/${data?.cardId?.frontDesign}`;
           const title = data?.cardId?.title;
           const price = data?.cardId?.price;
+          const isPaid =
+            data?.isPaid === true ||
+            data?.isPaid === 'true' ||
+            data?.isPaid === 1 ||
+            data?.isPaid === '1';
 
           return (
             <SwiperSlide key={key}>
@@ -391,7 +396,17 @@ export default function CardsCarousel({ allCards = [] }) {
                   '&:hover': { boxShadow: 6, transform: 'translateY(-2px)' }
                 }}
               >
-                <CardActionArea onClick={() => gotoEditor(data?.uuid, data?.cardId?.uuid)}>
+                <CardActionArea
+                  disabled={isPaid}
+                  onClick={() => {
+                    if (isPaid) return;
+                    gotoEditor(data?.uuid, data?.cardId?.uuid);
+                  }}
+                  sx={{
+                    cursor: isPaid ? 'not-allowed' : 'pointer',
+                    opacity: isPaid ? 0.85 : 1
+                  }}
+                >
                   <CardMedia
                     component="img"
                     src={img}
@@ -415,13 +430,23 @@ export default function CardsCarousel({ allCards = [] }) {
                       </Typography>
 
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Tooltip title="Edit Card">
-                          <IconButton onClick={(e) => { e.stopPropagation(); gotoEditor(data?.uuid, data?.cardId?.uuid); }}>
-                            <EditIcon sx={{ color: '#c165a0' }} />
-                          </IconButton>
+                        <Tooltip title={isPaid ? 'Paid cards cannot be edited' : 'Edit Card'}>
+                          <span>
+                            <IconButton
+                              disabled={isPaid}
+                              onClick={(e) => {
+                                if (isPaid) return;
+                                e.stopPropagation();
+                                gotoEditor(data?.uuid, data?.cardId?.uuid);
+                              }}
+                              sx={{ color: isPaid ? 'rgba(0,0,0,0.26)' : '#c165a0' }}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </span>
                         </Tooltip>
 
-                        {(data.isPaid === true || data.isPaid === 'true') ? (
+                        {isPaid ? (
                           // Show as Badge when paid
                           <Box
                             sx={{
