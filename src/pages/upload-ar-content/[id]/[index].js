@@ -39,6 +39,53 @@ const Upload = () => {
   const [selectedGalleryImages, setSelectedGalleryImages] = useState([]);
   const [showMsgAfterUploadContent, setShowMsgAfterUploadContent] = useState(false);
   
+// ✅ QR se aya hua token, sirf isi ko use karna hai
+const qrToken =
+  typeof token === 'string'
+    ? token
+    : Array.isArray(token)
+    ? token[0]
+    : null;
+
+const isUploadAuthenticated = !!qrToken;
+
+const verifyToken = async () => {
+  setVerifyLoading(true);
+  try {
+    if (!qrToken) {
+      setIsTokenValid(false);
+    } else {
+      // Agar chaho to yahan backend se verify hit kar sakti ho
+      setIsTokenValid(true);
+    }
+  } catch (err) {
+    console.error('Token verification failed:', err);
+    setIsTokenValid(false);
+  } finally {
+    setVerifyLoading(false);
+  }
+};
+useEffect(() => {
+  if (qrToken) {
+    verifyToken();
+  } else {
+    setIsTokenValid(false);
+  }
+}, [qrToken]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Debug log for state changes
   useEffect(() => {
     console.log('🔄 showMsgAfterUploadContent state changed:', showMsgAfterUploadContent);
@@ -52,28 +99,28 @@ const Upload = () => {
   console.log('token', token);
   console.log('isAuth', isAuth);
 
-  const verifyToken = async () => {
-    setVerifyLoading(true);
+  // const verifyToken = async () => {
+  //   setVerifyLoading(true);
 
-    try {
-      console.log('going to call verifyToken');
-      localStorage.setItem('token', token);
-      console.log('going to call initializse before');
-      await auth.initialize(true);
-      console.log('going to call initializse after--------------');
-      setIsTokenValid(true);
-      setVerifyLoading(false);
-    } catch (err) {
-      console.error('Token verification failed:', err);
-      setIsTokenValid(false);
-    }
-  };
+  //   try {
+  //     console.log('going to call verifyToken');
+  //     localStorage.setItem('token', token);
+  //     console.log('going to call initializse before');
+  //     await auth.initialize(true);
+  //     console.log('going to call initializse after--------------');
+  //     setIsTokenValid(true);
+  //     setVerifyLoading(false);
+  //   } catch (err) {
+  //     console.error('Token verification failed:', err);
+  //     setIsTokenValid(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (token) {
-      verifyToken();
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     verifyToken();
+  //   }
+  // }, [token]);
 
   const useStyles = styled((theme) => ({
     root: {
@@ -120,8 +167,9 @@ const Upload = () => {
         }
         const formData = new FormData();
         // Check token directly from localStorage to avoid stale closure
-        const token = localStorage.getItem('token');
-        const isAuth = !!token;
+        // const token = localStorage.getItem('token');
+        const isAuth = isUploadAuthenticated;
+        // const isAuth = !!token;
         console.log('🖼️ Image upload - Auth check:', {
           hasToken: !!token,
           isAuth: isAuth,
@@ -136,7 +184,8 @@ const Upload = () => {
           const res = await axios.post(`${BASE_URL}/api/user/ar-experience/upload-image`,
             formData,
             {
-              headers: { 'Content-Type': 'multipart/form-data' }
+              headers: { 'Content-Type': 'multipart/form-data' },
+              ...(qrToken && { Authorization: `Bearer ${qrToken}` }), 
             });
 
           setPreviewUrls(res?.data?.data?.image);
@@ -180,7 +229,8 @@ const Upload = () => {
     setVideoLoading(true);
     // Check token directly from localStorage to avoid stale closure
     const token = localStorage.getItem('token');
-    const authenticatedUser = !!token;
+    // const authenticatedUser = !!token;
+    const authenticatedUser = isUploadAuthenticated;
     console.log('🎥 Video upload - Auth check:', {
       hasToken: !!token,
       isAuth: authenticatedUser,
@@ -193,7 +243,8 @@ const Upload = () => {
 
     try {
       const res = await axios.post(`${BASE_URL}/api/user/ar-experience/upload-video`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        ...(qrToken && { Authorization: `Bearer ${qrToken}` }),
       });
       toast.success('Video uploaded successfully.');
       setPreviewVideoUrls(res?.data?.data?.video);
@@ -218,7 +269,9 @@ const Upload = () => {
     try {
       // Check token directly from localStorage to avoid stale closure
       const token = localStorage.getItem('token');
-      const isAuthenticated = !!token;
+      // const isAuthenticated = !!token;
+      const isAuthenticated = isUploadAuthenticated;
+
       console.log('🗑️ Delete content - Auth check:', {
         hasToken: !!token,
         isAuth: isAuthenticated,
@@ -226,6 +279,8 @@ const Upload = () => {
       });
       const res = await axios.post(`${BASE_URL}/api/user/ar-experience/remove-0-index-content`, {
         uuid: id, isImage, isAuthenticated: isAuthenticated
+      }, {
+        ...(qrToken && { Authorization: `Bearer ${qrToken}` }),
       });
 
       if (isImage) {
@@ -244,20 +299,30 @@ const Upload = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (showMsgAfterUploadContent) {
+  //     const timer = setTimeout(() => {
+
+  //       localStorage.removeItem('token');
+  //       router.push('https://www.google.com');
+  //       // router.push(WEB_URL);
+  //       // window.close();
+
+  //     }, 10000);
+
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [showMsgAfterUploadContent]);
   useEffect(() => {
     if (showMsgAfterUploadContent) {
       const timer = setTimeout(() => {
-
-        localStorage.removeItem('token');
         router.push('https://www.google.com');
-        // router.push(WEB_URL);
-        // window.close();
-
       }, 10000);
-
+  
       return () => clearTimeout(timer);
     }
   }, [showMsgAfterUploadContent]);
+  
 
   // const goToTheWebsite = () => {
   //   // router.push(WEB_URL);
