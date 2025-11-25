@@ -170,7 +170,7 @@ review:'“Made me smile straight away”It’s such a sweet concept. Simple, th
                           sx={{ fontWeight: 900, textAlign: 'left' }}
                         >
                           {client.name}
-                          <span style={{ color: '#ff002e' }}> ★</span>
+                          {/* <span style={{ color: '#ff002e' }}> ★</span> */}
                         </Typography>
                         <Box sx={{ display: 'flex', mb: 1 }}>
                           {[...Array(5)].map((_, j) => (
