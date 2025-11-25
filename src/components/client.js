@@ -30,27 +30,31 @@ const Clients = () => {
   const testimonials = [
     {
       name: 'Client 1',
-      review: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.'
+review:'“Absolutely loved it!”Such a clever idea. It made the card feel so personal and everyone who saw it was amazed. Will definitely be buying more.— Emily G, VIC'
     },
     {
       name: 'Client 2',
-      review: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.'
+review:'“Really touched by it”This made the whole message feel so much more personal. It’s a simple idea but it adds a lot of emotion, and the reaction was so warm. It felt meaningful in a way traditional cards don’t, and I love that it creates a moment people actually remember.— Sarah L, VIC'
     },
     {
       name: 'Client 3',
-      review: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.'
+review:'“A lovely way to share a message” The card looked beautiful, and the added experience just made everything more heartfelt. It’s soft, warm, and such a nice way to make someone feel appreciated. It really lifts the whole gesture.— Daniel K, NSW'
     },
     {
       name: 'Client 4',
-      review: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.'
+review:'“Highly recommend”Great quality, quick delivery, and such a creative idea. It’s a perfect gift when you want to make someone feel special.— Nick R, WA'
     },
     {
       name: 'Client 5',
-      review: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.'
+review:'I love that you can hold it and also have something digital to remember it by.— Tara L, VIC'
     },
     {
       name: 'Client 6',
-      review: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.'
+review:'“A really thoughtful gift”It’s the kind of thing people remember because it stands out. I’ll be ordering more whenever I want to send something with a bit more meaning behind it.— Matthew D, SA'
+    },
+    {
+      name: 'Client 7',
+review:'“Made me smile straight away”It’s such a sweet concept. Simple, thoughtful, and really makes an impression.I was honestly surprised by how beautiful it looked. Great quality and such a nice way to share a message. Everyone I’ve shown wants to try it now.— Alicia M, QLD'
     }
   ];
 
@@ -150,8 +154,15 @@ const Clients = () => {
                   my: {md: 10, xs:5 }
                 }}>
                   {group.map((client, i) => (
-                    <Grid item xs={12} md={6} lg={6} key={i}>
-                      <Card sx={{ p: 3 }}>
+                    <Grid item xs={12} md={6} lg={6} key={i} sx={{ display: 'flex' }}>
+                      <Card sx={{ 
+                        p: 3, 
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '100%',
+                        minHeight: { xs: '280px', md: '320px' },
+                        height: '100%'
+                      }}>
                         <Typography
                           gutterBottom
                           variant="h5"
@@ -166,7 +177,16 @@ const Clients = () => {
                             <StarIcon key={j} sx={{ color: '#e79552' }}/>
                           ))}
                         </Box>
-                        <Typography sx={{ textAlign: 'justify', mt: 3, mb: 3,  fontSize:{xs:'13px', md:'16px'},fontWeight: 900 }}>
+                        <Typography sx={{ 
+                          textAlign: 'justify', 
+                          mt: 3, 
+                          mb: 3,  
+                          fontSize:{xs:'13px', md:'16px'},
+                          fontWeight: 900,
+                          flexGrow: 1,
+                          display: 'flex',
+                          alignItems: 'flex-start'
+                        }}>
                           {client.review}
                         </Typography>
                       </Card>

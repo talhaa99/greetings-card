@@ -63,331 +63,315 @@ const Page = () => {
                 {/*</Typography>*/}
                 <CardMedia/>
                 <CardContent>
-                  <Typography gutterBottom variant="bod1"  sx={{ textAlign: 'center' }}>
-                    These Terms and Conditions (“Terms”, “Terms and Conditions”) govern your
-                    relationship with Tecshield website’ applications mobile application (the
-                    “Service”) operated by Tecshield. (“us”, “we”, or “our”).
-
-                    Please read these Terms and Conditions carefully before using our website and
-                    Tecshield’ mobile applications (the “Service”).
-
-                    Your access to and use of the Service is conditioned on your acceptance of and
-                    compliance with these Terms. These Terms apply to all visitors, users and others
-                    who access or use the Service.
-
-                    By accessing or using the Service you agree to be bound by these Terms. If you
-                    disagree with any part of the terms then you may not access the Service.
+                <Typography gutterBottom variant="h6" component="div" sx={{  mb: 3, mt:3 }}>
+                1. TERMS & CONDITIONS
+                </Typography>
+                  <Typography gutterBottom variant="h6" component="div" sx={{  mb: 3, mt:3 }}>
+                1.1 Acceptance of Terms
+                </Typography>
+                  <Typography variant="body2" color="text.secondary">
+By accessing the Incardible website, purchasing products, or submitting digital content, you acknowledge that you have read, understood, and agree to be bound by these Terms & Conditions. If you do not agree with any part of these Terms, you must not proceed with the use of our services.
                   </Typography>
                   <Typography gutterBottom variant="h6" component="div" sx={{  mb: 3, mt:3 }}>
-                    Purchases
+                  1.2 Nature of Services
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    If you wish to purchase any product or service made available through the
-                    Service (“Purchase”), you may be asked to supply certain information relevant to
-                    your Purchase including, without limitation, your credit card number, the
-                    expiration date of your credit card, your billing address, and your shipping
-                    information.
-
-                    You represent and warrant that: (i) you have the legal right to use any credit
-                    card(s) or other payment method(s) in connection with any Purchase; and that
-                    (ii) the information you supply to us is true, correct and complete.
-
-                    By submitting such information, you grant us the right to provide the
-                    information to third parties for purposes of facilitating the completion of
-                    Purchases.
-
-                    We reserve the right to refuse or cancel your order at any time for certain
-                    reasons including but not limited to: product or service availability, errors in
-                    the description or price of the product or service, error in your order or other
-                    reasons.
-
-                    We reserve the right to refuse or cancel your order if fraud or an unauthorised
-                    or illegal transaction is suspected.
+XRAI Studios Pty Ltd, trading as Incardible, provides personalised greeting cards incorporating augmented-reality (AR) digital content. The service involves user-uploaded audio, video, photographic or graphical material (&quot;User Content&quot;), the printing and dispatch of physical cards, and the temporary hosting of AR experiences.
                   </Typography>
                   <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                    Availability, Errors and Inaccuracies
+                  1.3 Pricing and Payment
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    We are constantly updating our offerings of products and services on the
-                    Service. The products or services available on our Service may be mispriced,
-                    described inaccurately, or unavailable, and we may experience delays in updating
-                    information on the Service and in our advertising on other web sites.
+All prices displayed on our website are stated in Australian Dollars (AUD).
 
-                    We cannot and do not guarantee the accuracy or completeness of any information,
-                    including prices, product images, specifications, availability, and services. We
-                    reserve the right to change or update information and to correct errors,
-                    inaccuracies, or omissions at any time without prior notice.
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    2.2 After the purchase, the product will be available for download, if the game
-                    cannot be
-                    downloaded please contact us by Email: team@brandongame.com and we will send it
-                    to
-                    you
-                    manually.
+All payments are processed exclusively through Stripe, a secure third-party payment processor.
+
+XRAI Studios Pty Ltd does not collect, hold, or store any payment card information.
+
+Your order is deemed accepted only upon confirmation of a successful payment transaction.
                   </Typography>
                   <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                    Contests, Sweepstakes and Promotions
+                  1.4 User Content – Rights and Obligations
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Any contests, sweepstakes or other promotions (collectively, “Promotions”) made
-                    available through the Service may be governed by rules that are separate from
-                    these Terms. If you participate in any Promotions, please review the applicable
-                    rules as well as our Privacy Policy. If the rules for a Promotion conflict with
-                    these Terms, the Promotion rules will apply.
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Subscriptions
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Some parts of the Service are billed on a subscription basis
-                      (“Subscription(s)”). You will be billed in advance on a recurring and periodic
-                      basis (weekly, monthly, yearly). Billing cycles are set either on a monthly or
-                      annual basis, depending on the type of subscription plan you select when
-                      purchasing a Subscription.
+By uploading User Content, you warrant and represent that:
 
-                      At the end of each Billing Cycle, your Subscription will automatically renew
-                      under the exact same conditions unless you cancel it or Tecshield. cancels it.
-                      You may cancel your Subscription renewal either through your online account
-                      management page.
+a) You own, or have obtained all necessary rights and permissions to use the content;
 
-                      A valid payment method, including credit card or PayPal, is required to
-                      process the payment for your Subscription. You shall provide Tecshield with
-                      accurate and complete billing information including full name, address, state,
-                      zip code, telephone number, and a valid payment method information. By
-                      submitting such payment information, you automatically authorize Tecshield to
-                      charge all Subscription fees incurred through your account to any such payment
-                      instruments.
+b) The content does not infringe upon any copyright, privacy, confidentiality, moral rights, or intellectual property rights of any person;
 
-                      Should automatic billing fail to occur for any reason, Tecshield will issue an
-                      electronic invoice indicating that you must proceed manually, within a certain
-                      deadline date, with the full payment corresponding to the billing period as
-                      indicated on the invoice.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Free Trial
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Tecshield may, at its sole discretion, offer a Subscription with a free trial
-                      for a limited period of time (“Free Trial”).
+c) The content is not unlawful, harassing, defamatory, harmful, explicit, offensive, abusive, discriminatory, or otherwise inappropriate.
 
-                      You may be required to enter your billing information in order to sign up for
-                      the Free Trial.
-
-                      If you do enter your billing information when signing up for the Free Trial,
-                      you will not be charged by Tecshield until the Free Trial has expired. On the
-                      last day of the Free Trial period, unless you cancelled your Subscription, you
-                      will be automatically charged the applicable Subscription fees for the type of
-                      Subscription you have selected.
-
-                      At any time and without notice, Tecshield reserves the right to (i) modify the
-                      terms and conditions of the Free Trial offer, or (ii) cancel such Free Trial
-                      offer.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Fee Changes
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Tecshield, in its sole discretion and at any time, may modify the Subscription
-                      fees for the Subscriptions. Any Subscription fee change will become effective
-                      at the end of the then-current Billing Cycle.
-
-                      Tecshield will provide you with a reasonable prior notice of any change in
-                      Subscription fees to give you an opportunity to terminate your Subscription
-                      before such change becomes effective.
-
-                      Your continued use of the Service after the Subscription fee change comes into
-                      effect constitutes your agreement to pay the modified Subscription fee amount.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Refunds
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Except when required by law, paid Subscription fees are non-refundable.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Content
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Our Service allows you to post, link, store, share and otherwise make
-                      available certain information, text, graphics, videos, or other material
-                      (“Content”). You are responsible for the Content that you post to the Service,
-                      including its legality, reliability, and appropriateness.
-
-                      By posting Content to the Service, you grant us the right and license to use,
-                      modify, publicly perform, publicly display, reproduce, and distribute such
-                      Content on and through the Service. You retain any and all of your rights to
-                      any Content you submit, post or display on or through the Service and you are
-                      responsible for protecting those rights. You agree that this license includes
-                      the right for us to make your Content available to other users of the Service,
-                      who may also use your Content subject to these Terms.
-
-                      You represent and warrant that: (i) the Content is yours (you own it) or you
-                      have the right to use it and grant us the rights and license as provided in
-                      these Terms, and (ii) the posting of your Content on or through the Service
-                      does not violate the privacy rights, publicity rights, copyrights, contract
-                      rights or any other rights of any person
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Accounts
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      When you create an account with us, you must provide us information that is
-                      accurate, complete, and current at all times. Failure to do so constitutes a
-                      breach of the Terms, which may result in immediate termination of your account
-                      on our Service.
-
-                      You are responsible for safeguarding the password that you use to access the
-                      Service and for any activities or actions under your password, whether your
-                      password is with our Service or a third-party service.
-
-                      You agree not to disclose your password to any third party. You must notify us
-                      immediately upon becoming aware of any breach of security or unauthorized use
-                      of your account.
-
-                      You may not use as a username the name of another person or entity or that is
-                      not lawfully available for use, a name or trade mark that is subject to any
-                      rights of another person or entity other than you without appropriate
-                      authorization, or a name that is otherwise offensive, vulgar or obscene.
-
-                      If you sign into the Service with Facebook Connect we will collect information
-                      that is visible via your Facebook account such as: (1) your first and last
-                      name, (2) Facebook ID, (3) Profile Picture/URL, and (4) list of Facebook
-                      friends. Your Account may be used to publicly identify you as part of social
-                      features of the Service, which may include user-to-user interaction, chat or
-                      messaging functionality, public leaderboards, head-to-head competition, and
-                      other similar features. Your username will be public and will be shown to
-                      other users, but will only permit access to information that is considered
-                      public or that you have designated as public in your user profile settings.
-                      All info here is provided by the User voluntarily to simplify the
-                      authorization process and use of social features. Learn about how to remove
-                      your Facebook integration with our Service: HERE
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Copyright Policy
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      We respect the intellectual property rights of others. It is our policy to
-                      respond to any claim that Content posted on the Service infringes the
-                      copyright or other intellectual property infringement (“Infringement”) of any
-                      person.
-
-                      If you are a copyright owner or authorized on behalf of one, and you believe
-                      that the copyrighted work has been copied in a way that constitutes copyright
-                      infringement that is taking place through the Service, you must submit your
-                      notice in writing to the attention of “Copyright Infringement” of
-                      support@tecshield.io and include in your notice a detailed description of the
-                      alleged Infringement.
-
-                      You may be held accountable for damages (including costs and attorneys’ fees)
-                      for misrepresenting that any Content is infringing your copyright.
-                    </Typography>
-
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Intellectual Property
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      The Service and its original content (excluding Content provided by users),
-                      features and functionality are and will remain the exclusive property of
-                      Tecshield and its licensors. The Service is protected by copyright, trademark,
-                      and other laws of both the Singapore and foreign countries. Our trademarks and
-                      trade dress may not be used in connection with any product or service without
-                      the prior written consent of Tecshield.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Links To Other Web Sites
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Our Service may contain links to third-party web sites or services that are
-                      not owned or controlled by Tecshield.
-
-                      Tecshield has no control over, and assumes no responsibility for, the content,
-                      privacy policies, or practices of any third party web sites or services. You
-                      further acknowledge and agree that Tecshield shall not be responsible or
-                      liable, directly or indirectly, for any damage or loss caused or alleged to be
-                      caused by or in connection with use of or reliance on any such content, goods
-                      or services available on or through any such web sites or services.
-
-                      We strongly advise you to read the terms and conditions and privacy policies
-                      of any third-party web sites or services that you visit.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Termination
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      We may terminate or suspend your account immediately, without prior notice or
-                      liability, for any reason whatsoever, including without limitation if you
-                      breach the Terms.
-
-                      Upon termination, your right to use the Service will immediately cease. If you
-                      wish to terminate your account, you may simply discontinue using the Service.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Limitation Of Liability
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      In no event shall Tecshield, nor its directors, employees, partners, agents,
-                      suppliers, or affiliates, be liable for any indirect, incidental, special,
-                      consequential or punitive damages, including without limitation, loss of
-                      profits, data, use, goodwill, or other intangible losses, resulting from (i)
-                      your access to or use of or inability to access or use the Service; (ii) any
-                      conduct or content of any third party on the Service; (iii) any content
-                      obtained from the Service; and (iv) unauthorized access, use or alteration of
-                      your transmissions or content, whether based on warranty, contract, tort
-                      (including negligence) or any other legal theory, whether or not we have been
-                      informed of the possibility of such damage, and even if a remedy set forth
-                      herein is found to have failed of its essential purpose.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Disclaimer
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Your use of the Service is at your sole risk. The Service is provided on an
-                      “AS IS” and “AS AVAILABLE” basis. The Service is provided without warranties
-                      of any kind, whether express or implied, including, but not limited to,
-                      implied warranties of merchantability, fitness for a particular purpose,
-                      non-infringement or course of performance.
-
-                      Tecshield its subsidiaries, affiliates, and its licensors do not warrant that
-                      a) the Service will function uninterrupted, secure or available at any
-                      particular time or location; b) any errors or defects will be corrected; c)
-                      the Service is free of viruses or other harmful components; or d) the results
-                      of using the Service will meet your requirements.’ fees)
-                      for misrepresenting that any Content is infringing your copyright.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Governing Law
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      These Terms shall be governed and construed in accordance with the laws of
-                      Singapore, without regard to its conflict of law provisions.
-
-                      Our failure to enforce any right or provision of these Terms will not be
-                      considered a waiver of those rights. If any provision of these Terms is held
-                      to be invalid or unenforceable by a court, the remaining provisions of these
-                      Terms will remain in effect. These Terms constitute the entire agreement
-                      between us regarding our Service, and supersede and replace any prior
-                      agreements we might have between us regarding the Service.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Changes
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      We reserve the right, at our sole discretion, to modify or replace these Terms
-                      at any time. If a revision is material we will try to provide at least 15 days
-                      notice prior to any new terms taking effect. What constitutes a material
-                      change will be determined at our sole discretion.
-
-                      By continuing to access or use our Service after those revisions become
-                      effective, you agree to be bound by the revised terms. If you do not agree to
-                      the new terms, please stop using the Service.
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
-                      Contact Us
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      If you have any questions about these Terms, please contact us at <b>Email: Info@incardible.com.au</b>
-                    </Typography>
+You grant XRAI Studios Pty Ltd a non-exclusive, royalty-free, limited licence to store, process, reproduce, and display User Content solely for the purpose of generating, supporting, and delivering your AR greeting card service.
                   </Typography>
+                  <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                  1.5 Storage, Retention and Deletion of Uploaded Content
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+User Content is retained only for the period necessary to facilitate your AR experience:
+
+Unpurchased designs/media: retained for 1 month, then permanently deleted;
+
+Purchased cards: AR experience remains available for 3 months from purchase date;
+
+Media for purchased cards: retained for the same 3-month period;
+
+Extended storage services: retained until the expiry of the purchased extension;
+
+Upon expiry of the applicable retention period, all associated User Content is permanently deleted.
+
+You acknowledge it is your responsibility to maintain personal backups of your media.
+                  </Typography>
+                  <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                    1.6 Production and Dispatch
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+All greeting cards are produced and dispatched from Victoria, Australia.
+
+Dispatch occurs only after the design process is completed and full payment is received.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                    1.7 Refunds, Replacements and Complaints
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+As products are custom-made and personalised:
+
+Refunds for change of mind are not offered;
+
+If the delivered product is damaged, materially defective, or incorrect, we will replace the item at no cost;
+
+All claims must be submitted within 7 days of delivery and may require photographic evidence.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                    1.8 Prohibited Use
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Users must not employ the service to produce AR content or physical materials containing:
+
+Illegal, explicit, violent, threatening, abusive, discriminatory, or harmful material;
+
+Content in breach of any applicable law or regulation.
+
+XRAI Studios Pty Ltd reserves the right to disable or remove any AR experience that contravenes these Terms.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                    1.9 Limitation of Liability
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+To the extent permitted by Australian law:
+
+XRAI Studios Pty Ltd shall not be liable for indirect, incidental, consequential, exemplary, or punitive damages;
+
+Our maximum cumulative liability relating to any order shall be limited to the amount paid for that specific order;
+
+Nothing in these Terms restricts your statutory rights under the Australian Consumer Law.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                    1.10 Amendments to Terms
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+XRAI Studios Pty Ltd may update these Terms at any time. The most recent version, published on our website, supersedes all prior versions. Continued use of the service constitutes acceptance of updated Terms.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                    1.11 Contact Details
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+All correspondence relating to these Terms should be directed to:
+
+<b>info@incardible.co.au</b>
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2. PRIVACY POLICY
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.1 Overview
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+This Privacy Policy outlines how XRAI Studios Pty Ltd collects, uses, stores, and discloses personal information and User Content in accordance with the Privacy Act 1988 (Cth) and the Australian Privacy Principles (APPs).
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.2 Personal Information Collected
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+We may collect the following categories of personal information:
+
+Full name;
+
+Email address;
+
+Phone number;
+
+Postal address;
+
+Uploaded media (photos/videos);
+
+Order history and transaction records;
+
+Device and technical information relating to website usage.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.3 Payment Information
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+All payment card information is handled solely by Stripe.
+
+XRAI Studios Pty Ltd does not access, store, or process any payment card data.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.4 Use of Personal Information
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Personal information may be used for the following purposes:
+
+Processing and fulfilling orders;
+
+Creating and delivering AR experiences;
+
+Providing customer support and order notifications;
+
+Managing your saved designs and account preferences;
+
+Improving website and service functionality.
+
+We do not sell, rent, or trade personal information to third parties.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.5 Data Retention for Uploaded Media
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+User Content is handled strictly in accordance with the retention timeframes outlined in Section 1.5.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.6 Security Measures
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+We employ reasonable administrative, technical, and physical safeguards to protect personal information from loss, misuse, or unauthorised access.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.7 Access and Correction
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+You may request access to, or correction of, your personal information at any time by contacting us at:
+
+<b>info@incardible.co.au</b>
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.8 Cookies and Tracking Technologies
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Our website may use cookies and similar technologies for usability, analytics, performance, and personalisation purposes.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      2.9 Amendments
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+We may review and update this Privacy Policy periodically. The latest version will always be available on our website.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3. SHIPPING & DELIVERY POLICY
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.1 Delivery Partner
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+All orders are shipped via Australia Post.
+
+Official delivery timeframes and network coverage information are available at:
+
+https://auspost.com.au/business/shipping/delivery-speeds-and-coverage
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.2 Processing Time
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Orders are processed within 1–3 business days following design completion and payment confirmation.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.3 Delivery Timeframes (Based on Australia Post Guidelines)
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Standard Delivery (Parcel Post)
+
+Dispatched from Victoria:
+
+Within Victoria: typically 2–4 business days;
+
+Interstate (NSW, QLD, SA, TAS, ACT): typically 3–6 business days;
+
+Remote or rural areas: delivery may exceed 6 business days.
+
+Express Delivery (Express Post)
+
+Within Victoria: typically 1–2 business days;
+
+Major interstate metro areas: typically 1–3 business days;
+
+Regional or remote destinations: delivery may exceed 3 business days.
+
+Express Post is the fastest postal service offered, but next-day delivery is not guaranteed for all locations.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.4 Tracking
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Customers will receive a tracking number once their order has been dispatched.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.5 Incorrect Address Information
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+XRAI Studios Pty Ltd is not responsible for delays, loss, or misdelivery resulting from incorrect or incomplete address details supplied by the customer.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.6 Delays and External Factors
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Delivery timeframes may be impacted by:
+
+Public holidays;
+
+Peak mailing periods;
+
+Severe weather;
+
+Australia Post network delays.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.7 Lost or Damaged Parcels
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Where a parcel is lost or delivered damaged:
+
+Notification must be made within 7 days of delivery;
+
+Photographic evidence may be required;
+
+We will replace the item at no additional cost to the customer.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.8 Shipping Fees
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Shipping rates are calculated at checkout based on destination and service type.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      3.9 Risk of Loss
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+Risk transfers to the customer once the parcel has been handed over to Australia Post.
+
+Notwithstanding, we will make reasonable efforts to assist with resolving delivery issues.
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div" sx={{ mt: 3, mb: 3 }}>
+                      4. CONTACT INFORMATION
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+All enquiries relating to orders, privacy, terms, or delivery should be directed to:
+
+Email: <b>info@incardible.co.au</b>
+
+Company: XRAI Studios Pty Ltd
+                    </Typography>
                 </CardContent>
               </Card>
             </Grid>
