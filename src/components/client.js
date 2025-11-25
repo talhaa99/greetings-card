@@ -29,32 +29,32 @@ const Clients = () => {
   const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
   const testimonials = [
     {
-      name: 'Client 1',
-review:'“Absolutely loved it!”Such a clever idea. It made the card feel so personal and everyone who saw it was amazed. Will definitely be buying more.— Emily G, VIC'
+      name: 'Emily G, VIC',
+review:'“Absolutely loved it!”Such a clever idea. It made the card feel so personal and everyone who saw it was amazed. Will definitely be buying more.'
     },
     {
-      name: 'Client 2',
-review:'“Really touched by it”This made the whole message feel so much more personal. It’s a simple idea but it adds a lot of emotion, and the reaction was so warm. It felt meaningful in a way traditional cards don’t, and I love that it creates a moment people actually remember.— Sarah L, VIC'
+      name: 'Sarah L, VIC',
+review:'“Really touched by it”This made the whole message feel so much more personal. It’s a simple idea but it adds a lot of emotion, and the reaction was so warm. It felt meaningful in a way traditional cards don’t, and I love that it creates a moment people actually remember.'
     },
     {
-      name: 'Client 3',
-review:'“A lovely way to share a message” The card looked beautiful, and the added experience just made everything more heartfelt. It’s soft, warm, and such a nice way to make someone feel appreciated. It really lifts the whole gesture.— Daniel K, NSW'
+      name: 'Daniel K, NSW',
+review:'“A lovely way to share a message” The card looked beautiful, and the added experience just made everything more heartfelt. It’s soft, warm, and such a nice way to make someone feel appreciated. It really lifts the whole gesture.'
     },
     {
-      name: 'Client 4',
-review:'“Highly recommend”Great quality, quick delivery, and such a creative idea. It’s a perfect gift when you want to make someone feel special.— Nick R, WA'
+      name: 'Nick R, WA',
+review:'“Highly recommend”Great quality, quick delivery, and such a creative idea. It’s a perfect gift when you want to make someone feel special.'
     },
     {
-      name: 'Client 5',
-review:'I love that you can hold it and also have something digital to remember it by.— Tara L, VIC'
+      name: 'Tara L, VIC',
+review:'I love that you can hold it and also have something digital to remember it by.'
     },
     {
-      name: 'Client 6',
-review:'“A really thoughtful gift”It’s the kind of thing people remember because it stands out. I’ll be ordering more whenever I want to send something with a bit more meaning behind it.— Matthew D, SA'
+      name: 'Matthew D, SA',
+review:'“A really thoughtful gift”It’s the kind of thing people remember because it stands out. I’ll be ordering more whenever I want to send something with a bit more meaning behind it.'
     },
     {
-      name: 'Client 7',
-review:'“Made me smile straight away”It’s such a sweet concept. Simple, thoughtful, and really makes an impression.I was honestly surprised by how beautiful it looked. Great quality and such a nice way to share a message. Everyone I’ve shown wants to try it now.— Alicia M, QLD'
+      name: 'Alicia M, QLD',
+review:'“Made me smile straight away”It’s such a sweet concept. Simple, thoughtful, and really makes an impression.I was honestly surprised by how beautiful it looked. Great quality and such a nice way to share a message. Everyone I’ve shown wants to try it now.'
     }
   ];
 
