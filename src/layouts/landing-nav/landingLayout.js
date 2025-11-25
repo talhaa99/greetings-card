@@ -552,8 +552,9 @@ export const LandingNav = () => {
                 backgroundColor: '#1a1d25 !important'
               }}
             >
-              <NextLink href="/" passHref legacyBehavior>
+           
                 <Box sx={{ width: 350, height: '100%', display: 'flex', alignItems: 'center' }}>
+                <NextLink href="/" passHref legacyBehavior>
                   <Box
                     component="img"
                     src={`${WEB_URL}/logo.png`}
@@ -567,6 +568,7 @@ export const LandingNav = () => {
                       height: 'auto'
                     }}
                   />
+                  </NextLink>
                   {/*<Box*/}
                   {/*  component="img"*/}
                   {/*  src={`${WEB_URL}/logo3.png`}*/}
@@ -579,7 +581,7 @@ export const LandingNav = () => {
                   {/*  }}*/}
                   {/*/>*/}
                 </Box>
-              </NextLink>
+         
               {/*<Box*/}
               {/*  component="img"*/}
               {/*  src={`${WEB_URL}/heading4.png`}*/}
